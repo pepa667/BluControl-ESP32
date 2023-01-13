@@ -1,0 +1,396 @@
+menu "BluControl Configuration"
+
+    choice BLUCONTROL_BUTTONS_PRESS_STATE
+        prompt "State when pressing buttons"
+        default BLUCONTROL_BUTTONS_PRESS_STATE_LOW
+        help
+            Select whether the buttons are pressed when in LOW (Ground) or HIGH (3.3)
+
+        config BLUCONTROL_BUTTONS_PRESS_STATE_LOW
+            bool "LOW State"
+
+        config BLUCONTROL_BUTTONS_PRESS_STATE_HIGH
+            bool "HIGH State"
+    endchoice
+
+    menu "Buttons"
+        #Buttons
+        config BLUCONTROL_BUTTON_A_GPIO
+            int "Button A GPIO"
+            default -1
+            help
+                GPIO Number for the A Button. -1 if the controller doesn't have that button.
+
+        config BLUCONTROL_BUTTON_B_GPIO
+            int "Button B GPIO"
+            default -1
+            help
+                GPIO Number for the B Button. -1 if the controller doesn't have that button.
+
+        config BLUCONTROL_BUTTON_Y_GPIO
+            int "Button Y GPIO"
+            default -1
+            help
+                GPIO Number for the Y Button. -1 if the controller doesn't have that button.
+
+        config BLUCONTROL_BUTTON_X_GPIO
+            int "Button X GPIO"
+            default -1
+            help
+                GPIO Number for the X Button. -1 if the controller doesn't have that button.
+
+        config BLUCONTROL_DPAD_RIGHT_GPIO
+            int "DPAD Right GPIO"
+            default -1
+            help
+                GPIO Number for the DPAD Right. -1 if the controller doesn't have that button.
+
+        config BLUCONTROL_DPAD_DOWN_GPIO
+            int "DPAD Down GPIO"
+            default -1
+            help
+                GPIO Number for the DPAD Down. -1 if the controller doesn't have that button.
+
+        config BLUCONTROL_DPAD_LEFT_GPIO
+            int "DPAD Left GPIO"
+            default -1
+            help
+                GPIO Number for the DPAD Left. -1 if the controller doesn't have that button.
+
+        config BLUCONTROL_DPAD_UP_GPIO
+            int "DPAD Up GPIO"
+            default -1
+            help
+                GPIO Number for the DPAD Up. -1 if the controller doesn't have that button.
+
+        config BLUCONTROL_BUTTON_L_GPIO
+            int "Button L GPIO"
+            default -1
+            help
+                GPIO Number for the L Button. -1 if the controller doesn't have that button.
+
+        config BLUCONTROL_BUTTON_ZL_GPIO
+            int "Button ZL GPIO"
+            default -1
+            help
+                GPIO Number for the ZL Button. -1 if the controller doesn't have that button.
+
+        config BLUCONTROL_BUTTON_R_GPIO
+            int "Button R GPIO"
+            default -1
+            help
+                GPIO Number for the R Button. -1 if the controller doesn't have that button.
+
+        config BLUCONTROL_BUTTON_ZR_GPIO
+            int "Button ZR GPIO"
+            default -1
+            help
+                GPIO Number for the ZR Button. -1 if the controller doesn't have that button.
+
+        config BLUCONTROL_BUTTON_START_GPIO
+            int "Button START GPIO"
+            default -1
+            help
+                GPIO Number for the START Button. -1 if the controller doesn't have that button.
+
+        config BLUCONTROL_BUTTON_HOME_GPIO
+            int "Button HOME GPIO"
+            default -1
+            help
+                GPIO Number for the HOME Button. -1 if the controller doesn't have that button.
+
+        config BLUCONTROL_BUTTON_CAPTURE_GPIO
+            int "Button CAPTURE GPIO"
+            default -1
+            help
+                GPIO Number for the CAPTURE Button. -1 if the controller doesn't have that button.
+
+        config BLUCONTROL_BUTTON_STICK_L_GPIO
+            int "Button Stick L (L3) GPIO"
+            default -1
+            help
+                GPIO Number for the Left Stick Button. -1 if the controller doesn't have that button.
+
+        config BLUCONTROL_BUTTON_STICK_R_GPIO
+            int "Button Stick R (R3) GPIO"
+            default -1
+            help
+                GPIO Number for the Right Stick Button. -1 if the controller doesn't have that button.
+    endmenu
+
+    menu "Sticks"
+        menu "Left Stick"
+            #Left Stick
+
+            choice BLUCONTROL_LEFT_STICK_MODE
+                prompt "Left stick mode"
+                default BLUCONTROL_LEFT_STICK_NONE
+                help
+                    Select the type of input for the left stick
+
+                config BLUCONTROL_LEFT_STICK_NONE
+                    bool "Disabled"
+
+                config BLUCONTROL_LEFT_STICK_ANALOG
+                    bool "Analog"
+
+                config BLUCONTROL_LEFT_STICK_N64
+                    bool "N64 stick"
+
+                config BLUCONTROL_LEFT_STICK_BUTTONS
+                    bool "Buttons"
+            endchoice
+
+            #Analog
+
+            config BLUCONTROL_LEFT_STICK_X
+                int "Left Stick X Axis"
+                default 32
+                range 32 39
+                depends on BLUCONTROL_LEFT_STICK_ANALOG
+                help
+                    GPIO Number for the Left Stick X Axis.
+
+            config BLUCONTROL_LEFT_STICK_Y
+                int "Left Stick Y Axis"
+                default 33
+                range 32 39
+                depends on BLUCONTROL_LEFT_STICK_ANALOG
+                help
+                    GPIO Number for the Left Stick Y Axis.
+
+            choice BLUCONTROL_LEFT_STICK_X_MODE
+                prompt "Left stick X axis mode"
+                default BLUCONTROL_LEFT_STICK_X_NORMAL
+                depends on BLUCONTROL_LEFT_STICK_ANALOG
+                help
+                    Select the mode for the left stick X axis
+
+                config BLUCONTROL_LEFT_STICK_X_NORMAL
+                    bool "Normal"
+
+                config BLUCONTROL_LEFT_STICK_X_INVERTED
+                    bool "Inverted"
+            endchoice
+
+            choice BLUCONTROL_LEFT_STICK_Y_MODE
+                prompt "Left stick Y axis mode"
+                default BLUCONTROL_LEFT_STICK_Y_NORMAL
+                depends on BLUCONTROL_LEFT_STICK_ANALOG
+                help
+                    Select the mode for the left stick Y axis
+
+                config BLUCONTROL_LEFT_STICK_Y_NORMAL
+                    bool "Normal"
+
+                config BLUCONTROL_LEFT_STICK_Y_INVERTED
+                    bool "Inverted"
+            endchoice
+
+            #N64
+
+            config BLUCONTROL_LEFT_STICK_X1
+                int "Left Stick X Axis Interrupt"
+                default 32
+                range 0 50
+                depends on BLUCONTROL_LEFT_STICK_N64
+                help
+                    GPIO Number for the Left Stick X Axis Interrupt.
+
+            config BLUCONTROL_LEFT_STICK_X2
+                int "Left Stick X Axis Counter"
+                default 33
+                range 0 50
+                depends on BLUCONTROL_LEFT_STICK_N64
+                help
+                    GPIO Number for the Left Stick X Axis Counter.
+
+            config BLUCONTROL_LEFT_STICK_Y1
+                int "Left Stick Y Axis Interrupt"
+                default 34
+                range 0 50
+                depends on BLUCONTROL_LEFT_STICK_N64
+                help
+                    GPIO Number for the Left Stick Y Axis Interrupt.
+
+            config BLUCONTROL_LEFT_STICK_Y2
+                int "Left Stick Y Axis Counter"
+                default 35
+                range 0 50
+                depends on BLUCONTROL_LEFT_STICK_N64
+                help
+                    GPIO Number for the Left Stick Y Axis Counter.
+
+                    #Buttons
+
+            config BLUCONTROL_LEFT_STICK_X_MAX
+                int "Left Stick X Axis Positive"
+                default 32
+                range 0 50
+                depends on BLUCONTROL_LEFT_STICK_BUTTONS
+                help
+                    GPIO Number for the Left Stick X Axis Positive.
+
+            config BLUCONTROL_LEFT_STICK_X_MIN
+                int "Left Stick X Axis Negative"
+                default 33
+                range 0 50
+                depends on BLUCONTROL_LEFT_STICK_BUTTONS
+                help
+                    GPIO Number for the Left Stick X Axis Negative.
+
+            config BLUCONTROL_LEFT_STICK_Y_MAX
+                int "Left Stick Y Axis Positive"
+                default 34
+                range 0 50
+                depends on BLUCONTROL_LEFT_STICK_BUTTONS
+                help
+                    GPIO Number for the Left Stick Y Axis Positive.
+
+            config BLUCONTROL_LEFT_STICK_Y_MIN
+                int "Left Stick Y Axis Negative"
+                default 35
+                range 0 50
+                depends on BLUCONTROL_LEFT_STICK_BUTTONS
+                help
+                    GPIO Number for the Left Stick Y Axis Negative.
+        endmenu
+
+        menu "Right stick"
+            #Right Stick
+
+            choice BLUCONTROL_RIGHT_STICK_MODE
+                prompt "Right stick mode"
+                default BLUCONTROL_RIGHT_STICK_NONE
+                help
+                    Select the type of input for the right stick
+
+                config BLUCONTROL_RIGHT_STICK_NONE
+                    bool "Disabled"
+
+                config BLUCONTROL_RIGHT_STICK_ANALOG
+                    bool "Analog"
+
+                config BLUCONTROL_RIGHT_STICK_N64
+                    bool "N64 stick"
+
+                config BLUCONTROL_RIGHT_STICK_BUTTONS
+                    bool "Buttons"
+            endchoice
+
+            #Analog
+
+            config BLUCONTROL_RIGHT_STICK_X
+                int "Right Stick X Axis"
+                default 36
+                range 32 39
+                depends on BLUCONTROL_RIGHT_STICK_ANALOG
+                help
+                    GPIO Number for the Right Stick X Axis.
+
+            config BLUCONTROL_RIGHT_STICK_Y
+                int "Right Stick Y Axis"
+                default 37
+                range 32 39
+                depends on BLUCONTROL_RIGHT_STICK_ANALOG
+                help
+                    GPIO Number for the Right Stick Y Axis.
+
+            choice BLUCONTROL_RIGHT_STICK_X_MODE
+                prompt "Right stick X axis mode"
+                default BLUCONTROL_RIGHT_STICK_X_NORMAL
+                depends on BLUCONTROL_RIGHT_STICK_ANALOG
+                help
+                    Select the mode for the right stick X axis
+
+                config BLUCONTROL_RIGHT_STICK_X_NORMAL
+                    bool "Normal"
+
+                config BLUCONTROL_RIGHT_STICK_X_INVERTED
+                    bool "Inverted"
+            endchoice
+
+            choice BLUCONTROL_RIGHT_STICK_Y_MODE
+                prompt "Right stick Y axis mode"
+                default BLUCONTROL_RIGHT_STICK_Y_NORMAL
+                depends on BLUCONTROL_RIGHT_STICK_ANALOG
+                help
+                    Select the mode for the right stick Y axis
+
+                config BLUCONTROL_RIGHT_STICK_Y_NORMAL
+                    bool "Normal"
+
+                config BLUCONTROL_RIGHT_STICK_Y_INVERTED
+                    bool "Inverted"
+            endchoice
+
+            #N64
+
+            config BLUCONTROL_RIGHT_STICK_X1
+                int "Right Stick X Axis Interrupt"
+                default 36
+                range 0 50
+                depends on BLUCONTROL_RIGHT_STICK_N64
+                help
+                    GPIO Number for the Right Stick X Axis Interrupt.
+
+            config BLUCONTROL_RIGHT_STICK_X2
+                int "Right Stick X Axis Counter"
+                default 37
+                range 0 50
+                depends on BLUCONTROL_RIGHT_STICK_N64
+                help
+                    GPIO Number for the Right Stick X Axis Counter.
+
+            config BLUCONTROL_RIGHT_STICK_Y1
+                int "Right Stick Y Axis Interrupt"
+                default 38
+                range 0 50
+                depends on BLUCONTROL_RIGHT_STICK_N64
+                help
+                    GPIO Number for the Right Stick Y Axis Interrupt.
+
+            config BLUCONTROL_RIGHT_STICK_Y2
+                int "Right Stick Y Axis Counter"
+                default 39
+                range 0 50
+                depends on BLUCONTROL_RIGHT_STICK_N64
+                help
+                    GPIO Number for the Right Stick Y Axis Counter.
+
+                    #Buttons
+
+            config BLUCONTROL_RIGHT_STICK_X_MAX
+                int "Right Stick X Axis Positive"
+                default 36
+                range 0 50
+                depends on BLUCONTROL_RIGHT_STICK_BUTTONS
+                help
+                    GPIO Number for the Right Stick X Axis Positive.
+
+            config BLUCONTROL_RIGHT_STICK_X_MIN
+                int "Right Stick X Axis Negative"
+                default 37
+                range 0 50
+                depends on BLUCONTROL_RIGHT_STICK_BUTTONS
+                help
+                    GPIO Number for the Right Stick X Axis Negative.
+
+            config BLUCONTROL_RIGHT_STICK_Y_MAX
+                int "Right Stick Y Axis Positive"
+                default 38
+                range 0 50
+                depends on BLUCONTROL_RIGHT_STICK_BUTTONS
+                help
+                    GPIO Number for the Right Stick Y Axis Positive.
+
+            config BLUCONTROL_RIGHT_STICK_Y_MIN
+                int "Right Stick Y Axis Negative"
+                default 39
+                range 0 50
+                depends on BLUCONTROL_RIGHT_STICK_BUTTONS
+                help
+                    GPIO Number for the Right Stick Y Axis Negative.
+        endmenu
+    endmenu
+endmenu

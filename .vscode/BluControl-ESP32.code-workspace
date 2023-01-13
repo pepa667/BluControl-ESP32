@@ -1,0 +1,48 @@
+{
+	"folders": [
+		{
+			"path": "../blu-switch"
+		},
+		{
+			"path": "../blu-generic"
+		},
+		{
+			"path": "../blu-common"
+		}
+	],
+	"settings":
+	{
+		"idf.portWin": "COM6",
+		"idf.adapterTargetName": "esp32",
+		"idf.flashType": "UART",
+		"files.associations": {
+			"task.h": "c",
+			"cmath": "cpp",
+			"*.tcc": "c",
+			"ostream": "c",
+			"*.h": "c",
+			"format": "c",
+			"chrono": "c",
+			"complex": "c",
+			"functional": "c",
+			"optional": "c",
+			"regex": "c",
+			"system_error": "c",
+			"type_traits": "c",
+			"xtr1common": "c",
+			"xutility": "c",
+			"array": "c",
+			"tuple": "c",
+			"utility": "c",
+			"algorithm": "cpp",
+			"charconv": "cpp",
+			"iomanip": "cpp",
+			"thread": "cpp",
+			"xhash": "cpp",
+			"xlocmon": "cpp",
+			"xlocnum": "cpp",
+			"*.inc": "cpp",
+			"cstdlib": "cpp"
+		}
+	}
+}

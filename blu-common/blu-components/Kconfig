@@ -393,4 +393,13 @@ menu "BluControl Configuration"
                     GPIO Number for the Right Stick Y Axis Negative.
         endmenu
     endmenu
+
+    menu "Advanced"
+        config BLUCONTROL_ANALOG_VREF
+            int "Default vRef for analog values"
+            default 1079
+            depends on BLUCONTROL_LEFT_STICK_ANALOG || BLUCONTROL_RIGHT_STICK_ANALOG
+            help
+                Default voltage reference value when reading analog values. This is just in case your ESP32 doesn't has this value written on its eFuse.
+    endmenu
 endmenu

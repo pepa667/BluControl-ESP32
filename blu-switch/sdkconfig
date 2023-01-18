@@ -1797,6 +1797,12 @@ CONFIG_BLUCONTROL_RIGHT_STICK_X_NORMAL=y
 CONFIG_BLUCONTROL_RIGHT_STICK_Y_INVERTED=y
 # end of Right stick
 # end of Sticks
+
+#
+# Advanced
+#
+CONFIG_BLUCONTROL_ANALOG_VREF=1079
+# end of Advanced
 # end of BluControl Configuration
 
 #

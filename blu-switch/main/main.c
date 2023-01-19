@@ -110,7 +110,7 @@ void app_main(void)
 
     hoja_init();
     hoja_set_core(HOJA_CORE_NS);
-    core_ns_set_subcore(NS_TYPE_PROCON);
+    core_ns_set_subcore(HOJA_CONTROL_TYPE);
 
     while(hoja_start_core() != HOJA_OK)
     {

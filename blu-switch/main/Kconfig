@@ -1,0 +1,33 @@
+menu "BluControl Switch Configuration"
+    choice BLUCONTROL_CONTROL_TYPE
+        prompt "Switch control type"
+        default BLUCONTROL_CONTROL_TYPE_PRO
+        help
+            Select the type of controller for the Switch
+
+        config BLUCONTROL_CONTROL_TYPE_PRO
+            bool "Pro Controller"
+
+        config BLUCONTROL_CONTROL_TYPE_N64
+            bool "Nintendo 64 Controller"
+
+        config BLUCONTROL_CONTROL_TYPE_JOY_L
+            bool "Left Joycon Controller"
+
+        config BLUCONTROL_CONTROL_TYPE_JOY_R
+            bool "Right Joycon Controller"
+
+        config BLUCONTROL_CONTROL_TYPE_SNES
+            bool "SNES Controller"
+
+        config BLUCONTROL_CONTROL_TYPE_NES
+            bool "NES Controller"
+
+        config BLUCONTROL_CONTROL_TYPE_FC
+            bool "FamiCom Controller"
+
+        config BLUCONTROL_CONTROL_TYPE_GENESIS
+            bool "Genesis Controller"
+    endchoice
+
+endmenu

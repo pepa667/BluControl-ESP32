@@ -2,6 +2,7 @@
 #define BLU_ANALOG_PAD_H
 
 #include "blu-hardware.h"
+#include "blu-analogs.h"
 #include "driver/gpio.h"
 #include "esp_adc/adc_cali.h"
 #include "esp_adc/adc_cali_scheme.h"

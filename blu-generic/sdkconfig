@@ -1641,6 +1641,15 @@ CONFIG_BLUCONTROL_BUTTON_STICK_R_GPIO=26
 # end of Buttons
 
 #
+# Triggers
+#
+CONFIG_BLUCONTROL_LEFT_TRIGGER_NONE=y
+# CONFIG_BLUCONTROL_LEFT_TRIGGER_ANALOG is not set
+CONFIG_BLUCONTROL_RIGHT_TRIGGER_NONE=y
+# CONFIG_BLUCONTROL_RIGHT_TRIGGER_ANALOG is not set
+# end of Triggers
+
+#
 # Sticks
 #
 
@@ -1674,6 +1683,12 @@ CONFIG_BLUCONTROL_RIGHT_STICK_Y_NORMAL=y
 # CONFIG_BLUCONTROL_RIGHT_STICK_Y_INVERTED is not set
 # end of Right stick
 # end of Sticks
+
+#
+# Advanced
+#
+CONFIG_BLUCONTROL_ANALOG_VREF=1079
+# end of Advanced
 # end of BluControl Configuration
 
 #

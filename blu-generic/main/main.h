@@ -26,6 +26,10 @@ extern "C" {
 #if defined(CONFIG_BLUCONTROL_LEFT_STICK_N64) || defined(CONFIG_BLUCONTROL_RIGHT_STICK_N64)
     #include "blun64-pad.h"
 #endif
+
+#if defined(CONFIG_BLUCONTROL_LEFT_TRIGGER_ANALOG) || defined(CONFIG_BLUCONTROL_RIGHT_TRIGGER_ANALOG)
+    #include "blu-analog-triggers.h"
+#endif
 #ifdef __cplusplus
 }
 #endif
@@ -111,6 +115,31 @@ extern "C" {
     #define BUTTON_STICK_R_NUMBER CONFIG_BLUCONTROL_BUTTON_STICK_R_BTN
 #else
     #define BUTTON_STICK_R_NUMBER -1
+#endif
+
+// Axis
+#ifdef CONFIG_BLUCONTROL_LEFT_STICK_NONE
+    #define AXIS_HAS_LEFT_STICK false
+#else
+    #define AXIS_HAS_LEFT_STICK true
+#endif
+
+#ifdef CONFIG_BLUCONTROL_RIGHT_STICK_NONE
+    #define AXIS_HAS_RIGHT_STICK false
+#else
+    #define AXIS_HAS_RIGHT_STICK true
+#endif
+
+#ifdef CONFIG_BLUCONTROL_LEFT_TRIGGER_NONE
+    #define AXIS_HAS_LEFT_TRIGGER false
+#else
+    #define AXIS_HAS_LEFT_TRIGGER true
+#endif
+
+#ifdef CONFIG_BLUCONTROL_RIGHT_TRIGGER_NONE
+    #define AXIS_HAS_RIGHT_TRIGGER false
+#else
+    #define AXIS_HAS_RIGHT_TRIGGER true
 #endif
 
 #endif

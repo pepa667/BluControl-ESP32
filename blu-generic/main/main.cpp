@@ -244,6 +244,18 @@ void app_loop(void *params)
                                      GET_JOYSTICK_Y_AXIS(0));
             #endif
 
+            #if defined(CONFIG_BLUCONTROL_LEFT_TRIGGER_ANALOG)
+            bleGamepad.setLeftTrigger(GET_ANALOG_TRIGGER_AXIS(blu_analog_trigger_get_value(BLU_ANALOG_TRIGGER_LEFT)));
+            #else
+            bleGamepad.setLeftTrigger(GET_ANALOG_TRIGGER_AXIS(0));
+            #endif
+
+            #if defined(CONFIG_BLUCONTROL_RIGHT_TRIGGER_ANALOG)
+            bleGamepad.setRightTrigger(GET_ANALOG_TRIGGER_AXIS(blu_analog_trigger_get_value(BLU_ANALOG_TRIGGER_RIGHT)));
+            #else
+            bleGamepad.setRightTrigger(GET_ANALOG_TRIGGER_AXIS(0));
+            #endif
+
             bleGamepad.sendReport();
         }
         blucontrol_handle_buttons();
@@ -297,7 +309,7 @@ extern "C" void app_main(void)
     bleGamepadConfig.setAxesMin(0x0000);
     bleGamepadConfig.setAxesMax(BLU_JOYSTICK_ABS_MAX * 2);
     bleGamepadConfig.setWhichSpecialButtons(BUTTON_START_NUMBER <= 0, BUTTON_CAPTURE_NUMBER <= 0, false, BUTTON_HOME_NUMBER <= 0, false, false, false, false);
-    bleGamepadConfig.setWhichAxes(true, true, true, false, false, true, false, false);
+    bleGamepadConfig.setWhichAxes(AXIS_HAS_LEFT_STICK, AXIS_HAS_LEFT_STICK, AXIS_HAS_RIGHT_STICK, AXIS_HAS_LEFT_TRIGGER, AXIS_HAS_RIGHT_TRIGGER, AXIS_HAS_RIGHT_STICK, false, false);
     bleGamepad.begin(&bleGamepadConfig);
 
     xTaskCreatePinnedToCore(app_loop, "APP_LOOP", 4096, NULL, tskIDLE_PRIORITY, &loopTaskHandle, 1);

@@ -118,6 +118,64 @@ menu "BluControl Configuration"
                 GPIO Number for the Right Stick Button. -1 if the controller doesn't have that button.
     endmenu
 
+    menu "Triggers"
+        choice BLUCONTROL_LEFT_TRIGGER_MODE
+            prompt "Left trigger mode"
+            default BLUCONTROL_LEFT_TRIGGER_NONE
+            help
+                Select the type of input for the left trigger
+
+            config BLUCONTROL_LEFT_TRIGGER_NONE
+                bool "Disabled"
+
+            config BLUCONTROL_LEFT_TRIGGER_ANALOG
+                bool "Analog"
+        endchoice
+
+        config BLUCONTROL_LEFT_TRIGGER_GPIO
+            int "Left trigger GPIO"
+            default 36
+            range 32 39
+            depends on BLUCONTROL_LEFT_TRIGGER_ANALOG
+            help
+                GPIO Number for the Left Trigger Axis.
+
+        config BLUCONTROL_LEFT_TRIGGER_IS_INVERTED
+            bool "Is left trigger inverted?"
+            default false
+            depends on BLUCONTROL_LEFT_TRIGGER_ANALOG
+            help
+                Check if left trigger has inverted values
+        
+        choice BLUCONTROL_RIGHT_TRIGGER_MODE
+            prompt "Right trigger mode"
+            default BLUCONTROL_RIGHT_TRIGGER_NONE
+            help
+                Select the type of input for the right trigger
+
+            config BLUCONTROL_RIGHT_TRIGGER_NONE
+                bool "Disabled"
+
+            config BLUCONTROL_RIGHT_TRIGGER_ANALOG
+                bool "Analog"
+        endchoice
+
+        config BLUCONTROL_RIGHT_TRIGGER_GPIO
+            int "Right trigger GPIO"
+            default 39
+            range 32 39
+            depends on BLUCONTROL_RIGHT_TRIGGER_ANALOG
+            help
+                GPIO Number for the Right Trigger Axis.
+        
+        config BLUCONTROL_RIGHT_TRIGGER_IS_INVERTED
+            bool "Is right trigger inverted?"
+            default false
+            depends on BLUCONTROL_RIGHT_TRIGGER_ANALOG
+            help
+                Check if right trigger has inverted values
+    endmenu
+
     menu "Sticks"
         menu "Left Stick"
             #Left Stick
@@ -398,7 +456,7 @@ menu "BluControl Configuration"
         config BLUCONTROL_ANALOG_VREF
             int "Default vRef for analog values"
             default 1079
-            depends on BLUCONTROL_LEFT_STICK_ANALOG || BLUCONTROL_RIGHT_STICK_ANALOG
+            depends on BLUCONTROL_LEFT_STICK_ANALOG || BLUCONTROL_RIGHT_STICK_ANALOG || BLUCONTROL_LEFT_TRIGGER_ANALOG || BLUCONTROL_RIGHT_TRIGGER_ANALOG
             help
                 Default voltage reference value when reading analog values. This is just in case your ESP32 doesn't has this value written on its eFuse.
     endmenu

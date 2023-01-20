@@ -10,6 +10,10 @@
     #include "blun64-pad.h"
 #endif
 
+#if defined(CONFIG_BLUCONTROL_LEFT_TRIGGER_ANALOG) || defined(CONFIG_BLUCONTROL_RIGHT_TRIGGER_ANALOG)
+    #include "blu-analog-triggers.h"
+#endif
+
 #define buttons_length 17
 
 blu_buttons_t blu_buttons = {};
@@ -61,6 +65,10 @@ void blu_init_hardware(void)
     #endif
     #if defined(CONFIG_BLUCONTROL_LEFT_STICK_N64) || defined(CONFIG_BLUCONTROL_RIGHT_STICK_N64)
     blun64_init();
+    #endif
+
+    #if defined(CONFIG_BLUCONTROL_LEFT_TRIGGER_ANALOG) || defined(CONFIG_BLUCONTROL_RIGHT_TRIGGER_ANALOG)
+    blu_analog_triggers_init();
     #endif
 }
 

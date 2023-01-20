@@ -10,9 +10,8 @@
 #define BLU_ADC_BITWIDTH ADC_BITWIDTH_11
 
 void blu_analog_init(void);
-adc_channel_t get_adc_channel_from_gpio(gpio_num_t gpio);
-
-extern adc_cali_handle_t blu_adc_cali_handle;
-extern adc_oneshot_unit_handle_t blu_adc1_handle;
+adc_channel_t blu_analog_get_channel(gpio_num_t gpio);
+adc_cali_handle_t *blu_analog_get_unit_cali(gpio_num_t gpio);
+adc_oneshot_unit_handle_t *blu_analog_get_unit_oneshot(gpio_num_t gpio);
 
 #endif

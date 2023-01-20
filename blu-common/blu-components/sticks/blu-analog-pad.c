@@ -21,23 +21,23 @@ void blu_analog_stick_init(void)
 
     #ifdef CONFIG_BLUCONTROL_LEFT_STICK_ANALOG
     printf("BluControl: Starting left analog stick.\n");
-    ESP_ERROR_CHECK(adc_oneshot_config_channel(blu_adc1_handle, get_adc_channel_from_gpio(LEFT_STICK_X), &adc_channel_config));
-    ESP_ERROR_CHECK(adc_oneshot_config_channel(blu_adc1_handle, get_adc_channel_from_gpio(LEFT_STICK_Y), &adc_channel_config));
+    ESP_ERROR_CHECK(adc_oneshot_config_channel(*blu_analog_get_unit_oneshot(LEFT_STICK_X), blu_analog_get_channel(LEFT_STICK_X), &adc_channel_config));
+    ESP_ERROR_CHECK(adc_oneshot_config_channel(*blu_analog_get_unit_oneshot(LEFT_STICK_Y), blu_analog_get_channel(LEFT_STICK_Y), &adc_channel_config));
     //Axis Calibration
-    ESP_ERROR_CHECK(adc_oneshot_read(blu_adc1_handle, get_adc_channel_from_gpio(LEFT_STICK_X), &tmp_read));
-    adc_cali_raw_to_voltage(blu_adc_cali_handle, tmp_read, &left_stick_center_data.x_axis);
-    ESP_ERROR_CHECK(adc_oneshot_read(blu_adc1_handle, get_adc_channel_from_gpio(LEFT_STICK_Y), &tmp_read));
-    adc_cali_raw_to_voltage(blu_adc_cali_handle, tmp_read, &left_stick_center_data.y_axis);
+    ESP_ERROR_CHECK(adc_oneshot_read(*blu_analog_get_unit_oneshot(LEFT_STICK_X), blu_analog_get_channel(LEFT_STICK_X), &tmp_read));
+    adc_cali_raw_to_voltage(*blu_analog_get_unit_cali(LEFT_STICK_X), tmp_read, &left_stick_center_data.x_axis);
+    ESP_ERROR_CHECK(adc_oneshot_read(*blu_analog_get_unit_oneshot(LEFT_STICK_Y), blu_analog_get_channel(LEFT_STICK_Y), &tmp_read));
+    adc_cali_raw_to_voltage(*blu_analog_get_unit_cali(LEFT_STICK_Y), tmp_read, &left_stick_center_data.y_axis);
     #endif
     #ifdef CONFIG_BLUCONTROL_RIGHT_STICK_ANALOG
     printf("BluControl: Starting right analog stick.\n");
-    ESP_ERROR_CHECK(adc_oneshot_config_channel(blu_adc1_handle, get_adc_channel_from_gpio(RIGHT_STICK_X), &adc_channel_config));
-    ESP_ERROR_CHECK(adc_oneshot_config_channel(blu_adc1_handle, get_adc_channel_from_gpio(RIGHT_STICK_Y), &adc_channel_config));
+    ESP_ERROR_CHECK(adc_oneshot_config_channel(*blu_analog_get_unit_oneshot(RIGHT_STICK_X), blu_analog_get_channel(RIGHT_STICK_X), &adc_channel_config));
+    ESP_ERROR_CHECK(adc_oneshot_config_channel(*blu_analog_get_unit_oneshot(RIGHT_STICK_Y), blu_analog_get_channel(RIGHT_STICK_Y), &adc_channel_config));
     //Axis Calibration
-    ESP_ERROR_CHECK(adc_oneshot_read(blu_adc1_handle, get_adc_channel_from_gpio(LEFT_STICK_X), &tmp_read));
-    adc_cali_raw_to_voltage(blu_adc_cali_handle, tmp_read, &right_stick_center_data.x_axis);
-    ESP_ERROR_CHECK(adc_oneshot_read(blu_adc1_handle, get_adc_channel_from_gpio(LEFT_STICK_Y), &tmp_read));
-    adc_cali_raw_to_voltage(blu_adc_cali_handle, tmp_read, &right_stick_center_data.y_axis);
+    ESP_ERROR_CHECK(adc_oneshot_read(*blu_analog_get_unit_oneshot(RIGHT_STICK_X), blu_analog_get_channel(RIGHT_STICK_X), &tmp_read));
+    adc_cali_raw_to_voltage(*blu_analog_get_unit_cali(RIGHT_STICK_X), tmp_read, &right_stick_center_data.x_axis);
+    ESP_ERROR_CHECK(adc_oneshot_read(*blu_analog_get_unit_oneshot(RIGHT_STICK_Y), blu_analog_get_channel(RIGHT_STICK_Y), &tmp_read));
+    adc_cali_raw_to_voltage(*blu_analog_get_unit_cali(RIGHT_STICK_Y), tmp_read, &right_stick_center_data.y_axis);
     #endif
     #endif
 }
@@ -51,11 +51,11 @@ blu_analog_stick_data_t *blu_analog_stick_get_data(char stick)
     #ifdef CONFIG_BLUCONTROL_LEFT_STICK_ANALOG
     if (stick == BLU_ANALOG_PAD_LEFT)
     {
-        ESP_ERROR_CHECK(adc_oneshot_read(blu_adc1_handle, get_adc_channel_from_gpio(LEFT_STICK_X), &tmp_read));
-        adc_cali_raw_to_voltage(blu_adc_cali_handle, tmp_read, &analog_tmp_data.x_axis);
+        ESP_ERROR_CHECK(adc_oneshot_read(*blu_analog_get_unit_oneshot(LEFT_STICK_X), blu_analog_get_channel(LEFT_STICK_X), &tmp_read));
+        adc_cali_raw_to_voltage(*blu_analog_get_unit_cali(LEFT_STICK_X), tmp_read, &analog_tmp_data.x_axis);
         analog_tmp_data.x_axis = (analog_tmp_data.x_axis - left_stick_center_data.x_axis) * LEFT_STICK_X_MULTIPLIER;
-        ESP_ERROR_CHECK(adc_oneshot_read(blu_adc1_handle, get_adc_channel_from_gpio(LEFT_STICK_Y), &tmp_read));
-        adc_cali_raw_to_voltage(blu_adc_cali_handle, tmp_read, &analog_tmp_data.y_axis);
+        ESP_ERROR_CHECK(adc_oneshot_read(*blu_analog_get_unit_oneshot(LEFT_STICK_Y), blu_analog_get_channel(LEFT_STICK_Y), &tmp_read));
+        adc_cali_raw_to_voltage(*blu_analog_get_unit_cali(LEFT_STICK_Y), tmp_read, &analog_tmp_data.y_axis);
         analog_tmp_data.y_axis = (analog_tmp_data.y_axis - left_stick_center_data.y_axis) * LEFT_STICK_Y_MULTIPLIER;
     }
     #endif
@@ -63,11 +63,11 @@ blu_analog_stick_data_t *blu_analog_stick_get_data(char stick)
     #ifdef CONFIG_BLUCONTROL_RIGHT_STICK_ANALOG
     if (stick == BLU_ANALOG_PAD_RIGHT)
     {
-        ESP_ERROR_CHECK(adc_oneshot_read(blu_adc1_handle, get_adc_channel_from_gpio(RIGHT_STICK_X), &tmp_read));
-        adc_cali_raw_to_voltage(blu_adc_cali_handle, tmp_read, &analog_tmp_data.x_axis);
+        ESP_ERROR_CHECK(adc_oneshot_read(*blu_analog_get_unit_oneshot(RIGHT_STICK_X), blu_analog_get_channel(RIGHT_STICK_X), &tmp_read));
+        adc_cali_raw_to_voltage(*blu_analog_get_unit_cali(RIGHT_STICK_X), tmp_read, &analog_tmp_data.x_axis);
         analog_tmp_data.x_axis = (analog_tmp_data.x_axis - right_stick_center_data.x_axis) * RIGHT_STICK_X_MULTIPLIER;
-        ESP_ERROR_CHECK(adc_oneshot_read(blu_adc1_handle, get_adc_channel_from_gpio(RIGHT_STICK_Y), &tmp_read));
-        adc_cali_raw_to_voltage(blu_adc_cali_handle, tmp_read, &analog_tmp_data.y_axis);
+        ESP_ERROR_CHECK(adc_oneshot_read(*blu_analog_get_unit_oneshot(RIGHT_STICK_Y), blu_analog_get_channel(RIGHT_STICK_Y), &tmp_read));
+        adc_cali_raw_to_voltage(*blu_analog_get_unit_cali(RIGHT_STICK_Y), tmp_read, &analog_tmp_data.y_axis);
         analog_tmp_data.y_axis = (analog_tmp_data.y_axis - right_stick_center_data.x_axis) * RIGHT_STICK_Y_MULTIPLIER;
     }
     #endif

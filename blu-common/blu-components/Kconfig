@@ -135,7 +135,6 @@ menu "BluControl Configuration"
         config BLUCONTROL_LEFT_TRIGGER_GPIO
             int "Left trigger GPIO"
             default 36
-            range 32 39
             depends on BLUCONTROL_LEFT_TRIGGER_ANALOG
             help
                 GPIO Number for the Left Trigger Axis.
@@ -163,7 +162,6 @@ menu "BluControl Configuration"
         config BLUCONTROL_RIGHT_TRIGGER_GPIO
             int "Right trigger GPIO"
             default 39
-            range 32 39
             depends on BLUCONTROL_RIGHT_TRIGGER_ANALOG
             help
                 GPIO Number for the Right Trigger Axis.
@@ -204,7 +202,6 @@ menu "BluControl Configuration"
             config BLUCONTROL_LEFT_STICK_X
                 int "Left Stick X Axis"
                 default 32
-                range 32 39
                 depends on BLUCONTROL_LEFT_STICK_ANALOG
                 help
                     GPIO Number for the Left Stick X Axis.
@@ -212,7 +209,6 @@ menu "BluControl Configuration"
             config BLUCONTROL_LEFT_STICK_Y
                 int "Left Stick Y Axis"
                 default 33
-                range 32 39
                 depends on BLUCONTROL_LEFT_STICK_ANALOG
                 help
                     GPIO Number for the Left Stick Y Axis.
@@ -341,7 +337,6 @@ menu "BluControl Configuration"
             config BLUCONTROL_RIGHT_STICK_X
                 int "Right Stick X Axis"
                 default 36
-                range 32 39
                 depends on BLUCONTROL_RIGHT_STICK_ANALOG
                 help
                     GPIO Number for the Right Stick X Axis.
@@ -349,7 +344,6 @@ menu "BluControl Configuration"
             config BLUCONTROL_RIGHT_STICK_Y
                 int "Right Stick Y Axis"
                 default 37
-                range 32 39
                 depends on BLUCONTROL_RIGHT_STICK_ANALOG
                 help
                     GPIO Number for the Right Stick Y Axis.

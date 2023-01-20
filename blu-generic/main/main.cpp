@@ -11,6 +11,9 @@ blu_analog_stick_data_t *analog_stick_data;
 #if defined(CONFIG_BLUCONTROL_LEFT_STICK_BUTTONS) || defined(CONFIG_BLUCONTROL_RIGHT_STICK_BUTTONS)
 blu_btn_stick_data_t *button_stick_data;
 #endif
+#if defined(CONFIG_BLUCONTROL_LEFT_TRIGGER_ANALOG) || defined(CONFIG_BLUCONTROL_RIGHT_TRIGGER_ANALOG)
+int trigger_value;
+#endif
 
 int btn_x_axis = 0;
 int btn_y_axis = 0;
@@ -54,33 +57,33 @@ void app_loop(void *params)
                     bleGamepad.release(BUTTON_X_NUMBER);
             }
 
-            if (TRIGGER_L_NUMBER > 0)
+            if (BUTTON_L_NUMBER > 0)
             {
                 if (blu_buttons.trigger_l)
-                    bleGamepad.press(TRIGGER_L_NUMBER);
+                    bleGamepad.press(BUTTON_L_NUMBER);
                 else
-                    bleGamepad.release(TRIGGER_L_NUMBER);
+                    bleGamepad.release(BUTTON_L_NUMBER);
             }
-            if (TRIGGER_ZL_NUMBER > 0)
+            if (BUTTON_ZL_NUMBER > 0)
             {
                 if (blu_buttons.trigger_zl)
-                    bleGamepad.press(TRIGGER_ZL_NUMBER);
+                    bleGamepad.press(BUTTON_ZL_NUMBER);
                 else
-                    bleGamepad.release(TRIGGER_ZL_NUMBER);
+                    bleGamepad.release(BUTTON_ZL_NUMBER);
             }
-            if (TRIGGER_R_NUMBER > 0)
+            if (BUTTON_R_NUMBER > 0)
             {
                 if (blu_buttons.trigger_r)
-                    bleGamepad.press(TRIGGER_R_NUMBER);
+                    bleGamepad.press(BUTTON_R_NUMBER);
                 else
-                    bleGamepad.release(TRIGGER_R_NUMBER);
+                    bleGamepad.release(BUTTON_R_NUMBER);
             }
-            if (TRIGGER_ZR_NUMBER > 0)
+            if (BUTTON_ZR_NUMBER > 0)
             {
                 if (blu_buttons.trigger_zr)
-                    bleGamepad.press(TRIGGER_ZR_NUMBER);
+                    bleGamepad.press(BUTTON_ZR_NUMBER);
                 else
-                    bleGamepad.release(TRIGGER_ZR_NUMBER);
+                    bleGamepad.release(BUTTON_ZR_NUMBER);
             }
 
             if (blu_buttons.special_start)
@@ -245,13 +248,29 @@ void app_loop(void *params)
             #endif
 
             #if defined(CONFIG_BLUCONTROL_LEFT_TRIGGER_ANALOG)
-            bleGamepad.setLeftTrigger(GET_ANALOG_TRIGGER_AXIS(blu_analog_trigger_get_value(BLU_ANALOG_TRIGGER_LEFT)));
+            trigger_value = GET_ANALOG_TRIGGER_AXIS(blu_analog_trigger_get_value(BLU_ANALOG_TRIGGER_LEFT));
+            bleGamepad.setLeftTrigger(trigger_value);
+            if (LEFT_TRIGGER_BTN > 0)
+            {
+                if (CHECK_IF_TRIGGER_IS_PRESSED(trigger_value, LEFT_TRIGGER_ACT))
+                    bleGamepad.press(LEFT_TRIGGER_BTN);
+                else
+                    bleGamepad.release(LEFT_TRIGGER_BTN);
+            }
             #else
             bleGamepad.setLeftTrigger(GET_ANALOG_TRIGGER_AXIS(0));
             #endif
 
             #if defined(CONFIG_BLUCONTROL_RIGHT_TRIGGER_ANALOG)
-            bleGamepad.setRightTrigger(GET_ANALOG_TRIGGER_AXIS(blu_analog_trigger_get_value(BLU_ANALOG_TRIGGER_RIGHT)));
+            trigger_value = GET_ANALOG_TRIGGER_AXIS(blu_analog_trigger_get_value(BLU_ANALOG_TRIGGER_RIGHT));
+            bleGamepad.setRightTrigger(trigger_value);
+            if (RIGHT_TRIGGER_BTN > 0)
+            {
+                if (CHECK_IF_TRIGGER_IS_PRESSED(trigger_value, RIGHT_TRIGGER_ACT))
+                    bleGamepad.press(RIGHT_TRIGGER_BTN);
+                else
+                    bleGamepad.release(RIGHT_TRIGGER_BTN);
+            }
             #else
             bleGamepad.setRightTrigger(GET_ANALOG_TRIGGER_AXIS(0));
             #endif
@@ -283,15 +302,17 @@ extern "C" void app_main(void)
             BUTTON_B_NUMBER,
             BUTTON_Y_NUMBER,
             BUTTON_X_NUMBER,
-            TRIGGER_L_NUMBER,
-            TRIGGER_ZL_NUMBER,
-            TRIGGER_R_NUMBER,
-            TRIGGER_ZR_NUMBER,
+            BUTTON_L_NUMBER,
+            BUTTON_ZL_NUMBER,
+            BUTTON_R_NUMBER,
+            BUTTON_ZR_NUMBER,
             BUTTON_START_NUMBER,
             BUTTON_HOME_NUMBER,
             BUTTON_CAPTURE_NUMBER,
             BUTTON_STICK_L_NUMBER,
-            BUTTON_STICK_R_NUMBER
+            BUTTON_STICK_R_NUMBER,
+            LEFT_TRIGGER_BTN,
+            RIGHT_TRIGGER_BTN
         };
         int maxNumber = 1;
         for (int i = 0; i < 13; i++)

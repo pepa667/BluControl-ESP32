@@ -146,6 +146,14 @@ menu "BluControl Configuration"
             help
                 Check if left trigger has inverted values
         
+        config BLUCONTROL_LEFT_TRIGGER_ACT
+            int "Left trigger activation"
+            default 10
+            range 0 100
+            depends on BLUCONTROL_LEFT_TRIGGER_ANALOG
+            help
+                Percentage to activate the left trigger as a button. 0 to disable it. 100 to activate only on fully pressed
+        
         choice BLUCONTROL_RIGHT_TRIGGER_MODE
             prompt "Right trigger mode"
             default BLUCONTROL_RIGHT_TRIGGER_NONE
@@ -172,6 +180,14 @@ menu "BluControl Configuration"
             depends on BLUCONTROL_RIGHT_TRIGGER_ANALOG
             help
                 Check if right trigger has inverted values
+        
+        config BLUCONTROL_RIGHT_TRIGGER_ACT
+            int "Right trigger activation"
+            default 10
+            range 0 100
+            depends on BLUCONTROL_RIGHT_TRIGGER_ANALOG
+            help
+                Percentage to activate the right trigger as a button. 0 to disable it. 100 to activate only on fully pressed
     endmenu
 
     menu "Sticks"

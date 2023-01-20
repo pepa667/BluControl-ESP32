@@ -49,7 +49,7 @@ int blu_analog_trigger_get_value(char trigger)
     }
     #endif
 
-    #ifdef CONFIG_BLUCONTROL_RIGHT_STICK_ANALOG
+    #ifdef CONFIG_BLUCONTROL_RIGHT_TRIGGER_ANALOG
     if (trigger == BLU_ANALOG_TRIGGER_RIGHT)
     {
         ESP_ERROR_CHECK(adc_oneshot_read(blu_adc1_handle, get_adc_channel_from_gpio(RIGHT_TRIGGER_GPIO), &analog_tmp_value));

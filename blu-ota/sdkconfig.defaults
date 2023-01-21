@@ -1,0 +1,6 @@
+#
+# BluControl OTA Configuration
+#
+CONFIG_BLUCONTROL_OTA_LED_GPIO=4
+# end of BluControl OTA Configuration
+# end of Component config

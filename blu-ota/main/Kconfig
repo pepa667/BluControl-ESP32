@@ -1,0 +1,7 @@
+menu "BluControl OTA Configuration"
+    config BLUCONTROL_OTA_LED_GPIO
+        int "OTA LED mode GPIO"
+        default -1
+        help
+            GPIO Number for the LED which will be blinking while on OTA mode. -1 for none.
+endmenu

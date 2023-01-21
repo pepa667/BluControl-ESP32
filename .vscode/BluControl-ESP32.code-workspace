@@ -8,6 +8,9 @@
 		},
 		{
 			"path": "../blu-common"
+		},
+		{
+			"path": "../blu-ota"
 		}
 	],
 	"settings":

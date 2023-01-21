@@ -1,0 +1,16 @@
+{
+  "name": "blucontrol_ota",
+  "version": "1.0.0",
+  "description": "Website for uploading OTA Updates to a BluControl device",
+  "main": "build.js",
+  "type": "module",
+  "scripts": {
+    "start": "echo \"Error: This project wasn't meant to run\" && exit 1",
+    "build": "node build.js"
+  },
+  "author": "JPZV",
+  "dependencies": {
+    "minify": "^9.1.0",
+    "try-to-catch": "^3.0.1"
+  }
+}

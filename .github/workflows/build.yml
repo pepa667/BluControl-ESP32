@@ -34,6 +34,21 @@ jobs:
       run: |
         mkdir tmp_files
         mkdir release
+    - name: Build OTA Website with Node
+      uses: actions/setup-node@v3.6.0
+      working-directory: ./blu-ota/html
+      run: |
+        npm install
+        npm run build
+    - name: Build OTA Mode with ESP-IDF
+      working-directory: ./blu-ota
+      run: |
+        . ../esp-idf/export.sh
+        idf.py build
+        mv build/blucontrol-ota.bin ../tmp_files/blucontrol-ota.bin
+        mv build/www.bin ../tmp_files/www.bin
+      env:
+        IDF_TOOLS_PATH : "/home/runner/work/BluControl-ESP32/BluControl-ESP32/tools"
     - name: Build Switch Mode with ESP-IDF
       working-directory: ./blu-switch
       run: |
@@ -61,15 +76,27 @@ jobs:
                                       0x1000 bootloader.bin \
                                       0x8000 partition-table.bin \
                                       0xd000 ota_data_initial.bin \
-                                      0x10000 blucontrol-switch.bin \
-                                      0x110000 blucontrol-generic.bin
+                                      0x10000 blucontrol-ota.bin \
+                                      0x110000 blucontrol-switch.bin \
+                                      0x210000 blucontrol-generic.bin \
+                                      0x310000 www.bin
         mv BluControl.bin ../release/BluControl.bin
       env:
         IDF_TOOLS_PATH : "/home/runner/work/BluControl-ESP32/BluControl-ESP32/tools"
+    - name: Create update files
+      working-directory: ./tmp_files
+      run: |
+        printf "\x01\x00%07d" `stat --printf="%s" blucontrol-switch.bin` | cat - blucontrol-switch.bin > blucontrol-switch.upd
+        printf "\x01\x01%07d" `stat --printf="%s" blucontrol-generic.bin` | cat - blucontrol-generic.bin > blucontrol-generic.upd
+        mkdir ../release/update/
+        cat blucontrol-switch.upd blucontrol-generic.upd > blucontrol.updpkg
+
+        mv blucontrol.updpkg ../release/update/BluControl.updpkg
     - name: Upload binary file
       uses: actions/upload-artifact@v3.1.2
       with:
         name: BluControl
         path: |
           release/BluControl.bin
+          release/update/BluControl.updpkg
         if-no-files-found: error

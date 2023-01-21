@@ -1,0 +1,34 @@
+<!-- Base on BlueRetro.io -->
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <title>BluControl OTA Update</title>
+    <link rel="stylesheet" href="css/main.css">
+    <script type="text/javascript" src="js/main.js"></script>
+  </head>
+
+  <body>
+    <h1>BluControl OTA Update</h1>
+
+    <!-- Base on https://www.html5rocks.com/en/tutorials/file/dndfiles// -->
+    <div style="margin-bottom:1em;">
+        Select firmware:
+        <input style="margin-bottom:1em;" type="file" id="updFile" accept=".upd, .updpkg"/>
+        <button onclick="onUploadClick()">Update Firmware</button>
+    </div>
+    <div style="margin-bottom:1em;">
+        <div id="progress_bar"><div id="progress_bar_percent" class="percent"></div></div>
+    </div>
+    <div style="margin-bottom:1em;">
+        <button onclick="onResetClick()">Reset device</button>
+    </div>
+    <h3>Live Output</h3>
+    <div id="output" class="output">
+        <div id="output_content"></div>
+    </div>    
+  </body>
+</html>

@@ -34,6 +34,7 @@ jobs:
       run: |
         mkdir tmp_files
         mkdir release
+        mkdir release/update
     - uses: actions/setup-node@v3.6.0
     - name: Build OTA Website with Node
       working-directory: ./blu-ota/html
@@ -88,7 +89,6 @@ jobs:
       run: |
         printf "\x01\x00%07d" `stat --printf="%s" blucontrol-switch.bin` | cat - blucontrol-switch.bin > blucontrol-switch.upd
         printf "\x01\x01%07d" `stat --printf="%s" blucontrol-generic.bin` | cat - blucontrol-generic.bin > blucontrol-generic.upd
-        mkdir ../release/update/
         cat blucontrol-switch.upd blucontrol-generic.upd > blucontrol.updpkg
 
         mv blucontrol.updpkg ../release/update/BluControl.updpkg

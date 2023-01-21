@@ -34,8 +34,8 @@ jobs:
       run: |
         mkdir tmp_files
         mkdir release
+    - uses: actions/setup-node@v3.6.0
     - name: Build OTA Website with Node
-      uses: actions/setup-node@v3.6.0
       working-directory: ./blu-ota/html
       run: |
         npm install

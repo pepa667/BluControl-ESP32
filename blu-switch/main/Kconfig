@@ -30,4 +30,33 @@ menu "BluControl Switch Configuration"
             bool "Genesis Controller"
     endchoice
 
+    menu "Triggers"
+        choice BLUCONTROL_LEFT_TRIGGER_BTN
+            prompt "Left Trigger Button"
+            default BLUCONTROL_LEFT_TRIGGER_BTN_L
+            depends on BLUCONTROL_LEFT_TRIGGER_ANALOG
+            help
+                Select the button for the Left Trigger when it activates
+    
+            config BLUCONTROL_LEFT_TRIGGER_BTN_L
+                bool "L Button"
+    
+            config BLUCONTROL_LEFT_TRIGGER_BTN_ZL
+                bool "ZL Button"
+        endchoice
+
+        choice BLUCONTROL_Right_TRIGGER_BTN
+            prompt "Right Trigger Button"
+            default BLUCONTROL_RIGHT_TRIGGER_BTN_R
+            depends on BLUCONTROL_RIGHT_TRIGGER_ANALOG
+            help
+                Select the button for the Right Trigger when it activates
+    
+            config BLUCONTROL_RIGHT_TRIGGER_BTN_R
+                bool "R Button"
+    
+            config BLUCONTROL_RIGHT_TRIGGER_BTN_ZR
+                bool "ZR Button"
+        endchoice
+    endmenu
 endmenu

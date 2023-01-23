@@ -1,5 +1,14 @@
 #include "main.h"
 
+#if defined(CONFIG_BLUCONTROL_LEFT_TRIGGER_ANALOG) || defined(CONFIG_BLUCONTROL_RIGHT_TRIGGER_ANALOG)
+#ifdef CONFIG_BLUCONTROL_LEFT_TRIGGER_ANALOG
+bool is_left_trigger_pressed = false;
+#endif
+#ifdef CONFIG_BLUCONTROL_RIGHT_TRIGGER_ANALOG
+bool is_right_trigger_pressed = false;
+#endif
+#endif
+
 void button_task(hoja_button_data_s *button_data)
 {
     blu_refresh_buttons();
@@ -14,10 +23,26 @@ void button_task(hoja_button_data_s *button_data)
     button_data->dpad_left = blu_buttons.dpad_left;
     button_data->dpad_up = blu_buttons.dpad_up;
 
+    #ifdef CONFIG_BLUCONTROL_LEFT_TRIGGER_BTN_L
+    button_data->trigger_l = blu_buttons.trigger_l | is_left_trigger_pressed;
+    #else
     button_data->trigger_l = blu_buttons.trigger_l;
+    #endif
+    #ifdef CONFIG_BLUCONTROL_LEFT_TRIGGER_BTN_ZL
+    button_data->trigger_zl = blu_buttons.trigger_zl | is_left_trigger_pressed;
+    #else
     button_data->trigger_zl = blu_buttons.trigger_zl;
+    #endif
+    #ifdef CONFIG_BLUCONTROL_RIGHT_TRIGGER_BTN_R
+    button_data->trigger_r = blu_buttons.trigger_r | is_right_trigger_pressed;
+    #else
     button_data->trigger_r = blu_buttons.trigger_r;
+    #endif
+    #ifdef CONFIG_BLUCONTROL_RIGHT_TRIGGER_BTN_ZR
+    button_data->trigger_zr = blu_buttons.trigger_zr | is_right_trigger_pressed;
+    #else
     button_data->trigger_zr = blu_buttons.trigger_zr;
+    #endif
 
     button_data->button_start = blu_buttons.special_start;
     button_data->button_home = blu_buttons.special_home;
@@ -94,6 +119,13 @@ void stick_task(hoja_analog_data_s* analog_data)
     #else
     analog_data->rs_x = GET_JOYSTICK_X_AXIS(0);
     analog_data->rs_y = GET_JOYSTICK_Y_AXIS(0);
+    #endif
+
+    #if defined(CONFIG_BLUCONTROL_LEFT_TRIGGER_ANALOG)
+    is_left_trigger_pressed = CHECK_IF_TRIGGER_IS_PRESSED(GET_ANALOG_TRIGGER_AXIS(blu_analog_trigger_get_value(BLU_ANALOG_TRIGGER_LEFT)), LEFT_TRIGGER_ACT);
+    #endif
+    #if defined(CONFIG_BLUCONTROL_RIGHT_TRIGGER_ANALOG)
+    is_right_trigger_pressed = CHECK_IF_TRIGGER_IS_PRESSED(GET_ANALOG_TRIGGER_AXIS(blu_analog_trigger_get_value(BLU_ANALOG_TRIGGER_RIGHT)), RIGHT_TRIGGER_ACT);
     #endif
 }
 

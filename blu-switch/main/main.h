@@ -21,6 +21,10 @@
     #include "blun64-pad.h"
 #endif
 
+#if defined(CONFIG_BLUCONTROL_LEFT_TRIGGER_ANALOG) || defined(CONFIG_BLUCONTROL_RIGHT_TRIGGER_ANALOG)
+    #include "blu-analog-triggers.h"
+#endif
+
 #if defined(CONFIG_BLUCONTROL_CONTROL_TYPE_N64)
     #define HOJA_CONTROL_TYPE NS_TYPE_N64
 #elif defined(CONFIG_BLUCONTROL_CONTROL_TYPE_JOY_L)
@@ -37,6 +41,19 @@
     #define HOJA_CONTROL_TYPE NS_TYPE_GENESIS
 #else
     #define HOJA_CONTROL_TYPE NS_TYPE_PROCON
+#endif
+
+// Triggers
+#ifdef CONFIG_BLUCONTROL_LEFT_TRIGGER_ACT
+    #define LEFT_TRIGGER_ACT CONFIG_BLUCONTROL_LEFT_TRIGGER_ACT
+#else
+    #define LEFT_TRIGGER_ACT -1
+#endif
+
+#ifdef CONFIG_BLUCONTROL_RIGHT_TRIGGER_ACT
+    #define RIGHT_TRIGGER_ACT CONFIG_BLUCONTROL_RIGHT_TRIGGER_ACT
+#else
+    #define RIGHT_TRIGGER_ACT -1
 #endif
 
 #endif

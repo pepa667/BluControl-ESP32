@@ -1,5 +1,7 @@
 #include "blu-analog-pad.h"
 
+#define LOG_TAG "BLU_ANALOG_PADS"
+
 #ifdef CONFIG_BLUCONTROL_LEFT_STICK_ANALOG
 blu_analog_stick_data_t left_stick_center_data = {};
 #endif
@@ -10,7 +12,7 @@ blu_analog_stick_data_t right_stick_center_data = {};
 int tmp_read = 0;
 void blu_analog_stick_init(void)
 {
-    printf("BluControl: Starting analogs sticks.\n");
+    ESP_LOGD(LOG_TAG, "Starting analogs sticks.");
     #if defined(CONFIG_BLUCONTROL_LEFT_STICK_ANALOG) || defined(CONFIG_BLUCONTROL_RIGHT_STICK_ANALOG)
     blu_analog_init();
 
@@ -20,7 +22,7 @@ void blu_analog_stick_init(void)
     };
 
     #ifdef CONFIG_BLUCONTROL_LEFT_STICK_ANALOG
-    printf("BluControl: Starting left analog stick.\n");
+    ESP_LOGD(LOG_TAG, "Starting left analog stick.");
     ESP_ERROR_CHECK(adc_oneshot_config_channel(*blu_analog_get_unit_oneshot(LEFT_STICK_X), blu_analog_get_channel(LEFT_STICK_X), &adc_channel_config));
     ESP_ERROR_CHECK(adc_oneshot_config_channel(*blu_analog_get_unit_oneshot(LEFT_STICK_Y), blu_analog_get_channel(LEFT_STICK_Y), &adc_channel_config));
     //Axis Calibration
@@ -30,7 +32,7 @@ void blu_analog_stick_init(void)
     adc_cali_raw_to_voltage(*blu_analog_get_unit_cali(LEFT_STICK_Y), tmp_read, &left_stick_center_data.y_axis);
     #endif
     #ifdef CONFIG_BLUCONTROL_RIGHT_STICK_ANALOG
-    printf("BluControl: Starting right analog stick.\n");
+    ESP_LOGD(LOG_TAG, "Starting right analog stick.");
     ESP_ERROR_CHECK(adc_oneshot_config_channel(*blu_analog_get_unit_oneshot(RIGHT_STICK_X), blu_analog_get_channel(RIGHT_STICK_X), &adc_channel_config));
     ESP_ERROR_CHECK(adc_oneshot_config_channel(*blu_analog_get_unit_oneshot(RIGHT_STICK_Y), blu_analog_get_channel(RIGHT_STICK_Y), &adc_channel_config));
     //Axis Calibration

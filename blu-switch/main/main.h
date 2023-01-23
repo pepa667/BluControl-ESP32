@@ -3,6 +3,7 @@
 
 #include "blucontrol_mode.h"
 #include "blu-hardware.h"
+#include "esp_log.h"
 #include "esp_system.h"
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"

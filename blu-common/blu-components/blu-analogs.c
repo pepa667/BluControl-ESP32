@@ -1,5 +1,7 @@
 #include "blu-analogs.h"
 
+#define LOG_TAG "BLU_ANALOGS"
+
 adc_cali_handle_t blu_adc1_cali_handle;
 adc_oneshot_unit_handle_t blu_adc1_handle;
 
@@ -14,7 +16,7 @@ void blu_analog_init(void)
         return;
     }
 
-    printf("BluControl: Starting analogs.\n");
+    ESP_LOGD(LOG_TAG, "Starting analogs.");
     adc_cali_line_fitting_config_t cali_config = {
         .unit_id = ADC_UNIT_1,
         .atten = BLU_ADC_ATTENUATION,

@@ -1,5 +1,7 @@
 #include "main.h"
 
+#define LOG_TAG "BLU_GENERIC"
+
 BleGamepad bleGamepad("BluControl Gamepad", "JPZV");
 BleGamepadConfiguration bleGamepadConfig;
 
@@ -283,7 +285,7 @@ void app_loop(void *params)
 
 extern "C" void app_main(void)
 {
-    printf("BluControl Generic Mode. HEAP=%#010lx\n", esp_get_free_heap_size());
+    ESP_LOGD(LOG_TAG, "HEAP=%#010lx", esp_get_free_heap_size());
 
     blu_init_hardware();
     blucontrol_mode_init();
@@ -325,7 +327,7 @@ extern "C" void app_main(void)
         bleGamepadConfig.setButtonCount(maxNumber);
     }
 
-    printf("BluControl: Buttons length: %d\n", bleGamepadConfig.getButtonCount());
+    ESP_LOGD(LOG_TAG, "Buttons length: %d", bleGamepadConfig.getButtonCount());
 
     bleGamepadConfig.setAxesMin(0x0000);
     bleGamepadConfig.setAxesMax(BLU_JOYSTICK_ABS_MAX * 2);
@@ -336,5 +338,5 @@ extern "C" void app_main(void)
     xTaskCreatePinnedToCore(app_loop, "APP_LOOP", 4096, NULL, tskIDLE_PRIORITY, &loopTaskHandle, 1);
     configASSERT(loopTaskHandle);
 
-    printf("BluControl. Started!\n");
+    ESP_LOGI(LOG_TAG, "Started!");
 }

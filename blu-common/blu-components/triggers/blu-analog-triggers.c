@@ -1,5 +1,7 @@
 #include "blu-analog-triggers.h"
 
+#define LOG_TAG "BLU_ANALOG_TRIGGERS"
+
 #ifdef CONFIG_BLUCONTROL_LEFT_TRIGGER_ANALOG
 int left_trigger_center = 0;
 #endif
@@ -9,7 +11,7 @@ int right_trigger_center = 0;
 
 void blu_analog_triggers_init(void)
 {
-    printf("BluControl: Starting analogs triggers.\n");
+    ESP_LOGD(LOG_TAG, "Starting analogs triggers.");
     #if defined(CONFIG_BLUCONTROL_LEFT_TRIGGER_ANALOG) || defined(CONFIG_BLUCONTROL_RIGHT_TRIGGER_ANALOG)
     blu_analog_init();
 
@@ -19,14 +21,14 @@ void blu_analog_triggers_init(void)
     };
 
     #ifdef CONFIG_BLUCONTROL_LEFT_TRIGGER_ANALOG
-    printf("BluControl: Starting left analog trigger.\n");
+    ESP_LOGD(LOG_TAG, "Starting left analog trigger.");
     ESP_ERROR_CHECK(adc_oneshot_config_channel(*blu_analog_get_unit_oneshot(LEFT_TRIGGER_GPIO), blu_analog_get_channel(LEFT_TRIGGER_GPIO), &adc_channel_config));
     //Axis Calibration
     ESP_ERROR_CHECK(adc_oneshot_read(*blu_analog_get_unit_oneshot(LEFT_TRIGGER_GPIO), blu_analog_get_channel(LEFT_TRIGGER_GPIO), &left_trigger_center));
     adc_cali_raw_to_voltage(*blu_analog_get_unit_cali(LEFT_TRIGGER_GPIO), left_trigger_center, &left_trigger_center);
     #endif
     #ifdef CONFIG_BLUCONTROL_RIGHT_TRIGGER_ANALOG
-    printf("BluControl: Starting right analog stick.\n");
+    ESP_LOGD(LOG_TAG, "Starting right analog stick.");
     ESP_ERROR_CHECK(adc_oneshot_config_channel(*blu_analog_get_unit_oneshot(RIGHT_TRIGGER_GPIO), blu_analog_get_channel(RIGHT_TRIGGER_GPIO), &adc_channel_config));
     //Axis Calibration
     ESP_ERROR_CHECK(adc_oneshot_read(*blu_analog_get_unit_oneshot(RIGHT_TRIGGER_GPIO), blu_analog_get_channel(RIGHT_TRIGGER_GPIO), &right_trigger_center));

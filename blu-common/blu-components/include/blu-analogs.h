@@ -5,6 +5,7 @@
 #include "esp_adc/adc_cali.h"
 #include "esp_adc/adc_cali_scheme.h"
 #include "esp_adc/adc_oneshot.h"
+#include "esp_log.h"
 
 #define BLU_ADC_ATTENUATION ADC_ATTEN_DB_11
 #define BLU_ADC_BITWIDTH ADC_BITWIDTH_11

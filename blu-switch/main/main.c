@@ -1,5 +1,7 @@
 #include "main.h"
 
+#define LOG_TAG "BLU_SWITCH"
+
 #if defined(CONFIG_BLUCONTROL_LEFT_TRIGGER_ANALOG) || defined(CONFIG_BLUCONTROL_RIGHT_TRIGGER_ANALOG)
 #ifdef CONFIG_BLUCONTROL_LEFT_TRIGGER_ANALOG
 bool is_left_trigger_pressed = false;
@@ -56,7 +58,7 @@ void button_task(hoja_button_data_s *button_data)
 
 void event_task(hoja_event_type_t type, uint8_t evt, uint8_t param)
 {
-    printf("BlueControl Event: \n\ttype: %d\n\tevent: %d\n\tparam: %d\n", type, evt, param);
+    ESP_LOGD(LOG_TAG, "Event: \n\ttype: %d\n\tevent: %d\n\tparam: %d", type, evt, param);
     if (type == HOJA_EVT_BT && evt == HEVT_BT_DISCONNECT)
     {
         while (true)
@@ -67,9 +69,9 @@ void event_task(hoja_event_type_t type, uint8_t evt, uint8_t param)
                 while(hoja_start_core() != HOJA_OK)
                 {
                     vTaskDelay(100 / portTICK_PERIOD_MS);
-                    printf("BlueControl. Retrying...\n");
+                    ESP_LOGW(LOG_TAG, "Retrying connection...");
                 }
-                printf("BlueControl. Connected!\n");
+                ESP_LOGI(LOG_TAG, "Connected!");
                 break;
             }
         }
@@ -131,7 +133,7 @@ void stick_task(hoja_analog_data_s* analog_data)
 
 void app_main(void)
 {
-    printf("BlueControl Switch Mode. HEAP=%#010lx\n", esp_get_free_heap_size());
+    ESP_LOGD(LOG_TAG, "HEAP=%#010lx", esp_get_free_heap_size());
 
     hoja_register_button_callback(button_task);
     hoja_register_analog_callback(stick_task);
@@ -147,7 +149,7 @@ void app_main(void)
     while(hoja_start_core() != HOJA_OK)
     {
         vTaskDelay(100 / portTICK_PERIOD_MS);
-        printf("BlueControl. Retrying...\n");
+        ESP_LOGW(LOG_TAG, "Retrying start...");
     }
-    printf("BlueControl. Switch Connected!\n");
+    ESP_LOGI(LOG_TAG, "Started!");
 }

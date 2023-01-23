@@ -1760,6 +1760,11 @@ CONFIG_BLUCONTROL_CONTROL_TYPE_PRO=y
 # CONFIG_BLUCONTROL_CONTROL_TYPE_NES is not set
 # CONFIG_BLUCONTROL_CONTROL_TYPE_FC is not set
 # CONFIG_BLUCONTROL_CONTROL_TYPE_GENESIS is not set
+
+#
+# Triggers
+#
+# end of Triggers
 # end of BluControl Switch Configuration
 
 #

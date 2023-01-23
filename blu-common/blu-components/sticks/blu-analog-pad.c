@@ -48,13 +48,25 @@ blu_analog_stick_data_t *blu_analog_stick_get_data(char stick)
     analog_tmp_data.x_axis = 0;
     analog_tmp_data.y_axis = 0;
 
+    esp_err_t err;
+
     #ifdef CONFIG_BLUCONTROL_LEFT_STICK_ANALOG
     if (stick == BLU_ANALOG_PAD_LEFT)
     {
-        ESP_ERROR_CHECK(adc_oneshot_read(*blu_analog_get_unit_oneshot(LEFT_STICK_X), blu_analog_get_channel(LEFT_STICK_X), &tmp_read));
+        err = adc_oneshot_read(*blu_analog_get_unit_oneshot(LEFT_STICK_X), blu_analog_get_channel(LEFT_STICK_X), &tmp_read);
+        if (err == ESP_ERR_TIMEOUT)
+        {
+            return &analog_tmp_data;
+        }
+        ESP_ERROR_CHECK(err);
         adc_cali_raw_to_voltage(*blu_analog_get_unit_cali(LEFT_STICK_X), tmp_read, &analog_tmp_data.x_axis);
         analog_tmp_data.x_axis = (analog_tmp_data.x_axis - left_stick_center_data.x_axis) * LEFT_STICK_X_MULTIPLIER;
-        ESP_ERROR_CHECK(adc_oneshot_read(*blu_analog_get_unit_oneshot(LEFT_STICK_Y), blu_analog_get_channel(LEFT_STICK_Y), &tmp_read));
+        err = adc_oneshot_read(*blu_analog_get_unit_oneshot(LEFT_STICK_Y), blu_analog_get_channel(LEFT_STICK_Y), &tmp_read);
+        if (err == ESP_ERR_TIMEOUT)
+        {
+            return &analog_tmp_data;
+        }
+        ESP_ERROR_CHECK(err);
         adc_cali_raw_to_voltage(*blu_analog_get_unit_cali(LEFT_STICK_Y), tmp_read, &analog_tmp_data.y_axis);
         analog_tmp_data.y_axis = (analog_tmp_data.y_axis - left_stick_center_data.y_axis) * LEFT_STICK_Y_MULTIPLIER;
     }
@@ -63,10 +75,20 @@ blu_analog_stick_data_t *blu_analog_stick_get_data(char stick)
     #ifdef CONFIG_BLUCONTROL_RIGHT_STICK_ANALOG
     if (stick == BLU_ANALOG_PAD_RIGHT)
     {
-        ESP_ERROR_CHECK(adc_oneshot_read(*blu_analog_get_unit_oneshot(RIGHT_STICK_X), blu_analog_get_channel(RIGHT_STICK_X), &tmp_read));
+        err = adc_oneshot_read(*blu_analog_get_unit_oneshot(RIGHT_STICK_X), blu_analog_get_channel(RIGHT_STICK_X), &tmp_read);
+        if (err == ESP_ERR_TIMEOUT)
+        {
+            return &analog_tmp_data;
+        }
+        ESP_ERROR_CHECK(err);
         adc_cali_raw_to_voltage(*blu_analog_get_unit_cali(RIGHT_STICK_X), tmp_read, &analog_tmp_data.x_axis);
         analog_tmp_data.x_axis = (analog_tmp_data.x_axis - right_stick_center_data.x_axis) * RIGHT_STICK_X_MULTIPLIER;
-        ESP_ERROR_CHECK(adc_oneshot_read(*blu_analog_get_unit_oneshot(RIGHT_STICK_Y), blu_analog_get_channel(RIGHT_STICK_Y), &tmp_read));
+        err = adc_oneshot_read(*blu_analog_get_unit_oneshot(RIGHT_STICK_Y), blu_analog_get_channel(RIGHT_STICK_Y), &tmp_read);
+        if (err == ESP_ERR_TIMEOUT)
+        {
+            return &analog_tmp_data;
+        }
+        ESP_ERROR_CHECK(err);
         adc_cali_raw_to_voltage(*blu_analog_get_unit_cali(RIGHT_STICK_Y), tmp_read, &analog_tmp_data.y_axis);
         analog_tmp_data.y_axis = (analog_tmp_data.y_axis - right_stick_center_data.x_axis) * RIGHT_STICK_Y_MULTIPLIER;
     }

@@ -40,10 +40,17 @@ int blu_analog_trigger_get_value(char trigger)
 {
     analog_tmp_value = 0;
 
+    esp_err_t err;
+
     #ifdef CONFIG_BLUCONTROL_LEFT_TRIGGER_ANALOG
     if (trigger == BLU_ANALOG_TRIGGER_LEFT)
     {
-        ESP_ERROR_CHECK(adc_oneshot_read(*blu_analog_get_unit_oneshot(LEFT_TRIGGER_GPIO), blu_analog_get_channel(LEFT_TRIGGER_GPIO), &analog_tmp_value));
+        err = adc_oneshot_read(*blu_analog_get_unit_oneshot(LEFT_TRIGGER_GPIO), blu_analog_get_channel(LEFT_TRIGGER_GPIO), &analog_tmp_value);
+        if (err == ESP_ERR_TIMEOUT)
+        {
+            return analog_tmp_value;
+        }
+        ESP_ERROR_CHECK(err);
         adc_cali_raw_to_voltage(*blu_analog_get_unit_cali(LEFT_TRIGGER_GPIO), analog_tmp_value, &analog_tmp_value);
         analog_tmp_value = (analog_tmp_value - left_trigger_center) * LEFT_TRIGGER_MULTIPLIER;
     }
@@ -52,7 +59,12 @@ int blu_analog_trigger_get_value(char trigger)
     #ifdef CONFIG_BLUCONTROL_RIGHT_TRIGGER_ANALOG
     if (trigger == BLU_ANALOG_TRIGGER_RIGHT)
     {
-        ESP_ERROR_CHECK(adc_oneshot_read(*blu_analog_get_unit_oneshot(RIGHT_TRIGGER_GPIO), blu_analog_get_channel(RIGHT_TRIGGER_GPIO), &analog_tmp_value));
+        err = adc_oneshot_read(*blu_analog_get_unit_oneshot(RIGHT_TRIGGER_GPIO), blu_analog_get_channel(RIGHT_TRIGGER_GPIO), &analog_tmp_value);
+        if (err == ESP_ERR_TIMEOUT)
+        {
+            return analog_tmp_value;
+        }
+        ESP_ERROR_CHECK(err);
         adc_cali_raw_to_voltage(*blu_analog_get_unit_cali(RIGHT_TRIGGER_GPIO), analog_tmp_value, &analog_tmp_value);
         analog_tmp_value = (analog_tmp_value - right_trigger_center) * RIGHT_TRIGGER_MULTIPLIER;
     }

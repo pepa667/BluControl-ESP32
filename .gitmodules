@@ -1,6 +1,3 @@
-[submodule "blu-switch/components/HOJA-LIB-ESP32"]
-	path = blu-switch/components/HOJA-LIB-ESP32
-	url = https://github.com/HandHeldLegend/HOJA-LIB-ESP32
 [submodule "blu-switch/components/BluControl-SDK-ESP32"]
 	path = blu-switch/components/BluControl-SDK-ESP32
 	url = https://github.com/JPZV/BluControl-SDK-ESP32
@@ -13,3 +10,7 @@
 [submodule "blu-generic/components/ESP32-BLE-Gamepad-idf"]
 	path = blu-generic/components/ESP32-BLE-Gamepad-idf
 	url = https://github.com/JPZV/ESP32-BLE-Gamepad-idf
+[submodule "blu-switch/components/Blue-N64-Control-ESP32"]
+	path = blu-switch/components/HOJA-LIB-ESP32
+	url = https://github.com/JPZV/Blue-N64-Control-ESP32
+	branch = prev_version

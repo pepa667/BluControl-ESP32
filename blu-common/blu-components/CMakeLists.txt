@@ -1,6 +1,7 @@
 idf_component_register(SRCS 
-                    "blu-hardware.c"
                     "blu-analogs.c"
+                    "blu-energy.c"
+                    "blu-hardware.c"
                     "sticks/blu-analog-pad.c"
                     "sticks/blu-buttons-pad.c"
                     "sticks/blun64-pad.c"
@@ -10,4 +11,5 @@ idf_component_register(SRCS
                     "include/sticks"
                     "include/triggers"
                     REQUIRES app_update driver
-                    esp_adc esp_partition esp_system)
+                    esp_adc esp_partition esp_system
+                    esp_timer)

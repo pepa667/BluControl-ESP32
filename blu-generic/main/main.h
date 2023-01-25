@@ -16,6 +16,7 @@
 extern "C" {
 #endif
 #include "blucontrol_mode.h"
+#include "blu-energy.h"
 #include "blu-hardware.h"
 
 #if defined(CONFIG_BLUCONTROL_LEFT_STICK_ANALOG) || defined(CONFIG_BLUCONTROL_RIGHT_STICK_ANALOG)

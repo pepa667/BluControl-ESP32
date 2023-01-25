@@ -26,6 +26,13 @@ void app_loop(void *params)
     {
         if (bleGamepad.isConnected())
         {
+            #ifdef CONFIG_BLUCONTROL_ENERGY_MODE_SOFTWARE
+            if (blu_energy_is_clock_running())
+            {
+                blu_energy_stop_clock();
+            }
+            #endif
+            
             btn_x_axis = btn_y_axis = 0;
 
             blu_refresh_buttons();
@@ -279,6 +286,15 @@ void app_loop(void *params)
 
             bleGamepad.sendReport();
         }
+        else
+        {
+            #ifdef CONFIG_BLUCONTROL_ENERGY_MODE_SOFTWARE
+            if (!blu_energy_is_clock_running())
+            {
+                blu_energy_start_clock();
+            }
+            #endif
+        }
     }
 }
 
@@ -286,6 +302,7 @@ extern "C" void app_main(void)
 {
     ESP_LOGD(LOG_TAG, "HEAP=%#010lx", esp_get_free_heap_size());
 
+    blu_energy_init();
     blu_init_hardware();
     blucontrol_mode_init(true);
 

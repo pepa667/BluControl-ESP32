@@ -61,10 +61,26 @@ void event_task(hoja_event_type_t type, uint8_t evt, uint8_t param)
     {
         //This shouldn't be needed, but HOJA glitches after disconnecting the Switch... so... ¯\_(ツ)_/¯
         esp_restart();
+    }
+
+    if (type == HOJA_EVT_BT)
+    {
+        #ifdef CONFIG_BLUCONTROL_ENERGY_MODE_SOFTWARE
+        if (evt != HEVT_BT_CONNECTED)
         {
+            if (!blu_energy_is_clock_running())
             {
+                blu_energy_start_clock();
             }
         }
+        else
+        {
+            if (blu_energy_is_clock_running())
+            {
+                blu_energy_stop_clock();
+            }
+        }
+        #endif
     }
 }
 
@@ -129,6 +145,8 @@ void app_main(void)
     hoja_register_analog_callback(stick_task);
     hoja_register_event_callback(event_task);
 
+    blu_energy_init();
+    blu_energy_start_clock();
     blu_init_hardware();
     blucontrol_mode_init(true);
 

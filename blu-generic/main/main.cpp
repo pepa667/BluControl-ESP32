@@ -279,7 +279,6 @@ void app_loop(void *params)
 
             bleGamepad.sendReport();
         }
-        blucontrol_handle_buttons();
     }
 }
 
@@ -288,7 +287,7 @@ extern "C" void app_main(void)
     ESP_LOGD(LOG_TAG, "HEAP=%#010lx", esp_get_free_heap_size());
 
     blu_init_hardware();
-    blucontrol_mode_init();
+    blucontrol_mode_init(true);
 
     bleGamepadConfig.setAutoReport(false);
 

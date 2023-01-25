@@ -52,8 +52,6 @@ void button_task(hoja_button_data_s *button_data)
 
     button_data->button_stick_left = blu_buttons.button_stick_left;
     button_data->button_stick_right = blu_buttons.button_stick_right;
-
-    blucontrol_handle_buttons();
 }
 
 void event_task(hoja_event_type_t type, uint8_t evt, uint8_t param)
@@ -140,7 +138,7 @@ void app_main(void)
     hoja_register_event_callback(event_task);
 
     blu_init_hardware();
-    blucontrol_mode_init();
+    blucontrol_mode_init(true);
 
     hoja_init();
     hoja_set_core(HOJA_CORE_NS);

@@ -227,14 +227,14 @@ void app_loop(void *params)
             #if defined(CONFIG_BLUCONTROL_LEFT_STICK_ANALOG)
             analog_stick_data = blu_analog_stick_get_data(BLU_ANALOG_PAD_LEFT);
             bleGamepad.setLeftThumb(GET_ANALOG_JOYSTICK_X_AXIS(analog_stick_data->x_axis),
-                                    GET_ANALOG_JOYSTICK_Y_AXIS(analog_stick_data->y_axis));
+                                    GET_ANALOG_JOYSTICK_Y_AXIS(analog_stick_data->y_axis * -1));
             #elif defined(CONFIG_BLUCONTROL_LEFT_STICK_N64)
             bleGamepad.setLeftThumb(GET_JOYSTICK_X_AXIS(n64_left_joystick_data.x_axis.value),
-                                    GET_JOYSTICK_Y_AXIS(n64_left_joystick_data.y_axis.value));
+                                    GET_JOYSTICK_Y_AXIS(n64_left_joystick_data.y_axis.value)); //Should add -1 too?
             #elif defined(CONFIG_BLUCONTROL_LEFT_STICK_BUTTONS)
             button_stick_data = blu_buttons_stick_get_data(BLU_BUTTONS_PAD_LEFT);
             bleGamepad.setLeftThumb(GET_JOYSTICK_X_AXIS(button_stick_data->x_axis),
-                                    GET_JOYSTICK_Y_AXIS(button_stick_data->y_axis));
+                                    GET_JOYSTICK_Y_AXIS(button_stick_data->y_axis)); //Should add -1 too?
             #else
             bleGamepad.setLeftThumb(GET_JOYSTICK_X_AXIS(0),
                                     GET_JOYSTICK_Y_AXIS(0));
@@ -243,14 +243,14 @@ void app_loop(void *params)
             #if defined(CONFIG_BLUCONTROL_RIGHT_STICK_ANALOG)
             analog_stick_data = blu_analog_stick_get_data(BLU_ANALOG_PAD_RIGHT);
             bleGamepad.setRightThumb(GET_ANALOG_JOYSTICK_X_AXIS(analog_stick_data->x_axis),
-                                     GET_ANALOG_JOYSTICK_Y_AXIS(analog_stick_data->y_axis));
+                                     GET_ANALOG_JOYSTICK_Y_AXIS(analog_stick_data->y_axis * -1));
             #elif defined(CONFIG_BLUCONTROL_RIGHT_STICK_N64)
             bleGamepad.setRightThumb(GET_JOYSTICK_X_AXIS(n64_right_joystick_data.x_axis.value),
-                                     GET_JOYSTICK_X_AXIS(n64_right_joystick_data.y_axis.value));
+                                     GET_JOYSTICK_X_AXIS(n64_right_joystick_data.y_axis.value)); //Should add -1 too?
             #elif defined(CONFIG_BLUCONTROL_RIGHT_STICK_BUTTONS)
             button_stick_data = blu_buttons_stick_get_data(BLU_BUTTONS_PAD_RIGHT);
             bleGamepad.setRightThumb(GET_JOYSTICK_X_AXIS(button_stick_data->x_axis),
-                                     GET_JOYSTICK_Y_AXIS(button_stick_data->y_axis));
+                                     GET_JOYSTICK_Y_AXIS(button_stick_data->y_axis)); //Should add -1 too?
             #else
             bleGamepad.setRightThumb(GET_JOYSTICK_X_AXIS(0),
                                      GET_JOYSTICK_Y_AXIS(0));

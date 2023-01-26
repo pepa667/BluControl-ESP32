@@ -11,58 +11,58 @@ menu "BluControl Generic Configuration"
         config BLUCONTROL_BUTTON_A_BTN
             int "Button A Button"
             default 1
-            range 1 128
+            range 0 128
             help
-                Button Number for the A Button.
+                Button Number for the A Button. 0 if not being used
 
         config BLUCONTROL_BUTTON_B_BTN
             int "Button B Button"
             default 1
-            range 1 128
+            range 0 128
             help
-                Button Number for the B Button.
+                Button Number for the B Button. 0 if not being used
 
         config BLUCONTROL_BUTTON_Y_BTN
             int "Button Y Button"
             default 1
-            range 1 128
+            range 0 128
             help
-                Button Number for the Y Button.
+                Button Number for the Y Button. 0 if not being used
 
         config BLUCONTROL_BUTTON_X_BTN
             int "Button X Button"
             default 1
-            range 1 128
+            range 0 128
             help
-                Button Number for the X Button.
+                Button Number for the X Button. 0 if not being used
 
         config BLUCONTROL_BUTTON_L_BTN
             int "Button L Button"
             default 1
-            range 1 128
+            range 0 128
             help
-                Button Number for the L Button.
+                Button Number for the L Button. 0 if not being used
 
         config BLUCONTROL_BUTTON_ZL_BTN
             int "Button ZL Button"
             default 1
-            range 1 128
+            range 0 128
             help
-                Button Number for the ZL Button.
+                Button Number for the ZL Button. 0 if not being used
 
         config BLUCONTROL_BUTTON_R_BTN
             int "Button R Button"
             default 1
-            range 1 128
+            range 0 128
             help
-                Button Number for the R Button.
+                Button Number for the R Button. 0 if not being used
 
         config BLUCONTROL_BUTTON_ZR_BTN
             int "Button ZR Button"
             default 1
-            range 1 128
+            range 0 128
             help
-                Button Number for the ZR Button.
+                Button Number for the ZR Button. 0 if not being used
 
         config BLUCONTROL_BUTTON_START_BTN
             int "Button START Button"
@@ -88,16 +88,16 @@ menu "BluControl Generic Configuration"
         config BLUCONTROL_BUTTON_STICK_L_BTN
             int "Button Stick L (L3) Button"
             default 1
-            range 1 128
+            range 0 128
             help
-                Button Number for the Left Stick Button.
+                Button Number for the Left Stick Button. 0 if not being used
 
         config BLUCONTROL_BUTTON_STICK_R_BTN
             int "Button Stick R (R3) Button"
             default 1
-            range 1 128
+            range 0 128
             help
-                Button Number for the Right Stick Button.
+                Button Number for the Right Stick Button. 0 if not being used
     endmenu
 
     menu "Triggers"
@@ -105,16 +105,16 @@ menu "BluControl Generic Configuration"
             int "Left Trigger Button"
             default 1
             depends on BLUCONTROL_LEFT_TRIGGER_ANALOG
-            range 1 128
+            range 0 128
             help
-                Button Number for the left trigger when it activates
+                Button Number for the left trigger when it activates. 0 if not being used
         
         config BLUCONTROL_RIGHT_TRIGGER_BTN
             int "Right Trigger Button"
             default 1
             depends on BLUCONTROL_RIGHT_TRIGGER_ANALOG
-            range 1 128
+            range 0 128
             help
-                Button Number for the right trigger when it activates
+                Button Number for the right trigger when it activates. 0 if not being used
     endmenu
 endmenu

@@ -39,4 +39,5 @@ examples/
 release/
 *.log
 sdkconfig.old
+sdkconfig
 tmp/

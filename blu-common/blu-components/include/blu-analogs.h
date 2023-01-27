@@ -10,6 +10,12 @@
 #define BLU_ADC_ATTENUATION ADC_ATTEN_DB_11
 #define BLU_ADC_BITWIDTH ADC_BITWIDTH_11
 
+#ifdef CONFIG_BLUCONTROL_ANALOG_VREF
+    #define ANALOG_REF CONFIG_BLUCONTROL_ANALOG_VREF
+#else
+    #define ANALOG_REF 0
+#endif
+
 void blu_analog_init(void);
 adc_channel_t blu_analog_get_channel(gpio_num_t gpio);
 adc_cali_handle_t *blu_analog_get_unit_cali(gpio_num_t gpio);

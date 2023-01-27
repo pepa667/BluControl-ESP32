@@ -21,7 +21,7 @@ void blu_analog_init(void)
         .unit_id = ADC_UNIT_1,
         .atten = BLU_ADC_ATTENUATION,
         .bitwidth = BLU_ADC_BITWIDTH,
-        .default_vref = CONFIG_BLUCONTROL_ANALOG_VREF
+        .default_vref = ANALOG_REF
     };
     ESP_ERROR_CHECK(adc_cali_create_scheme_line_fitting(&cali_config, &blu_adc1_cali_handle));
 

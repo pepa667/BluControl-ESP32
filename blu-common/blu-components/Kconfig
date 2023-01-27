@@ -93,6 +93,12 @@ menu "BluControl Configuration"
             help
                 GPIO Number for the START Button. -1 if the controller doesn't have that button.
 
+        config BLUCONTROL_BUTTON_SELECT_GPIO
+            int "Button SELECT GPIO"
+            default -1
+            help
+                GPIO Number for the SELECT Button. -1 if the controller doesn't have that button.
+
         config BLUCONTROL_BUTTON_HOME_GPIO
             int "Button HOME GPIO"
             default -1

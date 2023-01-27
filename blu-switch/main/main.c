@@ -47,6 +47,7 @@ void button_task(hoja_button_data_s *button_data)
     #endif
 
     button_data->button_start = blu_buttons.special_start;
+    button_data->button_select = blu_buttons.special_select;
     button_data->button_home = blu_buttons.special_home;
     button_data->button_capture = blu_buttons.special_capture;
 

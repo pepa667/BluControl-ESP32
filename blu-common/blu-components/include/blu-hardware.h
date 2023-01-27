@@ -88,6 +88,11 @@
 #else
     #define BUTTON_START_PIN -1
 #endif
+#ifdef CONFIG_BLUCONTROL_BUTTON_SELECT_GPIO
+    #define BUTTON_SELECT_PIN CONFIG_BLUCONTROL_BUTTON_SELECT_GPIO
+#else
+    #define BUTTON_SELECT_PIN -1
+#endif
 #ifdef CONFIG_BLUCONTROL_BUTTON_HOME_GPIO
     #define BUTTON_HOME_PIN CONFIG_BLUCONTROL_BUTTON_HOME_GPIO
 #else
@@ -172,6 +177,7 @@ typedef struct
         {
             // Special Functions
             uint8_t special_start   : 1;
+            uint8_t special_select  : 1;
             uint8_t special_home    : 1;
             uint8_t special_capture : 1;
         };

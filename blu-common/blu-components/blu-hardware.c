@@ -87,6 +87,7 @@ void blu_refresh_buttons(void)
     blu_buttons.trigger_r           = get_button_state(TRIGGER_R_PIN);
     blu_buttons.trigger_zr          = get_button_state(TRIGGER_ZR_PIN);
     blu_buttons.special_start       = get_button_state(BUTTON_START_PIN);
+    blu_buttons.special_select      = get_button_state(BUTTON_SELECT_PIN);
     blu_buttons.special_home        = get_button_state(BUTTON_HOME_PIN);
     blu_buttons.special_capture     = get_button_state(BUTTON_CAPTURE_PIN);
     blu_buttons.button_stick_left   = get_button_state(BUTTON_STICK_L);

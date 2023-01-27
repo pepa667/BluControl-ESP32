@@ -67,23 +67,30 @@ menu "BluControl Generic Configuration"
         config BLUCONTROL_BUTTON_START_BTN
             int "Button START Button"
             default 0
-            range 0 128
+            range -1 128
             help
-                Button Number for the START Button. 0 to use the special button for Start.
+                Button Number for the START Button. 0 to use the special button for Start, -1 if not being used
+
+        config BLUCONTROL_BUTTON_SELECT_BTN
+            int "Button SELECT Button"
+            default 0
+            range -1 128
+            help
+                Button Number for the SELECT Button. 0 to use the special button for Select, -1 if not being used
 
         config BLUCONTROL_BUTTON_HOME_BTN
             int "Button HOME Button"
             default 0
-            range 0 128
+            range -1 128
             help
-                Button Number for the HOME Button. 0 to use the special button for Home.
+                Button Number for the HOME Button. 0 to use the special button for Home, -1 if not being used
 
         config BLUCONTROL_BUTTON_CAPTURE_BTN
             int "Button CAPTURE Button"
             default 0
             range 0 128
             help
-                Button Number for the CAPTURE Button. 0 to use the special button for Select
+                Button Number for the CAPTURE Button. 0 if not being used
 
         config BLUCONTROL_BUTTON_STICK_L_BTN
             int "Button Stick L (L3) Button"

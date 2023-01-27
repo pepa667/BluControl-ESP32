@@ -101,7 +101,7 @@ void app_loop(void *params)
                 {
                     bleGamepad.press(BUTTON_START_NUMBER);
                 }
-                else
+                else if (BUTTON_START_NUMBER == 0)
                 {
                     bleGamepad.pressStart();
                 }
@@ -112,9 +112,31 @@ void app_loop(void *params)
                 {
                     bleGamepad.release(BUTTON_START_NUMBER);
                 }
-                else
+                else if (BUTTON_START_NUMBER == 0)
                 {
                     bleGamepad.releaseStart();
+                }
+            }
+            if (blu_buttons.special_select)
+            {
+                if (BUTTON_SELECT_NUMBER > 0)
+                {
+                    bleGamepad.press(BUTTON_SELECT_NUMBER);
+                }
+                else if (BUTTON_SELECT_NUMBER == 0)
+                {
+                    bleGamepad.pressSelect();
+                }
+            }
+            else
+            {
+                if (BUTTON_SELECT_NUMBER > 0)
+                {
+                    bleGamepad.release(BUTTON_SELECT_NUMBER);
+                }
+                else if (BUTTON_SELECT_NUMBER == 0)
+                {
+                    bleGamepad.releaseSelect();
                 }
             }
             if (blu_buttons.special_home)
@@ -123,7 +145,7 @@ void app_loop(void *params)
                 {
                     bleGamepad.press(BUTTON_HOME_NUMBER);
                 }
-                else
+                else if (BUTTON_HOME_NUMBER == 0)
                 {
                     bleGamepad.pressHome();
                 }
@@ -134,32 +156,17 @@ void app_loop(void *params)
                 {
                     bleGamepad.release(BUTTON_HOME_NUMBER);
                 }
-                else
+                else if (BUTTON_HOME_NUMBER == 0)
                 {
                     bleGamepad.releaseHome();
                 }
             }
-            if (blu_buttons.special_capture)
+            if (BUTTON_CAPTURE_NUMBER > 0)
             {
-                if (BUTTON_CAPTURE_NUMBER > 0)
-                {
+                if (blu_buttons.special_capture)
                     bleGamepad.press(BUTTON_CAPTURE_NUMBER);
-                }
                 else
-                {
-                    bleGamepad.pressSelect();
-                }
-            }
-            else
-            {
-                if (BUTTON_CAPTURE_NUMBER > 0)
-                {
                     bleGamepad.release(BUTTON_CAPTURE_NUMBER);
-                }
-                else
-                {
-                    bleGamepad.releaseSelect();
-                }
             }
 
             if (BUTTON_STICK_L_NUMBER > 0)

@@ -11,6 +11,9 @@
 		},
 		{
 			"path": "../blu-ota"
+		},
+		{
+			"path": "../configs"
 		}
 	],
 	"settings":

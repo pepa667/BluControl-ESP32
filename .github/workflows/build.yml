@@ -104,7 +104,7 @@ jobs:
                                       0x210000 $(basename $folder)/blucontrol-generic.bin \
                                       0x310000 www.bin; \
 
-          mv BluControl_$(basename $folder.bin ../release/BluControl_$(basename $folder.bin; \
+          mv BluControl_$(basename $folder).bin ../release/BluControl_$(basename $folder).bin; \
         done
       env:
         IDF_TOOLS_PATH : "/home/runner/work/BluControl-ESP32/BluControl-ESP32/tools"

@@ -15,44 +15,44 @@ void button_task(hoja_button_data_s *button_data)
 {
     blu_refresh_buttons();
 
-    button_data->button_right = blu_buttons.button_A;
-    button_data->button_down = blu_buttons.button_B;
-    button_data->button_left = blu_buttons.button_Y;
-    button_data->button_up = blu_buttons.button_X;
+    button_data->button_right       |= blu_buttons.button_A.value;
+    button_data->button_down        |= blu_buttons.button_B.value;
+    button_data->button_left        |= blu_buttons.button_Y.value;
+    button_data->button_up          |= blu_buttons.button_X.value;
 
-    button_data->dpad_right = blu_buttons.dpad_right;
-    button_data->dpad_down = blu_buttons.dpad_down;
-    button_data->dpad_left = blu_buttons.dpad_left;
-    button_data->dpad_up = blu_buttons.dpad_up;
+    button_data->dpad_right         |= blu_buttons.dpad_right.value;
+    button_data->dpad_down          |= blu_buttons.dpad_down.value;
+    button_data->dpad_left          |= blu_buttons.dpad_left.value;
+    button_data->dpad_up            |= blu_buttons.dpad_up.value;
 
     #ifdef CONFIG_BLUCONTROL_LEFT_TRIGGER_BTN_L
-    button_data->trigger_l = blu_buttons.trigger_l | is_left_trigger_pressed;
+    button_data->trigger_l          |= blu_buttons.trigger_l.value | is_left_trigger_pressed;
     #else
-    button_data->trigger_l = blu_buttons.trigger_l;
+    button_data->trigger_l          |= blu_buttons.trigger_l.value;
     #endif
     #ifdef CONFIG_BLUCONTROL_LEFT_TRIGGER_BTN_ZL
-    button_data->trigger_zl = blu_buttons.trigger_zl | is_left_trigger_pressed;
+    button_data->trigger_zl         |= blu_buttons.trigger_zl.value | is_left_trigger_pressed;
     #else
-    button_data->trigger_zl = blu_buttons.trigger_zl;
+    button_data->trigger_zl         |= blu_buttons.trigger_zl.value;
     #endif
     #ifdef CONFIG_BLUCONTROL_RIGHT_TRIGGER_BTN_R
-    button_data->trigger_r = blu_buttons.trigger_r | is_right_trigger_pressed;
+    button_data->trigger_r          |= blu_buttons.trigger_r.value | is_right_trigger_pressed;
     #else
-    button_data->trigger_r = blu_buttons.trigger_r;
+    button_data->trigger_r          |= blu_buttons.trigger_r.value;
     #endif
     #ifdef CONFIG_BLUCONTROL_RIGHT_TRIGGER_BTN_ZR
-    button_data->trigger_zr = blu_buttons.trigger_zr | is_right_trigger_pressed;
+    button_data->trigger_zr         |= blu_buttons.trigger_zr.value | is_right_trigger_pressed;
     #else
-    button_data->trigger_zr = blu_buttons.trigger_zr;
+    button_data->trigger_zr         |= blu_buttons.trigger_zr.value;
     #endif
 
-    button_data->button_start = blu_buttons.special_start;
-    button_data->button_select = blu_buttons.special_select;
-    button_data->button_home = blu_buttons.special_home;
-    button_data->button_capture = blu_buttons.special_capture;
+    button_data->button_start       |= blu_buttons.special_start.value;
+    button_data->button_select      |= blu_buttons.special_select.value;
+    button_data->button_home        |= blu_buttons.special_home.value;
+    button_data->button_capture     |= blu_buttons.special_capture.value;
 
-    button_data->button_stick_left = blu_buttons.button_stick_left;
-    button_data->button_stick_right = blu_buttons.button_stick_right;
+    button_data->button_stick_left  |= blu_buttons.button_stick_left.value;
+    button_data->button_stick_right |= blu_buttons.button_stick_right.value;
 }
 
 void event_task(hoja_event_type_t type, uint8_t evt, uint8_t param)

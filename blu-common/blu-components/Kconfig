@@ -16,112 +16,112 @@ menu "BluControl Configuration"
     menu "Buttons"
         #Buttons
         config BLUCONTROL_BUTTON_A_GPIO
-            int "Button A GPIO"
-            default -1
+            string "Button A GPIO"
+            default ""
             help
-                GPIO Number for the A Button. -1 if the controller doesn't have that button.
+                GPIO Number for the A Button. Empty if the controller doesn't have that button. Multiple GPIOs can be defined with a space between them
 
         config BLUCONTROL_BUTTON_B_GPIO
-            int "Button B GPIO"
-            default -1
+            string "Button B GPIO"
+            default ""
             help
-                GPIO Number for the B Button. -1 if the controller doesn't have that button.
+                GPIO Number for the B Button. Empty if the controller doesn't have that button. Multiple GPIOs can be defined with a space between them
 
         config BLUCONTROL_BUTTON_Y_GPIO
-            int "Button Y GPIO"
-            default -1
+            string "Button Y GPIO"
+            default ""
             help
-                GPIO Number for the Y Button. -1 if the controller doesn't have that button.
+                GPIO Number for the Y Button. Empty if the controller doesn't have that button. Multiple GPIOs can be defined with a space between them
 
         config BLUCONTROL_BUTTON_X_GPIO
-            int "Button X GPIO"
-            default -1
+            string "Button X GPIO"
+            default ""
             help
-                GPIO Number for the X Button. -1 if the controller doesn't have that button.
+                GPIO Number for the X Button. Empty if the controller doesn't have that button. Multiple GPIOs can be defined with a space between them
 
         config BLUCONTROL_DPAD_RIGHT_GPIO
-            int "DPAD Right GPIO"
-            default -1
+            string "DPAD Right GPIO"
+            default ""
             help
-                GPIO Number for the DPAD Right. -1 if the controller doesn't have that button.
+                GPIO Number for the DPAD Right. Empty if the controller doesn't have that button. Multiple GPIOs can be defined with a space between them
 
         config BLUCONTROL_DPAD_DOWN_GPIO
-            int "DPAD Down GPIO"
-            default -1
+            string "DPAD Down GPIO"
+            default ""
             help
-                GPIO Number for the DPAD Down. -1 if the controller doesn't have that button.
+                GPIO Number for the DPAD Down. Empty if the controller doesn't have that button. Multiple GPIOs can be defined with a space between them
 
         config BLUCONTROL_DPAD_LEFT_GPIO
-            int "DPAD Left GPIO"
-            default -1
+            string "DPAD Left GPIO"
+            default ""
             help
-                GPIO Number for the DPAD Left. -1 if the controller doesn't have that button.
+                GPIO Number for the DPAD Left. Empty if the controller doesn't have that button. Multiple GPIOs can be defined with a space between them
 
         config BLUCONTROL_DPAD_UP_GPIO
-            int "DPAD Up GPIO"
-            default -1
+            string "DPAD Up GPIO"
+            default ""
             help
-                GPIO Number for the DPAD Up. -1 if the controller doesn't have that button.
+                GPIO Number for the DPAD Up. Empty if the controller doesn't have that button. Multiple GPIOs can be defined with a space between them
 
         config BLUCONTROL_BUTTON_L_GPIO
-            int "Button L GPIO"
-            default -1
+            string "Button L GPIO"
+            default ""
             help
-                GPIO Number for the L Button. -1 if the controller doesn't have that button.
+                GPIO Number for the L Button. Empty if the controller doesn't have that button. Multiple GPIOs can be defined with a space between them
 
         config BLUCONTROL_BUTTON_ZL_GPIO
-            int "Button ZL GPIO"
-            default -1
+            string "Button ZL GPIO"
+            default ""
             help
-                GPIO Number for the ZL Button. -1 if the controller doesn't have that button.
+                GPIO Number for the ZL Button. Empty if the controller doesn't have that button. Multiple GPIOs can be defined with a space between them
 
         config BLUCONTROL_BUTTON_R_GPIO
-            int "Button R GPIO"
-            default -1
+            string "Button R GPIO"
+            default ""
             help
-                GPIO Number for the R Button. -1 if the controller doesn't have that button.
+                GPIO Number for the R Button. Empty if the controller doesn't have that button. Multiple GPIOs can be defined with a space between them
 
         config BLUCONTROL_BUTTON_ZR_GPIO
-            int "Button ZR GPIO"
-            default -1
+            string "Button ZR GPIO"
+            default ""
             help
-                GPIO Number for the ZR Button. -1 if the controller doesn't have that button.
+                GPIO Number for the ZR Button. Empty if the controller doesn't have that button. Multiple GPIOs can be defined with a space between them
 
         config BLUCONTROL_BUTTON_START_GPIO
-            int "Button START GPIO"
-            default -1
+            string "Button START GPIO"
+            default ""
             help
-                GPIO Number for the START Button. -1 if the controller doesn't have that button.
+                GPIO Number for the START Button. Empty if the controller doesn't have that button. Multiple GPIOs can be defined with a space between them
 
         config BLUCONTROL_BUTTON_SELECT_GPIO
-            int "Button SELECT GPIO"
-            default -1
+            string "Button SELECT GPIO"
+            default ""
             help
-                GPIO Number for the SELECT Button. -1 if the controller doesn't have that button.
+                GPIO Number for the SELECT Button. Empty if the controller doesn't have that button. Multiple GPIOs can be defined with a space between them
 
         config BLUCONTROL_BUTTON_HOME_GPIO
-            int "Button HOME GPIO"
-            default -1
+            string "Button HOME GPIO"
+            default ""
             help
-                GPIO Number for the HOME Button. -1 if the controller doesn't have that button.
+                GPIO Number for the HOME Button. Empty if the controller doesn't have that button. Multiple GPIOs can be defined with a space between them
 
         config BLUCONTROL_BUTTON_CAPTURE_GPIO
-            int "Button CAPTURE GPIO"
-            default -1
+            string "Button CAPTURE GPIO"
+            default ""
             help
-                GPIO Number for the CAPTURE Button. -1 if the controller doesn't have that button.
+                GPIO Number for the CAPTURE Button. Empty if the controller doesn't have that button. Multiple GPIOs can be defined with a space between them
 
         config BLUCONTROL_BUTTON_STICK_L_GPIO
-            int "Button Stick L (L3) GPIO"
-            default -1
+            string "Button Stick L (L3) GPIO"
+            default ""
             help
-                GPIO Number for the Left Stick Button. -1 if the controller doesn't have that button.
+                GPIO Number for the Left Stick Button. Empty if the controller doesn't have that button. Multiple GPIOs can be defined with a space between them
 
         config BLUCONTROL_BUTTON_STICK_R_GPIO
-            int "Button Stick R (R3) GPIO"
-            default -1
+            string "Button Stick R (R3) GPIO"
+            default ""
             help
-                GPIO Number for the Right Stick Button. -1 if the controller doesn't have that button.
+                GPIO Number for the Right Stick Button. Empty if the controller doesn't have that button. Multiple GPIOs can be defined with a space between them
     endmenu
 
     menu "Triggers"

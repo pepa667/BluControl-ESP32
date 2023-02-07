@@ -14,7 +14,7 @@
     #include "blu-analog-triggers.h"
 #endif
 
-#define buttons_length 17
+#define buttons_length 18
 
 blu_buttons_t blu_buttons = {};
 
@@ -33,6 +33,7 @@ gpio_num_t buttons_gpio[buttons_length] =
     TRIGGER_R_PIN,
     TRIGGER_ZR_PIN,
     BUTTON_START_PIN,
+    BUTTON_SELECT_PIN,
     BUTTON_HOME_PIN,
     BUTTON_CAPTURE_PIN,
     BUTTON_STICK_L,

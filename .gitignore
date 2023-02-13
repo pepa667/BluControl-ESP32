@@ -41,3 +41,4 @@ release/
 sdkconfig.old
 sdkconfig
 tmp/
+tmp*.txt

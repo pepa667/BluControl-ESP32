@@ -468,6 +468,19 @@ menu "BluControl Configuration"
         endmenu
     endmenu
 
+    menu "Rumble"
+        config BLUCONTROL_RUMBLE_LEFT_GPIO
+            int "Left rumble GPIO"
+            default -1
+            help
+                GPIO Number for the left side rumble motor. -1 if not present.
+        config BLUCONTROL_RUMBLE_RIGHT_GPIO
+            int "Right rumble GPIO"
+            default -1
+            help
+                GPIO Number for the right side rumble motor. -1 if not present.
+    endmenu
+
     menu "Energy control"
         choice BLUCONTROL_ENERGY_MODE
             prompt "Energy mode"

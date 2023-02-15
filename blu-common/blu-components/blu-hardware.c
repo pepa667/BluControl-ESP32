@@ -65,10 +65,12 @@ blu_button_t *buttons_ref[buttons_length] =
 
 uint8_t get_button_state(gpio_num_t gpio_num);
 void prepare_buttons_gpio();
+void prepare_rumbles_gpio();
 
 void blu_init_hardware(void)
 {
     prepare_buttons_gpio();
+    prepare_rumbles_gpio();
 
     #if defined(CONFIG_BLUCONTROL_LEFT_STICK_ANALOG) || defined(CONFIG_BLUCONTROL_RIGHT_STICK_ANALOG)
     blu_analog_stick_init();
@@ -199,4 +201,18 @@ void prepare_buttons_gpio()
             o++;
         }
     }
+}
+
+void prepare_rumbles_gpio()
+{
+    #ifdef CONFIG_BLUCONTROL_RUMBLE_LEFT_GPIO
+    gpio_reset_pin(CONFIG_BLUCONTROL_RUMBLE_LEFT_GPIO);
+    gpio_set_direction(CONFIG_BLUCONTROL_RUMBLE_LEFT_GPIO, GPIO_MODE_OUTPUT);
+    gpio_set_level(CONFIG_BLUCONTROL_RUMBLE_LEFT_GPIO, 0);
+    #endif
+    #ifdef CONFIG_BLUCONTROL_RUMBLE_RIGHT_GPIO
+    gpio_reset_pin(CONFIG_BLUCONTROL_RUMBLE_RIGHT_GPIO);
+    gpio_set_direction(CONFIG_BLUCONTROL_RUMBLE_RIGHT_GPIO, GPIO_MODE_OUTPUT);
+    gpio_set_level(CONFIG_BLUCONTROL_RUMBLE_RIGHT_GPIO, 0);
+    #endif
 }

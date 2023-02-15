@@ -138,6 +138,16 @@ void stick_task(hoja_analog_data_s* analog_data)
     #endif
 }
 
+void rumble_task(hoja_rumble_data_s* rumble_data)
+{
+    #if LEFT_RUMBLE_GPIO >= 0
+    gpio_set_level(LEFT_RUMBLE_GPIO, rumble_data->left_rumble);
+    #endif
+    #if RIGHT_RUMBLE_GPIO >= 0
+    gpio_set_level(RIGHT_RUMBLE_GPIO, rumble_data->right_rumble);
+    #endif
+}
+
 void app_main(void)
 {
     ESP_LOGD(LOG_TAG, "HEAP=%#010lx", esp_get_free_heap_size());
@@ -145,6 +155,7 @@ void app_main(void)
     hoja_register_button_callback(button_task);
     hoja_register_analog_callback(stick_task);
     hoja_register_event_callback(event_task);
+    hoja_register_rumble_callback(rumble_task);
 
     blu_energy_init();
     blu_energy_start_clock();

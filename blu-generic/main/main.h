@@ -172,5 +172,17 @@ extern "C" {
     #define RIGHT_TRIGGER_BTN -1
 #endif
 
+// Rumbles
+#ifdef CONFIG_BLUCONTROL_RUMBLE_LEFT_GPIO
+    #define LEFT_RUMBLE_GPIO CONFIG_BLUCONTROL_RUMBLE_LEFT_GPIO
+#else
+    #define LEFT_RUMBLE_GPIO -1
+#endif
+#ifdef CONFIG_BLUCONTROL_RUMBLE_RIGHT_GPIO
+    #define RIGHT_RUMBLE_GPIO CONFIG_BLUCONTROL_RUMBLE_RIGHT_GPIO
+#else
+    #define RIGHT_RUMBLE_GPIO -1
+#endif
+
 
 #endif

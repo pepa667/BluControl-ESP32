@@ -305,6 +305,16 @@ void app_loop(void *params)
     }
 }
 
+void rumble_callback(RumbleData *rumble_data)
+{
+    #if LEFT_RUMBLE_GPIO >= 0
+    gpio_set_level((gpio_num_t)LEFT_RUMBLE_GPIO, rumble_data->left_rumble);
+    #endif
+    #if RIGHT_RUMBLE_GPIO >= 0
+    gpio_set_level((gpio_num_t)RIGHT_RUMBLE_GPIO, rumble_data->right_rumble);
+    #endif
+}
+
 extern "C" void app_main(void)
 {
     ESP_LOGD(LOG_TAG, "HEAP=%#010lx", esp_get_free_heap_size());
@@ -356,7 +366,14 @@ extern "C" void app_main(void)
     bleGamepadConfig.setAxesMax(BLU_JOYSTICK_ABS_MAX * 2);
     bleGamepadConfig.setWhichSpecialButtons(BUTTON_START_NUMBER <= 0, BUTTON_CAPTURE_NUMBER <= 0, false, BUTTON_HOME_NUMBER <= 0, false, false, false, false);
     bleGamepadConfig.setWhichAxes(AXIS_HAS_LEFT_STICK, AXIS_HAS_LEFT_STICK, AXIS_HAS_RIGHT_STICK, AXIS_HAS_LEFT_TRIGGER, AXIS_HAS_RIGHT_TRIGGER, AXIS_HAS_RIGHT_STICK, false, false);
+    
+    #if LEFT_RUMBLE_GPIO >= 0 || RIGHT_RUMBLE_GPIO >= 0
     bleGamepadConfig.setHasRumble(true);
+    bleGamepadConfig.setRumbleCallBack(rumble_callback);
+    #else
+    bleGamepadConfig.setHasRumble(false);
+    #endif
+    
     bleGamepad.begin(&bleGamepadConfig);
 
     xTaskCreatePinnedToCore(app_loop, "APP_LOOP", 4096, NULL, tskIDLE_PRIORITY, &loopTaskHandle, 1);

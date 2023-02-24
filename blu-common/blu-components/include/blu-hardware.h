@@ -206,6 +206,7 @@ typedef struct
 
 extern blu_buttons_t blu_buttons;
 
+uint8_t blu_get_button_state(gpio_num_t gpio_num);
 void blu_init_hardware(void);
 void blu_refresh_buttons(void);
 

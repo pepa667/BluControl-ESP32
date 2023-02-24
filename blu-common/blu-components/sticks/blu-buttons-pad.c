@@ -20,13 +20,13 @@ blu_btn_stick_data_t *blu_buttons_stick_get_data(char stick)
     #ifdef CONFIG_BLUCONTROL_LEFT_STICK_BUTTONS
     if (stick == BLU_BUTTONS_PAD_LEFT)
     {
-        if (!gpio_get_level(LEFT_STICK_X_MAX))
+        if (blu_get_button_state(LEFT_STICK_X_MAX))
             btns_pad_tmp_data.x_axis += BLU_JOYSTICK_MAX_X;
-        if (!gpio_get_level(LEFT_STICK_X_MIN))
+        if (blu_get_button_state(LEFT_STICK_X_MIN))
             btns_pad_tmp_data.x_axis -= BLU_JOYSTICK_MAX_X;
-        if (!gpio_get_level(LEFT_STICK_Y_MAX))
+        if (blu_get_button_state(LEFT_STICK_Y_MAX))
             btns_pad_tmp_data.y_axis += BLU_JOYSTICK_MAX_Y;
-        if (!gpio_get_level(LEFT_STICK_Y_MIN))
+        if (blu_get_button_state(LEFT_STICK_Y_MIN))
             btns_pad_tmp_data.y_axis -= BLU_JOYSTICK_MAX_Y;
     }
     #endif
@@ -34,13 +34,13 @@ blu_btn_stick_data_t *blu_buttons_stick_get_data(char stick)
     #ifdef CONFIG_BLUCONTROL_RIGHT_STICK_BUTTONS
     if (stick == BLU_BUTTONS_PAD_RIGHT)
     {
-        if (!gpio_get_level(RIGHT_STICK_X_MAX))
+        if (blu_get_button_state(RIGHT_STICK_X_MAX))
             btns_pad_tmp_data.x_axis += BLU_JOYSTICK_MAX_X;
-        if (!gpio_get_level(RIGHT_STICK_X_MIN))
+        if (blu_get_button_state(RIGHT_STICK_X_MIN))
             btns_pad_tmp_data.x_axis -= BLU_JOYSTICK_MAX_X;
-        if (!gpio_get_level(RIGHT_STICK_Y_MAX))
+        if (blu_get_button_state(RIGHT_STICK_Y_MAX))
             btns_pad_tmp_data.y_axis += BLU_JOYSTICK_MAX_Y;
-        if (!gpio_get_level(RIGHT_STICK_Y_MIN))
+        if (blu_get_button_state(RIGHT_STICK_Y_MIN))
             btns_pad_tmp_data.y_axis -= BLU_JOYSTICK_MAX_Y;
     }
     #endif

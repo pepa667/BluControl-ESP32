@@ -6,7 +6,8 @@
 	url = https://github.com/JPZV/BluControl-SDK-ESP32
 [submodule "blu-generic/components/esp-nimble-cpp"]
 	path = blu-generic/components/esp-nimble-cpp
-	url = https://github.com/h2zero/esp-nimble-cpp
+	url = https://github.com/JPZV/esp-nimble-cpp
+	branch = patch-1
 [submodule "blu-generic/components/ESP32-BLE-Gamepad-idf"]
 	path = blu-generic/components/ESP32-BLE-Gamepad-idf
 	url = https://github.com/JPZV/ESP32-BLE-Gamepad-idf

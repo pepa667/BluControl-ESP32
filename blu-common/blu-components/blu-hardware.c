@@ -63,7 +63,6 @@ blu_button_t *buttons_ref[buttons_length] =
     &(blu_buttons.button_stick_right),
 };
 
-uint8_t get_button_state(gpio_num_t gpio_num);
 void prepare_buttons_gpio();
 void prepare_rumbles_gpio();
 
@@ -108,7 +107,7 @@ void blu_refresh_buttons(void)
                 continue;
             }
             checkedGPIOs++;
-            if (!get_button_state(buttons_ref[i]->gpios[o]))
+            if (!blu_get_button_state(buttons_ref[i]->gpios[o]))
             {
                 isButtonPressed = false;
                 break;
@@ -125,7 +124,7 @@ void blu_refresh_buttons(void)
     }
 }
 
-uint8_t get_button_state(gpio_num_t gpio_num)
+uint8_t blu_get_button_state(gpio_num_t gpio_num)
 {
     if (gpio_num >= 0 && gpio_get_level(gpio_num) == BUTTONS_PRESS_STATE)
     {

@@ -39,149 +39,77 @@ void app_loop(void *params)
 
             if (BUTTON_A_NUMBER > 0)
             {
-                if (blu_buttons.button_A.value)
-                    bleGamepad.press(BUTTON_A_NUMBER);
-                else
-                    bleGamepad.release(BUTTON_A_NUMBER);
+                bleGamepad.setState(BUTTON_A_NUMBER, blu_buttons.button_A.value);
             }
             if (BUTTON_B_NUMBER > 0)
             {
-                if (blu_buttons.button_B.value)
-                    bleGamepad.press(BUTTON_B_NUMBER);
-                else
-                    bleGamepad.release(BUTTON_B_NUMBER);
+                bleGamepad.setState(BUTTON_B_NUMBER, blu_buttons.button_B.value);
             }
             if (BUTTON_Y_NUMBER > 0)
             {
-                if (blu_buttons.button_Y.value)
-                    bleGamepad.press(BUTTON_Y_NUMBER);
-                else
-                    bleGamepad.release(BUTTON_Y_NUMBER);
+                bleGamepad.setState(BUTTON_Y_NUMBER, blu_buttons.button_Y.value);
             }
             if (BUTTON_X_NUMBER > 0)
             {
-                if (blu_buttons.button_X.value)
-                    bleGamepad.press(BUTTON_X_NUMBER);
-                else
-                    bleGamepad.release(BUTTON_X_NUMBER);
+                bleGamepad.setState(BUTTON_X_NUMBER, blu_buttons.button_X.value);
             }
 
             if (BUTTON_L_NUMBER > 0)
             {
-                if (blu_buttons.trigger_l.value)
-                    bleGamepad.press(BUTTON_L_NUMBER);
-                else
-                    bleGamepad.release(BUTTON_L_NUMBER);
+                bleGamepad.setState(BUTTON_L_NUMBER, blu_buttons.trigger_l.value);
             }
             if (BUTTON_ZL_NUMBER > 0)
             {
-                if (blu_buttons.trigger_zl.value)
-                    bleGamepad.press(BUTTON_ZL_NUMBER);
-                else
-                    bleGamepad.release(BUTTON_ZL_NUMBER);
+                bleGamepad.setState(BUTTON_ZL_NUMBER, blu_buttons.trigger_zl.value);
             }
             if (BUTTON_R_NUMBER > 0)
             {
-                if (blu_buttons.trigger_r.value)
-                    bleGamepad.press(BUTTON_R_NUMBER);
-                else
-                    bleGamepad.release(BUTTON_R_NUMBER);
+                bleGamepad.setState(BUTTON_R_NUMBER, blu_buttons.trigger_r.value);
             }
             if (BUTTON_ZR_NUMBER > 0)
             {
-                if (blu_buttons.trigger_zr.value)
-                    bleGamepad.press(BUTTON_ZR_NUMBER);
-                else
-                    bleGamepad.release(BUTTON_ZR_NUMBER);
+                bleGamepad.setState(BUTTON_ZR_NUMBER, blu_buttons.trigger_zr.value);
             }
 
-            if (blu_buttons.special_start.value)
+            if (BUTTON_START_NUMBER > 0)
             {
-                if (BUTTON_START_NUMBER > 0)
-                {
-                    bleGamepad.press(BUTTON_START_NUMBER);
-                }
-                else if (BUTTON_START_NUMBER == 0)
-                {
-                    bleGamepad.pressStart();
-                }
+                bleGamepad.setState(BUTTON_START_NUMBER, blu_buttons.special_start.value);
             }
-            else
+            else if (BUTTON_START_NUMBER == 0)
             {
-                if (BUTTON_START_NUMBER > 0)
-                {
-                    bleGamepad.release(BUTTON_START_NUMBER);
-                }
-                else if (BUTTON_START_NUMBER == 0)
-                {
-                    bleGamepad.releaseStart();
-                }
+                bleGamepad.setStateSpecialButton(START_BUTTON, blu_buttons.special_start.value);
             }
-            if (blu_buttons.special_select.value)
+
+            if (BUTTON_SELECT_NUMBER > 0)
             {
-                if (BUTTON_SELECT_NUMBER > 0)
-                {
-                    bleGamepad.press(BUTTON_SELECT_NUMBER);
-                }
-                else if (BUTTON_SELECT_NUMBER == 0)
-                {
-                    bleGamepad.pressSelect();
-                }
+                bleGamepad.setState(BUTTON_SELECT_NUMBER, blu_buttons.special_select.value);
             }
-            else
+            else if (BUTTON_SELECT_NUMBER == 0)
             {
-                if (BUTTON_SELECT_NUMBER > 0)
-                {
-                    bleGamepad.release(BUTTON_SELECT_NUMBER);
-                }
-                else if (BUTTON_SELECT_NUMBER == 0)
-                {
-                    bleGamepad.releaseSelect();
-                }
+                bleGamepad.setStateSpecialButton(SELECT_BUTTON, blu_buttons.special_select.value);
             }
-            if (blu_buttons.special_home.value)
+
+            if (BUTTON_HOME_NUMBER > 0)
             {
-                if (BUTTON_HOME_NUMBER > 0)
-                {
-                    bleGamepad.press(BUTTON_HOME_NUMBER);
-                }
-                else if (BUTTON_HOME_NUMBER == 0)
-                {
-                    bleGamepad.pressHome();
-                }
+                bleGamepad.setState(BUTTON_HOME_NUMBER, blu_buttons.special_home.value);
             }
-            else
+            else if (BUTTON_HOME_NUMBER == 0)
             {
-                if (BUTTON_HOME_NUMBER > 0)
-                {
-                    bleGamepad.release(BUTTON_HOME_NUMBER);
-                }
-                else if (BUTTON_HOME_NUMBER == 0)
-                {
-                    bleGamepad.releaseHome();
-                }
+                bleGamepad.setStateSpecialButton(HOME_BUTTON, blu_buttons.special_home.value);
             }
+
             if (BUTTON_CAPTURE_NUMBER > 0)
             {
-                if (blu_buttons.special_capture.value)
-                    bleGamepad.press(BUTTON_CAPTURE_NUMBER);
-                else
-                    bleGamepad.release(BUTTON_CAPTURE_NUMBER);
+                bleGamepad.setState(BUTTON_CAPTURE_NUMBER, blu_buttons.special_capture.value);
             }
 
             if (BUTTON_STICK_L_NUMBER > 0)
             {
-                if (blu_buttons.button_stick_left.value)
-                    bleGamepad.press(BUTTON_STICK_L_NUMBER);
-                else
-                    bleGamepad.release(BUTTON_STICK_L_NUMBER);
+                bleGamepad.setState(BUTTON_STICK_L_NUMBER, blu_buttons.button_stick_left.value);
             }
             if (BUTTON_STICK_R_NUMBER > 0)
             {
-                if (blu_buttons.button_stick_right.value)
-                    bleGamepad.press(BUTTON_STICK_R_NUMBER);
-                else
-                    bleGamepad.release(BUTTON_STICK_R_NUMBER);
+                bleGamepad.setState(BUTTON_STICK_R_NUMBER, blu_buttons.button_stick_right.value);
             }
 
             if (blu_buttons.dpad_up.value)
@@ -192,7 +120,7 @@ void app_loop(void *params)
                 btn_x_axis--;
             if (blu_buttons.dpad_right.value)
                 btn_x_axis++;
-            
+
             if (btn_y_axis == 0 && btn_x_axis == 0)
             {
                 dpad_axis = 0;
@@ -268,10 +196,7 @@ void app_loop(void *params)
             bleGamepad.setLeftTrigger(trigger_value);
             if (LEFT_TRIGGER_BTN > 0)
             {
-                if (CHECK_IF_TRIGGER_IS_PRESSED(trigger_value, LEFT_TRIGGER_ACT))
-                    bleGamepad.press(LEFT_TRIGGER_BTN);
-                else
-                    bleGamepad.release(LEFT_TRIGGER_BTN);
+                bleGamepad.setStateSpecialButton(LEFT_TRIGGER_BTN, CHECK_IF_TRIGGER_IS_PRESSED(trigger_value, LEFT_TRIGGER_ACT));
             }
             #else
             bleGamepad.setLeftTrigger(GET_ANALOG_TRIGGER_AXIS(0));
@@ -282,10 +207,7 @@ void app_loop(void *params)
             bleGamepad.setRightTrigger(trigger_value);
             if (RIGHT_TRIGGER_BTN > 0)
             {
-                if (CHECK_IF_TRIGGER_IS_PRESSED(trigger_value, RIGHT_TRIGGER_ACT))
-                    bleGamepad.press(RIGHT_TRIGGER_BTN);
-                else
-                    bleGamepad.release(RIGHT_TRIGGER_BTN);
+                bleGamepad.setStateSpecialButton(RIGHT_TRIGGER_BTN, CHECK_IF_TRIGGER_IS_PRESSED(trigger_value, RIGHT_TRIGGER_ACT));
             }
             #else
             bleGamepad.setRightTrigger(GET_ANALOG_TRIGGER_AXIS(0));

@@ -48,7 +48,32 @@
 			"xlocmon": "cpp",
 			"xlocnum": "cpp",
 			"*.inc": "cpp",
-			"cstdlib": "cpp"
+			"cstdlib": "cpp",
+			"deque": "cpp",
+			"forward_list": "cpp",
+			"future": "cpp",
+			"list": "cpp",
+			"map": "cpp",
+			"memory": "cpp",
+			"queue": "cpp",
+			"random": "cpp",
+			"ratio": "cpp",
+			"set": "cpp",
+			"sstream": "cpp",
+			"stack": "cpp",
+			"unordered_map": "cpp",
+			"unordered_set": "cpp",
+			"vector": "cpp",
+			"xmemory": "cpp",
+			"xstring": "cpp",
+			"xtree": "cpp",
+			"atomic": "cpp",
+			"bit": "cpp",
+			"string": "cpp",
+			"memory_resource": "cpp",
+			"fstream": "cpp",
+			"numeric": "cpp",
+			"span": "cpp"
 		}
 	}
 }

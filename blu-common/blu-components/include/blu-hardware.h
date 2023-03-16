@@ -138,6 +138,7 @@
 typedef struct
 {
     uint8_t value   : 1;
+    uint8_t old_value   : 1;
     int8_t *gpios;
     uint8_t gpio_length;
 } blu_button_t;

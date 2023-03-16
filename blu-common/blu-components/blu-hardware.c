@@ -120,6 +120,7 @@ void blu_refresh_buttons(void)
             continue;    
         }
 
+        buttons_ref[i]->old_value = buttons_ref[i]->value;
         buttons_ref[i]->value = isButtonPressed;
     }
 }

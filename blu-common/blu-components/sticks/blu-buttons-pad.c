@@ -7,7 +7,8 @@ void blu_buttons_stick_init(void)
     io_conf.intr_type = GPIO_INTR_DISABLE;
     io_conf.pin_bit_mask = BOTH_STICK_BTNS_MASK;
     io_conf.mode = GPIO_MODE_INPUT;
-    io_conf.pull_up_en = GPIO_PULLUP_ENABLE;
+    io_conf.pull_up_en = BUTTONS_PRESS_STATE == 0 ? GPIO_PULLUP_ENABLE : GPIO_PULLUP_DISABLE;
+    io_conf.pull_down_en = BUTTONS_PRESS_STATE == 1 ? GPIO_PULLDOWN_ENABLE : GPIO_PULLDOWN_DISABLE;
     gpio_config(&io_conf);
 }
 

@@ -46,7 +46,7 @@ void joystick_interrupt_handler(void *params)
     {
         default:
         case N64_JOYSTICK_X_AXIS:
-            if (gpio_get_level(pkg->joystick_data->x_axis.interrupt_pin) == gpio_get_level(pkg->joystick_data->x_axis.counter_pin))
+            if (blu_get_button_state(pkg->joystick_data->x_axis.interrupt_pin) == blu_get_button_state(pkg->joystick_data->x_axis.counter_pin))
             {
                 pkg->joystick_data->x_axis.value--;
             }
@@ -66,7 +66,7 @@ void joystick_interrupt_handler(void *params)
             }
             break;
         case N64_JOYSTICK_Y_AXIS:
-            if (gpio_get_level(pkg->joystick_data->y_axis.interrupt_pin) == gpio_get_level(pkg->joystick_data->y_axis.counter_pin))
+            if (blu_get_button_state(pkg->joystick_data->y_axis.interrupt_pin) == blu_get_button_state(pkg->joystick_data->y_axis.counter_pin))
             {
                 pkg->joystick_data->y_axis.value--;
             }
@@ -103,13 +103,15 @@ void blun64_init(void)
     io_conf.intr_type = GPIO_INTR_DISABLE;
     io_conf.pin_bit_mask = BOTH_STICK_Q_BIT_MASK;
     io_conf.mode = GPIO_MODE_INPUT;
-    io_conf.pull_up_en = GPIO_PULLUP_ENABLE;
+    io_conf.pull_up_en = BUTTONS_PRESS_STATE == 0 ? GPIO_PULLUP_ENABLE : GPIO_PULLUP_DISABLE;
+    io_conf.pull_down_en = BUTTONS_PRESS_STATE == 1 ? GPIO_PULLDOWN_ENABLE : GPIO_PULLDOWN_DISABLE;
     gpio_config(&io_conf);
 
     io_conf.intr_type = GPIO_INTR_ANYEDGE;
     io_conf.pin_bit_mask = BOTH_STICK_INT_BIT_MASK;
     io_conf.mode = GPIO_MODE_INPUT;
-    io_conf.pull_up_en = GPIO_PULLUP_ENABLE;
+    io_conf.pull_up_en = BUTTONS_PRESS_STATE == 0 ? GPIO_PULLUP_ENABLE : GPIO_PULLUP_DISABLE;
+    io_conf.pull_down_en = BUTTONS_PRESS_STATE == 1 ? GPIO_PULLDOWN_ENABLE : GPIO_PULLDOWN_DISABLE;
     gpio_config(&io_conf);
 
     ESP_ERROR_CHECK(gpio_install_isr_service(0));

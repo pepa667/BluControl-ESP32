@@ -216,7 +216,7 @@ void app_loop(void *params)
             #elif defined(CONFIG_BLUCONTROL_LEFT_STICK_BUTTONS)
             button_stick_data = blu_buttons_stick_get_data(BLU_BUTTONS_PAD_LEFT);
             bleGamepad.setLeftThumb(GET_JOYSTICK_X_AXIS(button_stick_data->x_axis),
-                                    GET_JOYSTICK_Y_AXIS(button_stick_data->y_axis)); //Should add -1 too?
+                                    GET_JOYSTICK_Y_AXIS(button_stick_data->y_axis) * -1);
             
             need_report |= (old_l_thumb_x_value != button_stick_data->x_axis) || (old_l_thumb_y_value != button_stick_data->y_axis);
             old_l_thumb_x_value = button_stick_data->x_axis;
@@ -244,7 +244,7 @@ void app_loop(void *params)
             #elif defined(CONFIG_BLUCONTROL_RIGHT_STICK_BUTTONS)
             button_stick_data = blu_buttons_stick_get_data(BLU_BUTTONS_PAD_RIGHT);
             bleGamepad.setRightThumb(GET_JOYSTICK_X_AXIS(button_stick_data->x_axis),
-                                     GET_JOYSTICK_Y_AXIS(button_stick_data->y_axis)); //Should add -1 too?
+                                     GET_JOYSTICK_Y_AXIS(button_stick_data->y_axis) * -1);
 
             need_report |= (old_r_thumb_x_value != button_stick_data->x_axis) || (old_r_thumb_y_value != button_stick_data->y_axis);
             old_r_thumb_x_value = button_stick_data->x_axis;

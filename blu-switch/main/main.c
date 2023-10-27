@@ -11,54 +11,54 @@ bool is_right_trigger_pressed = false;
 #endif
 #endif
 
-void button_task(hoja_button_data_s *button_data)
+void button_task()
 {
     blu_refresh_buttons();
 
-    button_data->button_right       |= blu_buttons.button_A.value;
-    button_data->button_down        |= blu_buttons.button_B.value;
-    button_data->button_left        |= blu_buttons.button_Y.value;
-    button_data->button_up          |= blu_buttons.button_X.value;
+    hoja_button_data.button_right       |= blu_buttons.button_A.value;
+    hoja_button_data.button_down        |= blu_buttons.button_B.value;
+    hoja_button_data.button_left        |= blu_buttons.button_Y.value;
+    hoja_button_data.button_up          |= blu_buttons.button_X.value;
 
-    button_data->dpad_right         |= blu_buttons.dpad_right.value;
-    button_data->dpad_down          |= blu_buttons.dpad_down.value;
-    button_data->dpad_left          |= blu_buttons.dpad_left.value;
-    button_data->dpad_up            |= blu_buttons.dpad_up.value;
+    hoja_button_data.dpad_right         |= blu_buttons.dpad_right.value;
+    hoja_button_data.dpad_down          |= blu_buttons.dpad_down.value;
+    hoja_button_data.dpad_left          |= blu_buttons.dpad_left.value;
+    hoja_button_data.dpad_up            |= blu_buttons.dpad_up.value;
 
     #ifdef CONFIG_BLUCONTROL_LEFT_TRIGGER_BTN_L
-    button_data->trigger_l          |= blu_buttons.trigger_l.value | is_left_trigger_pressed;
+    hoja_button_data.trigger_l          |= blu_buttons.trigger_l.value | is_left_trigger_pressed;
     #else
-    button_data->trigger_l          |= blu_buttons.trigger_l.value;
+    hoja_button_data.trigger_l          |= blu_buttons.trigger_l.value;
     #endif
     #ifdef CONFIG_BLUCONTROL_LEFT_TRIGGER_BTN_ZL
-    button_data->trigger_zl         |= blu_buttons.trigger_zl.value | is_left_trigger_pressed;
+    hoja_button_data.trigger_zl         |= blu_buttons.trigger_zl.value | is_left_trigger_pressed;
     #else
-    button_data->trigger_zl         |= blu_buttons.trigger_zl.value;
+    hoja_button_data.trigger_zl         |= blu_buttons.trigger_zl.value;
     #endif
     #ifdef CONFIG_BLUCONTROL_RIGHT_TRIGGER_BTN_R
-    button_data->trigger_r          |= blu_buttons.trigger_r.value | is_right_trigger_pressed;
+    hoja_button_data.trigger_r          |= blu_buttons.trigger_r.value | is_right_trigger_pressed;
     #else
-    button_data->trigger_r          |= blu_buttons.trigger_r.value;
+    hoja_button_data.trigger_r          |= blu_buttons.trigger_r.value;
     #endif
     #ifdef CONFIG_BLUCONTROL_RIGHT_TRIGGER_BTN_ZR
-    button_data->trigger_zr         |= blu_buttons.trigger_zr.value | is_right_trigger_pressed;
+    hoja_button_data.trigger_zr         |= blu_buttons.trigger_zr.value | is_right_trigger_pressed;
     #else
-    button_data->trigger_zr         |= blu_buttons.trigger_zr.value;
+    hoja_button_data.trigger_zr         |= blu_buttons.trigger_zr.value;
     #endif
 
-    button_data->button_start       |= blu_buttons.special_start.value;
-    button_data->button_select      |= blu_buttons.special_select.value;
-    button_data->button_home        |= blu_buttons.special_home.value;
-    button_data->button_capture     |= blu_buttons.special_capture.value;
+    hoja_button_data.button_start       |= blu_buttons.special_start.value;
+    hoja_button_data.button_select      |= blu_buttons.special_select.value;
+    hoja_button_data.button_home        |= blu_buttons.special_home.value;
+    hoja_button_data.button_capture     |= blu_buttons.special_capture.value;
 
-    button_data->button_stick_left  |= blu_buttons.button_stick_left.value;
-    button_data->button_stick_right |= blu_buttons.button_stick_right.value;
+    hoja_button_data.button_stick_left  |= blu_buttons.button_stick_left.value;
+    hoja_button_data.button_stick_right |= blu_buttons.button_stick_right.value;
 }
 
 void event_task(hoja_event_type_t type, uint8_t evt, uint8_t param)
 {
     ESP_LOGD(LOG_TAG, "Event: \n\ttype: %d\n\tevent: %d\n\tparam: %d", type, evt, param);
-    if (type == HOJA_EVT_BT && evt == HEVT_BT_DISCONNECT)
+    if (type == HOJA_EVT_BT && evt == HEVT_BT_DISCONNECTED)
     {
         //This shouldn't be needed, but HOJA glitches after disconnecting the Switch... so... ¯\_(ツ)_/¯
         esp_restart();
@@ -95,39 +95,39 @@ blu_btn_stick_data_t *button_stick_data;
 // Separate task to read sticks.
 // This is essential to have as a separate component as ADC scans typically take more time and this is only
 // scanned once between each polling interval. This varies from core to core.
-void stick_task(hoja_analog_data_s* analog_data)
+void stick_task()
 {
     // Joystick
     #if defined(CONFIG_BLUCONTROL_LEFT_STICK_ANALOG)
     analog_stick_data = blu_analog_stick_get_data(BLU_ANALOG_PAD_LEFT);
-    analog_data->ls_x = GET_ANALOG_JOYSTICK_X_AXIS(analog_stick_data->x_axis);
-    analog_data->ls_y = GET_ANALOG_JOYSTICK_Y_AXIS(analog_stick_data->y_axis);
+    hoja_analog_data.ls_x = GET_ANALOG_JOYSTICK_X_AXIS(analog_stick_data->x_axis);
+    hoja_analog_data.ls_y = GET_ANALOG_JOYSTICK_Y_AXIS(analog_stick_data->y_axis);
     #elif defined(CONFIG_BLUCONTROL_LEFT_STICK_N64)
-    analog_data->ls_x = GET_JOYSTICK_X_AXIS(n64_left_joystick_data.x_axis.value);
-    analog_data->ls_y = GET_JOYSTICK_Y_AXIS(n64_left_joystick_data.y_axis.value);
+    hoja_analog_data.ls_x = GET_JOYSTICK_X_AXIS(n64_left_joystick_data.x_axis.value);
+    hoja_analog_data.ls_y = GET_JOYSTICK_Y_AXIS(n64_left_joystick_data.y_axis.value);
     #elif defined(CONFIG_BLUCONTROL_LEFT_STICK_BUTTONS)
     button_stick_data = blu_buttons_stick_get_data(BLU_BUTTONS_PAD_LEFT);
-    analog_data->ls_x = GET_JOYSTICK_X_AXIS(button_stick_data->x_axis);
-    analog_data->ls_y = GET_JOYSTICK_Y_AXIS(button_stick_data->y_axis);
+    hoja_analog_data.ls_x = GET_JOYSTICK_X_AXIS(button_stick_data->x_axis);
+    hoja_analog_data.ls_y = GET_JOYSTICK_Y_AXIS(button_stick_data->y_axis);
     #else
-    analog_data->ls_x = GET_JOYSTICK_X_AXIS(0);
-    analog_data->ls_y = GET_JOYSTICK_Y_AXIS(0);
+    hoja_analog_data.ls_x = GET_JOYSTICK_X_AXIS(0);
+    hoja_analog_data.ls_y = GET_JOYSTICK_Y_AXIS(0);
     #endif
 
     #if defined(CONFIG_BLUCONTROL_RIGHT_STICK_ANALOG)
     analog_stick_data = blu_analog_stick_get_data(BLU_ANALOG_PAD_RIGHT);
-    analog_data->rs_x = GET_ANALOG_JOYSTICK_X_AXIS(analog_stick_data->x_axis);
-    analog_data->rs_y = GET_ANALOG_JOYSTICK_Y_AXIS(analog_stick_data->y_axis);
+    hoja_analog_data.rs_x = GET_ANALOG_JOYSTICK_X_AXIS(analog_stick_data->x_axis);
+    hoja_analog_data.rs_y = GET_ANALOG_JOYSTICK_Y_AXIS(analog_stick_data->y_axis);
     #elif defined(CONFIG_BLUCONTROL_RIGHT_STICK_N64)
-    analog_data->rs_x = GET_JOYSTICK_X_AXIS(n64_right_joystick_data.x_axis.value);
-    analog_data->rs_y = GET_JOYSTICK_Y_AXIS(n64_right_joystick_data.y_axis.value);
+    hoja_analog_data.rs_x = GET_JOYSTICK_X_AXIS(n64_right_joystick_data.x_axis.value);
+    hoja_analog_data.rs_y = GET_JOYSTICK_Y_AXIS(n64_right_joystick_data.y_axis.value);
     #elif defined(CONFIG_BLUCONTROL_RIGHT_STICK_BUTTONS)
     button_stick_data = blu_buttons_stick_get_data(BLU_BUTTONS_PAD_RIGHT);
-    analog_data->rs_x = GET_JOYSTICK_X_AXIS(button_stick_data->x_axis);
-    analog_data->rs_y = GET_JOYSTICK_Y_AXIS(button_stick_data->y_axis);
+    hoja_analog_data.rs_x = GET_JOYSTICK_X_AXIS(button_stick_data->x_axis);
+    hoja_analog_data.rs_y = GET_JOYSTICK_Y_AXIS(button_stick_data->y_axis);
     #else
-    analog_data->rs_x = GET_JOYSTICK_X_AXIS(0);
-    analog_data->rs_y = GET_JOYSTICK_Y_AXIS(0);
+    hoja_analog_data.rs_x = GET_JOYSTICK_X_AXIS(0);
+    hoja_analog_data.rs_y = GET_JOYSTICK_Y_AXIS(0);
     #endif
 
     #if defined(CONFIG_BLUCONTROL_LEFT_TRIGGER_ANALOG)

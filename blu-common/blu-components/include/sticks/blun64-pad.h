@@ -11,29 +11,41 @@
         #define LEFT_STICK_X_Q      CONFIG_BLUCONTROL_LEFT_STICK_X2
         #define LEFT_STICK_Y_INT    CONFIG_BLUCONTROL_LEFT_STICK_Y1
         #define LEFT_STICK_Y_Q      CONFIG_BLUCONTROL_LEFT_STICK_Y2
+
+        #define LEFT_STICK_INT_BIT_MASK ((1ULL<<LEFT_STICK_X_INT) | (1ULL<<LEFT_STICK_Y_INT))
+        #define LEFT_STICK_Q_BIT_MASK   ((1ULL<<LEFT_STICK_X_Q) | (1ULL<<LEFT_STICK_Y_Q))
     #else
         #define LEFT_STICK_X_INT    -1
         #define LEFT_STICK_X_Q      -1
         #define LEFT_STICK_Y_INT    -1
         #define LEFT_STICK_Y_Q      -1
+
+        #define LEFT_STICK_INT_BIT_MASK 0
+        #define LEFT_STICK_Q_BIT_MASK   0
     #endif
+
     #ifdef CONFIG_BLUCONTROL_RIGHT_STICK_N64
         #define RIGHT_STICK_X_INT   CONFIG_BLUCONTROL_RIGHT_STICK_X1
         #define RIGHT_STICK_X_Q     CONFIG_BLUCONTROL_RIGHT_STICK_X2
         #define RIGHT_STICK_Y_INT   CONFIG_BLUCONTROL_RIGHT_STICK_Y1
         #define RIGHT_STICK_Y_Q     CONFIG_BLUCONTROL_RIGHT_STICK_Y2
+
+        #define RIGHT_STICK_INT_BIT_MASK ((1ULL<<RIGHT_STICK_X_INT) | (1ULL<<RIGHT_STICK_Y_INT))
+        #define RIGHT_STICK_Q_BIT_MASK   ((1ULL<<RIGHT_STICK_X_Q) | (1ULL<<RIGHT_STICK_Y_Q))
     #else
         #define RIGHT_STICK_X_INT   -1
         #define RIGHT_STICK_X_Q     -1
         #define RIGHT_STICK_Y_INT   -1
         #define RIGHT_STICK_Y_Q     -1
-    #endif
 
-    #define BOTH_STICK_Q_BIT_MASK   ((1ULL<<LEFT_STICK_X_Q) | (1ULL<<LEFT_STICK_Y_Q) | (1ULL<<RIGHT_STICK_X_Q) | (1ULL<<RIGHT_STICK_Y_Q))
-    #define BOTH_STICK_INT_BIT_MASK ((1ULL<<LEFT_STICK_X_INT) | (1ULL<<LEFT_STICK_Y_INT) | (1ULL<<RIGHT_STICK_X_INT) | (1ULL<<RIGHT_STICK_Y_INT))
+        #define RIGHT_STICK_INT_BIT_MASK 0
+        #define RIGHT_STICK_Q_BIT_MASK   0
+    #endif
 #else
-    #define BOTH_STICK_Q_BIT_MASK   0
-    #define BOTH_STICK_INT_BIT_MASK 0
+    #define LEFT_STICK_INT_BIT_MASK 0
+    #define LEFT_STICK_Q_BIT_MASK   0
+    #define RIGHT_STICK_INT_BIT_MASK 0
+    #define RIGHT_STICK_Q_BIT_MASK   0
 #endif
 
 typedef struct

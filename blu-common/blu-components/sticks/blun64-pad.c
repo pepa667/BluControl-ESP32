@@ -90,41 +90,49 @@ void joystick_interrupt_handler(void *params)
 
 #ifdef CONFIG_BLUCONTROL_LEFT_STICK_N64
 n64_joystick_package_t left_joystick_x;
-n64_joystick_package_t left_joystick_x;
+n64_joystick_package_t left_joystick_y;
 #endif
 #ifdef CONFIG_BLUCONTROL_RIGHT_STICK_N64
 n64_joystick_package_t right_joystick_x;
-n64_joystick_package_t right_joystick_x;
+n64_joystick_package_t right_joystick_y;
 #endif
 void blun64_init(void)
 {
     gpio_config_t io_conf = {};
 
-    io_conf.intr_type = GPIO_INTR_DISABLE;
-    io_conf.pin_bit_mask = BOTH_STICK_Q_BIT_MASK;
+    io_conf.intr_type = GPIO_INTR_ANYEDGE;
+    io_conf.pin_bit_mask = LEFT_STICK_INT_BIT_MASK;
     io_conf.mode = GPIO_MODE_INPUT;
     io_conf.pull_up_en = BUTTONS_PRESS_STATE == 0 ? GPIO_PULLUP_ENABLE : GPIO_PULLUP_DISABLE;
     io_conf.pull_down_en = BUTTONS_PRESS_STATE == 1 ? GPIO_PULLDOWN_ENABLE : GPIO_PULLDOWN_DISABLE;
     gpio_config(&io_conf);
+    io_conf.pin_bit_mask = RIGHT_STICK_INT_BIT_MASK;
+    gpio_config(&io_conf);
 
-    io_conf.intr_type = GPIO_INTR_ANYEDGE;
-    io_conf.pin_bit_mask = BOTH_STICK_INT_BIT_MASK;
+    io_conf.intr_type = GPIO_INTR_DISABLE;
+    io_conf.pin_bit_mask = LEFT_STICK_Q_BIT_MASK;
     io_conf.mode = GPIO_MODE_INPUT;
     io_conf.pull_up_en = BUTTONS_PRESS_STATE == 0 ? GPIO_PULLUP_ENABLE : GPIO_PULLUP_DISABLE;
     io_conf.pull_down_en = BUTTONS_PRESS_STATE == 1 ? GPIO_PULLDOWN_ENABLE : GPIO_PULLDOWN_DISABLE;
+    gpio_config(&io_conf);
+    io_conf.pin_bit_mask = RIGHT_STICK_Q_BIT_MASK;
     gpio_config(&io_conf);
 
     ESP_ERROR_CHECK(gpio_install_isr_service(0));
     #ifdef CONFIG_BLUCONTROL_LEFT_STICK_N64
-    left_joystick_x = { &n64_left_joystick_data, N64_JOYSTICK_X_AXIS };
-    ESP_ERROR_CHECK(gpio_isr_handler_add(JOYSTICK_X_INT_PIN, joystick_interrupt_handler, (void *)(&left_joystick_x)));
-    left_joystick_x = { &n64_left_joystick_data, N64_JOYSTICK_Y_AXIS };
-    ESP_ERROR_CHECK(gpio_isr_handler_add(JOYSTICK_Y_INT_PIN, joystick_interrupt_handler, (void *)(&left_joystick_y)));
+    left_joystick_x.joystick_data = &n64_left_joystick_data;
+    left_joystick_x.axis_flag = N64_JOYSTICK_X_AXIS;
+    ESP_ERROR_CHECK(gpio_isr_handler_add(LEFT_STICK_X_INT, joystick_interrupt_handler, (void *)(&left_joystick_x)));
+    left_joystick_y.joystick_data = &n64_left_joystick_data;
+    left_joystick_y.axis_flag = N64_JOYSTICK_Y_AXIS;
+    ESP_ERROR_CHECK(gpio_isr_handler_add(LEFT_STICK_Y_INT, joystick_interrupt_handler, (void *)(&left_joystick_y)));
     #endif
     #ifdef CONFIG_BLUCONTROL_RIGHT_STICK_N64
-    right_joystick_x = { &n64_right_joystick_data, N64_JOYSTICK_X_AXIS };
-    ESP_ERROR_CHECK(gpio_isr_handler_add(JOYSTICK_X_INT_PIN, joystick_interrupt_handler, (void *)(&right_joystick_x)));
-    right_joystick_x = { &n64_right_joystick_data, N64_JOYSTICK_Y_AXIS };
-    ESP_ERROR_CHECK(gpio_isr_handler_add(JOYSTICK_Y_INT_PIN, joystick_interrupt_handler, (void *)(&right_joystick_y)));
+    right_joystick_x.joystick_data = &n64_right_joystick_data;
+    right_joystick_x.axis_flag = N64_JOYSTICK_X_AXIS;
+    ESP_ERROR_CHECK(gpio_isr_handler_add(RIGHT_STICK_X_INT, joystick_interrupt_handler, (void *)(&right_joystick_x)));
+    right_joystick_y.joystick_data = &n64_right_joystick_data;
+    right_joystick_y.axis_flag = N64_JOYSTICK_Y_AXIS;
+    ESP_ERROR_CHECK(gpio_isr_handler_add(RIGHT_STICK_Y_INT, joystick_interrupt_handler, (void *)(&right_joystick_y)));
     #endif
 }

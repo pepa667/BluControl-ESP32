@@ -208,7 +208,7 @@ void app_loop(void *params)
             old_l_thumb_y_value = analog_stick_data->y_axis;
             #elif defined(CONFIG_BLUCONTROL_LEFT_STICK_N64)
             bleGamepad.setLeftThumb(GET_JOYSTICK_X_AXIS(n64_left_joystick_data.x_axis.value),
-                                    GET_JOYSTICK_Y_AXIS(n64_left_joystick_data.y_axis.value)); //Should add -1 too?
+                                    GET_JOYSTICK_Y_AXIS(n64_left_joystick_data.y_axis.value * -1));
 
             need_report |= (old_l_thumb_x_value != n64_left_joystick_data.x_axis.value) || (old_l_thumb_y_value != n64_left_joystick_data.y_axis.value);
             old_l_thumb_x_value = n64_left_joystick_data.x_axis.value;
@@ -236,7 +236,7 @@ void app_loop(void *params)
             old_r_thumb_y_value = analog_stick_data->y_axis;
             #elif defined(CONFIG_BLUCONTROL_RIGHT_STICK_N64)
             bleGamepad.setRightThumb(GET_JOYSTICK_X_AXIS(n64_right_joystick_data.x_axis.value),
-                                     GET_JOYSTICK_X_AXIS(n64_right_joystick_data.y_axis.value)); //Should add -1 too?
+                                     GET_JOYSTICK_X_AXIS(n64_right_joystick_data.y_axis.value * -1));
 
             need_report |= (old_r_thumb_x_value != n64_right_joystick_data.x_axis.value) || (old_r_thumb_y_value != n64_right_joystick_data.y_axis.value);
             old_r_thumb_x_value = n64_right_joystick_data.x_axis.value;

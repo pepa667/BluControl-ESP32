@@ -42,3 +42,4 @@ sdkconfig.old
 sdkconfig
 tmp/
 tmp*.txt
+blu-switch/.DS_Store

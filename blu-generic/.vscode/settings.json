@@ -1,5 +1,17 @@
 {
-    "idf.portWin": "COM9",
-    "idf.adapterTargetName": "esp32",
-    "idf.flashType": "UART"
+  "idf.portWin": "COM9",
+  "idf.adapterTargetName": "esp32",
+  "idf.flashType": "UART",
+  "idf.currentSetup": "/Users/pepa/esp/v5.2.3/esp-idf",
+  "idf.openOcdConfigs": ["board/esp32-wrover-kit-3.3v.cfg"],
+  "idf.customExtraVars": {
+    "IDF_TARGET": "esp32"
+  },
+  "python-envs.pythonProjects": [
+    {
+      "path": ".",
+      "envManager": "ms-python.python:pyenv",
+      "packageManager": "ms-python.python:pip"
+    }
+  ]
 }

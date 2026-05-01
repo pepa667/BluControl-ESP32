@@ -43,3 +43,6 @@ sdkconfig
 tmp/
 tmp*.txt
 blu-switch/.DS_Store
+blu-ota/.DS_Store
+.gitignore
+.DS_Store

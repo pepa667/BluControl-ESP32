@@ -11,7 +11,7 @@
 #include "hoja_includes.h"
 #include "core_switch_backend.h"
 #include <string.h>
-#include <stdlib.h>
+#include <stdio.h>
 
 #if defined(CONFIG_BLUCONTROL_LEFT_STICK_ANALOG) || defined(CONFIG_BLUCONTROL_RIGHT_STICK_ANALOG)
 #include "blu-analog-pad.h"

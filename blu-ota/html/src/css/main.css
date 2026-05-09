@@ -1,60 +1,107 @@
-body
-{
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
+/* Minimal CSS Dark Theme */
+:root {
+  --bg-color: 18, 18, 18;
+  --text-color: 224, 224, 224;
+  --card-bg: 30, 30, 30;
+  --accent: 187, 134, 252;
 }
 
-.output
-{
-    background-color: #f0f0f0;
-    border-radius: 0.75em;
-    display: block;
-    margin: 0.5em;
-    padding: 0.5em;
+body {
+  background-color: rgb(var(--bg-color));
+  color: rgb(var(--text-color));
+  font-family: sans-serif;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  padding: 20px;
 }
 
-#output_content .error
-{
-    color: brown;
+.container {
+  background-color: rgb(var(--card-bg));
+  padding: 20px;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 400px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+  border: rgba(var(--text-color), 0.2) 1px solid;
 }
-#output_content .log
-{
-    color: gray;
+
+.container,
+.container * {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
 }
-#output_content .message
-{
-    color: blue;
+
+h1 {
+  color: rgba(var(--accent), 1);
 }
-  
-#output_content:empty
-{
-    display: none;
+
+button,
+input::file-selector-button {
+  background-color: rgba(var(--accent), 1);
+  color: #000;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
 }
-  
-#progress_bar
-{
-    margin: 10px 0;
-    border: 1px solid #000;
-    font-size: 14px;
-    clear: both;
-    opacity: 0;
-    -moz-transition: opacity 1s linear;
-    -o-transition: opacity 1s linear;
-    -webkit-transition: opacity 1s linear;
+button:hover,
+input::file-selector-button:hover {
+  background-color: rgba(var(--accent), 0.8);
 }
-  
-#progress_bar.loading
-{
-    opacity: 1.0;
+
+#file,
+#file input {
+  background-color: rgba(var(--accent), 0.2);
+  padding: 1em;
+  border-radius: 0.75em;
+  gap: 1.5em;
+  border: rgba(var(--text-color), 0.2) 1px solid;
 }
-  
-#progress_bar .percent
-{
-    background-color: #99ccff;
-    height: 5px;
-    width: 0;
-    -moz-transition: width 0.2s linear;
-    -o-transition: width 0.2s linear;
-    -webkit-transition: width 0.2s linear
+
+.output {
+  background-color: rgb(240, 240, 240);
+  border-radius: 0.75em;
+  display: block;
+  margin: 0.5em;
+  padding: 0.5em;
+}
+
+#output_content .error {
+  color: brown;
+}
+#output_content .log {
+  color: gray;
+}
+#output_content .message {
+  color: blue;
+}
+
+#output_content:empty {
+  display: none;
+}
+
+#progress_bar {
+  margin: 10px 0;
+  border: 1px solid #000;
+  font-size: 14px;
+  clear: both;
+  opacity: 0;
+  -moz-transition: opacity 1s linear;
+  -o-transition: opacity 1s linear;
+  -webkit-transition: opacity 1s linear;
+}
+
+#progress_bar.loading {
+  opacity: 1;
+}
+
+#progress_bar .percent {
+  background-color: #99ccff;
+  height: 5px;
+  width: 0;
+  -moz-transition: width 0.2s linear;
+  -o-transition: width 0.2s linear;
+  -webkit-transition: width 0.2s linear;
 }

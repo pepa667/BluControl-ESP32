@@ -50,34 +50,18 @@ cp "$ROOT_DIR/blu-ota/build/www.bin" "$TMP_DIR/"
 cp "$ROOT_DIR/blu-switch/build/blucontrol-switch.bin" "$TMP_DIR/"
 cp "$ROOT_DIR/blu-generic/build/blucontrol-generic.bin" "$TMP_DIR/"
 
-esptool.py --chip esp32 merge_bin -o "$FINAL_BUILD_DIR/$RELEASE_FILE" \
-     0x1000  "$TMP_DIR/bootloader.bin" \
-     0x8000  "$TMP_DIR/partition-table.bin" \
-     0xd000  "$TMP_DIR/ota_data_initial.bin" \
-    0x10000  "$TMP_DIR/blucontrol-ota.bin" \
-   0x110000  "$TMP_DIR/blucontrol-switch.bin" \
-   0x210000  "$TMP_DIR/blucontrol-generic.bin" \
-   0x310000  "$TMP_DIR/www.bin" || { echo "${RED}Erro no Merge!${NC}"; exit 1 }
+# esptool.py --chip esp32 merge_bin -o "$FINAL_BUILD_DIR/$RELEASE_FILE" \
+#      0x1000  "$TMP_DIR/bootloader.bin" \
+#      0x8000  "$TMP_DIR/partition-table.bin" \
+#      0xd000  "$TMP_DIR/ota_data_initial.bin" \
+#     0x10000  "$TMP_DIR/blucontrol-ota.bin" \
+#    0x110000  "$TMP_DIR/blucontrol-switch.bin" \
+#    0x210000  "$TMP_DIR/blucontrol-generic.bin" \
+#    0x310000  "$TMP_DIR/www.bin" || { echo "${RED}Erro no Merge!${NC}"; exit 1 }
 
-# 2.1 Gerar pacotes de atualização incremental (opcional, para OTA)
-echo "${YELLOW}===> Gerando pacotes de atualização incremental...${NC}"
-
-# Função rápida para pegar o tamanho do arquivo no macOS/Linux
-get_size() {
-    wc -c < "$1" | tr -d ' '
-}
-
-SIZE_SWITCH=$(get_size "$TMP_DIR/blucontrol-switch.bin")
-SIZE_GENERIC=$(get_size "$TMP_DIR/blucontrol-generic.bin")
-
-# Gerando os headers compatíveis com o seu parser no ESP32
-printf "\x01\x00%07d" $SIZE_SWITCH | cat - "$TMP_DIR/blucontrol-switch.bin" > "$FINAL_BUILD_DIR/blucontrol-switch.upd"
-printf "\x01\x01%07d" $SIZE_GENERIC | cat - "$TMP_DIR/blucontrol-generic.bin" > "$FINAL_BUILD_DIR/blucontrol-generic.upd"
-
-# Empacotando tudo
-cat "$FINAL_BUILD_DIR/blucontrol-switch.upd" "$FINAL_BUILD_DIR/blucontrol-generic.upd" > "$FINAL_BUILD_DIR/blucontrol.updpkg"
-
-echo "${GREEN}✔ Pacote .updpkg gerado com sucesso!${NC}"
+          printf "\x01\x00%07d" `stat --printf="%s" $TMP_DIR/blucontrol-switch.bin` | cat - $TMP_DIR/blucontrol-switch.bin > $FINAL_BUILD_DIR/blucontrol-switch.upd; \
+          printf "\x01\x01%07d" `stat --printf="%s" $TMP_DIR/blucontrol-generic.bin` | cat - $TMP_DIR/blucontrol-generic.bin > $FINAL_BUILD_DIR/blucontrol-generic.upd; \
+          cat $FINAL_BUILD_DIR/blucontrol-switch.upd $FINAL_BUILD_DIR/blucontrol-generic.upd > $FINAL_BUILD_DIR/blucontrol.updpkg; \
 
 
 # 3. FLASH & MONITOR PHASE

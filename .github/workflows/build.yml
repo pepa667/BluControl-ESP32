@@ -1,129 +1,126 @@
 name: Build
 
 on:
-  push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+  workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Install ESP-IDF prerequisite
-      run: |
-        sudo add-apt-repository -y "deb http://archive.ubuntu.com/ubuntu `lsb_release -sc` main universe restricted multiverse"
-        sudo apt-get update -y -qq
-        sudo apt-get install git wget flex bison gperf python3 python3-pip python3-setuptools cmake ninja-build ccache libffi-dev libssl-dev dfu-util
-    - name: Set python3 default
-      run: sudo update-alternatives --install /usr/bin/python python /usr/bin/python3 10 && alias pip=pip3
-    - name: Clone Repository
-      run: |
-        eval `ssh-agent -s`
-        ssh-add - <<< '${{ secrets.PULL_KEY }}'
-        git clone --recursive git@github.com:JPZV/BluControl-ESP32.git .
-    - name: Download ESP-IDF
-      run: git clone --recursive --branch v5.0 https://github.com/espressif/esp-idf.git ./esp-idf
-    - name: Install ESP-IDF
-      working-directory: ./esp-idf
-      run: sh ./install.sh
-      env:
-        IDF_TOOLS_PATH : "/home/runner/work/BluControl-ESP32/BluControl-ESP32/tools"
-    - name: Preparing release Folder
-      run: |
-        mkdir tmp_files
-        mkdir release
-        mkdir release/update
+      - name: Install ESP-IDF prerequisite
+        run: |
+          sudo add-apt-repository -y "deb http://archive.ubuntu.com/ubuntu `lsb_release -sc` main universe restricted multiverse"
+          sudo apt-get update -y -qq
+          sudo apt-get install git wget flex bison gperf python3 python3-pip python3-setuptools cmake ninja-build ccache libffi-dev libssl-dev dfu-util
+      - name: Set python3 default
+        run: sudo update-alternatives --install /usr/bin/python python /usr/bin/python3 10 && alias pip=pip3
+      - name: Clone Repository
+        run: |
+          eval `ssh-agent -s`
+          ssh-add - <<< '${{ secrets.PULL_KEY }}'
+          git clone --recursive git@github.com:JPZV/BluControl-ESP32.git .
+      - name: Download ESP-IDF
+        run: git clone --recursive --branch v5.0 https://github.com/espressif/esp-idf.git ./esp-idf
+      - name: Install ESP-IDF
+        working-directory: ./esp-idf
+        run: sh ./install.sh
+        env:
+          IDF_TOOLS_PATH: "/home/runner/work/BluControl-ESP32/BluControl-ESP32/tools"
+      - name: Preparing release Folder
+        run: |
+          mkdir tmp_files
+          mkdir release
+          mkdir release/update
 
-        echo "pkg_version=$(git describe --always --tags --dirty)" >> $GITHUB_ENV
-    - uses: actions/setup-node@v3.6.0
-    - name: Build OTA Website with Node
-      working-directory: ./blu-ota/html
-      run: |
-        npm install
-        npm run build
-    - name: Build OTA Mode with ESP-IDF
-      working-directory: ./blu-ota
-      run: |
-        . ../esp-idf/export.sh
+          echo "pkg_version=$(git describe --always --tags --dirty)" >> $GITHUB_ENV
+      - uses: actions/setup-node@v3.6.0
+      - name: Build OTA Website with Node
+        working-directory: ./blu-ota/html
+        run: |
+          npm install
+          npm run build
+      - name: Build OTA Mode with ESP-IDF
+        working-directory: ./blu-ota
+        run: |
+          . ../esp-idf/export.sh
 
-        for file in ../configs/*.sdkconfig; \
-        do \
-          (cat base.sdkconfig ; echo ; echo ; cat ../configs/$(basename $file)) > sdkconfig; \
-          idf.py build; \
-          mkdir -p ../tmp_files/$(basename $file .sdkconfig)/; \
-          mv build/blucontrol-ota.bin ../tmp_files/$(basename $file .sdkconfig)/blucontrol-ota.bin; \
-        done
+          for file in ../configs/*.sdkconfig; \
+          do \
+            (cat base.sdkconfig ; echo ; echo ; cat ../configs/$(basename $file)) > sdkconfig; \
+            idf.py build; \
+            mkdir -p ../tmp_files/$(basename $file .sdkconfig)/; \
+            mv build/blucontrol-ota.bin ../tmp_files/$(basename $file .sdkconfig)/blucontrol-ota.bin; \
+          done
 
-        mv build/www.bin ../tmp_files/www.bin
-        mv build/ota_data_initial.bin ../tmp_files/ota_data_initial.bin
-        mv build/bootloader/bootloader.bin ../tmp_files/bootloader.bin
-        mv build/partition_table/partition-table.bin ../tmp_files/partition-table.bin
-      env:
-        IDF_TOOLS_PATH : "/home/runner/work/BluControl-ESP32/BluControl-ESP32/tools"
-    - name: Build Switch Mode with ESP-IDF
-      working-directory: ./blu-switch
-      run: |
-        . ../esp-idf/export.sh
+          mv build/www.bin ../tmp_files/www.bin
+          mv build/ota_data_initial.bin ../tmp_files/ota_data_initial.bin
+          mv build/bootloader/bootloader.bin ../tmp_files/bootloader.bin
+          mv build/partition_table/partition-table.bin ../tmp_files/partition-table.bin
+        env:
+          IDF_TOOLS_PATH: "/home/runner/work/BluControl-ESP32/BluControl-ESP32/tools"
+      - name: Build Switch Mode with ESP-IDF
+        working-directory: ./blu-switch
+        run: |
+          . ../esp-idf/export.sh
 
-        for file in ../configs/*.sdkconfig; \
-        do \
-          (cat base.sdkconfig ; echo ; echo ; cat ../configs/$(basename $file)) > sdkconfig; \
-          idf.py build; \
-          mv build/blucontrol-switch.bin ../tmp_files/$(basename $file .sdkconfig)/blucontrol-switch.bin; \
-        done
-      env:
-        IDF_TOOLS_PATH : "/home/runner/work/BluControl-ESP32/BluControl-ESP32/tools"
-    - name: Build Generic Mode with ESP-IDF
-      working-directory: ./blu-generic
-      run: |
-        . ../esp-idf/export.sh
+          for file in ../configs/*.sdkconfig; \
+          do \
+            (cat base.sdkconfig ; echo ; echo ; cat ../configs/$(basename $file)) > sdkconfig; \
+            idf.py build; \
+            mv build/blucontrol-switch.bin ../tmp_files/$(basename $file .sdkconfig)/blucontrol-switch.bin; \
+          done
+        env:
+          IDF_TOOLS_PATH: "/home/runner/work/BluControl-ESP32/BluControl-ESP32/tools"
+      - name: Build Generic Mode with ESP-IDF
+        working-directory: ./blu-generic
+        run: |
+          . ../esp-idf/export.sh
 
-        for file in ../configs/*.sdkconfig; \
-        do \
-          (cat base.sdkconfig ; echo ; echo ; cat ../configs/$(basename $file)) > sdkconfig; \
-          idf.py build; \
-          mv build/blucontrol-generic.bin ../tmp_files/$(basename $file .sdkconfig)/blucontrol-generic.bin; \
-        done
-      env:
-        IDF_TOOLS_PATH : "/home/runner/work/BluControl-ESP32/BluControl-ESP32/tools"
-    - name: Merge ready-to-flash binary file
-      working-directory: ./tmp_files
-      run: |
-        . ../esp-idf/export.sh
+          for file in ../configs/*.sdkconfig; \
+          do \
+            (cat base.sdkconfig ; echo ; echo ; cat ../configs/$(basename $file)) > sdkconfig; \
+            idf.py build; \
+            mv build/blucontrol-generic.bin ../tmp_files/$(basename $file .sdkconfig)/blucontrol-generic.bin; \
+          done
+        env:
+          IDF_TOOLS_PATH: "/home/runner/work/BluControl-ESP32/BluControl-ESP32/tools"
+      - name: Merge ready-to-flash binary file
+        working-directory: ./tmp_files
+        run: |
+          . ../esp-idf/export.sh
 
-        for folder in ./*/; \
-        do \
-          esptool.py --chip esp32 merge_bin -o BluControl_$(basename $folder).bin \
-                                        0x1000 bootloader.bin \
-                                        0x8000 partition-table.bin \
-                                        0xd000 ota_data_initial.bin \
-                                       0x10000 $(basename $folder)/blucontrol-ota.bin \
-                                      0x110000 $(basename $folder)/blucontrol-switch.bin \
-                                      0x210000 $(basename $folder)/blucontrol-generic.bin \
-                                      0x310000 www.bin; \
+          for folder in ./*/; \
+          do \
+            esptool.py --chip esp32 merge_bin -o BluControl_$(basename $folder).bin \
+                                          0x1000 bootloader.bin \
+                                          0x8000 partition-table.bin \
+                                          0xd000 ota_data_initial.bin \
+                                         0x10000 $(basename $folder)/blucontrol-ota.bin \
+                                        0x110000 $(basename $folder)/blucontrol-switch.bin \
+                                        0x210000 $(basename $folder)/blucontrol-generic.bin \
+                                        0x310000 www.bin; \
 
-          mv BluControl_$(basename $folder).bin ../release/BluControl_$(basename $folder).bin; \
-        done
-      env:
-        IDF_TOOLS_PATH : "/home/runner/work/BluControl-ESP32/BluControl-ESP32/tools"
-    - name: Create update files
-      working-directory: ./tmp_files
-      run: |
-        for folder in ./*/; \
-        do \
-          printf "\x01\x00%07d" `stat --printf="%s" $(basename $folder)/blucontrol-switch.bin` | cat - $(basename $folder)/blucontrol-switch.bin > blucontrol-switch_$(basename $folder).upd; \
-          printf "\x01\x01%07d" `stat --printf="%s" $(basename $folder)/blucontrol-generic.bin` | cat - $(basename $folder)/blucontrol-generic.bin > blucontrol-generic_$(basename $folder).upd; \
-          cat blucontrol-switch_$(basename $folder).upd blucontrol-generic_$(basename $folder).upd > blucontrol_$(basename $folder).updpkg; \
+            mv BluControl_$(basename $folder).bin ../release/BluControl_$(basename $folder).bin; \
+          done
+        env:
+          IDF_TOOLS_PATH: "/home/runner/work/BluControl-ESP32/BluControl-ESP32/tools"
+      - name: Create update files
+        working-directory: ./tmp_files
+        run: |
+          for folder in ./*/; \
+          do \
+            printf "\x01\x00%07d" `stat --printf="%s" $(basename $folder)/blucontrol-switch.bin` | cat - $(basename $folder)/blucontrol-switch.bin > blucontrol-switch_$(basename $folder).upd; \
+            printf "\x01\x01%07d" `stat --printf="%s" $(basename $folder)/blucontrol-generic.bin` | cat - $(basename $folder)/blucontrol-generic.bin > blucontrol-generic_$(basename $folder).upd; \
+            cat blucontrol-switch_$(basename $folder).upd blucontrol-generic_$(basename $folder).upd > blucontrol_$(basename $folder).updpkg; \
 
-          mv blucontrol_$(basename $folder).updpkg ../release/update/BluControl_$(basename $folder).updpkg; \
-        done
-    - name: Upload binary file
-      uses: actions/upload-artifact@v3.1.2
-      with:
-        name: BluControl_${{ env.pkg_version }}
-        path: |
-          release/BluControl*.bin
-          release/update/BluControl*.updpkg
-        if-no-files-found: error
+            mv blucontrol_$(basename $folder).updpkg ../release/update/BluControl_$(basename $folder).updpkg; \
+          done
+      - name: Upload binary file
+        uses: actions/upload-artifact@v3.1.2
+        with:
+          name: BluControl_${{ env.pkg_version }}
+          path: |
+            release/BluControl*.bin
+            release/update/BluControl*.updpkg
+          if-no-files-found: error

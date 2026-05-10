@@ -25,10 +25,10 @@ jobs:
           sudo apt-get update -y -qq
           sudo apt-get install -y git wget flex bison gperf python3-pip python3-setuptools cmake ninja-build ccache libffi-dev libssl-dev dfu-util
 
-      - name: Set up Python 3.10
+      - name: Set up Python 3.8
         uses: actions/setup-python@v5
         with:
-          python-version: "3.10"
+          python-version: "3.8"
 
       - name: Download ESP-IDF
         run: git clone --recursive --branch v5.0 https://github.com/espressif/esp-idf.git ./esp-idf

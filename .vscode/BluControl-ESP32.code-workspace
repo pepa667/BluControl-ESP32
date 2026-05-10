@@ -1,18 +1,23 @@
 {
   "folders": [
     {
+      "name": "blu-switch",
       "path": "../blu-switch",
     },
     {
+      "name": "blu-generic",
       "path": "../blu-generic",
     },
     {
+      "name": "blu-common",
       "path": "../blu-common",
     },
     {
+      "name": "blu-ota",
       "path": "../blu-ota",
     },
     {
+      "name": "configs",
       "path": "../configs",
     },
   ],

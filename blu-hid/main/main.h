@@ -1,0 +1,188 @@
+#ifndef MAIN_H
+#define MAIN_H
+
+#include <BleGamepad.h>
+#include "esp_log.h"
+#include "esp_system.h"
+#include "freertos/FreeRTOS.h"
+#include "freertos/task.h"
+#include "NimBLEDevice.h"
+#include <string.h>
+#include <tgmath.h>
+
+#define PI 3.14159265
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+#include "blucontrol_mode.h"
+#include "blu-energy.h"
+#include "blu-hardware.h"
+
+#if defined(CONFIG_BLUCONTROL_LEFT_STICK_ANALOG) || defined(CONFIG_BLUCONTROL_RIGHT_STICK_ANALOG)
+    #include "blu-analog-pad.h"
+#endif
+#if defined(CONFIG_BLUCONTROL_LEFT_STICK_BUTTONS) || defined(CONFIG_BLUCONTROL_RIGHT_STICK_BUTTONS)
+    #include "blu-buttons-pad.h"
+#endif
+#if defined(CONFIG_BLUCONTROL_LEFT_STICK_N64) || defined(CONFIG_BLUCONTROL_RIGHT_STICK_N64)
+    #include "blun64-pad.h"
+#endif
+
+#if defined(CONFIG_BLUCONTROL_LEFT_TRIGGER_ANALOG) || defined(CONFIG_BLUCONTROL_RIGHT_TRIGGER_ANALOG)
+    #include "blu-analog-triggers.h"
+#endif
+#ifdef __cplusplus
+}
+#endif
+
+//DON'T RE-DEFINE THE BUTTONS NUMBERS HERE!!!
+//DO IT USING THE `idf.py menuconfig` COMMAND
+//READ THE README.MD FOR MORE INFO
+
+// Buttons
+#ifdef CONFIG_BLUCONTROL_BUTTONS_LENGTH
+    #define BUTTONS_LENGTH CONFIG_BLUCONTROL_BUTTONS_LENGTH
+#else
+    #define BUTTONS_LENGTH -1
+#endif
+
+#ifdef CONFIG_BLUCONTROL_BUTTON_A_BTN
+    #define BUTTON_A_NUMBER CONFIG_BLUCONTROL_BUTTON_A_BTN
+#else
+    #define BUTTON_A_NUMBER -1
+#endif
+#ifdef CONFIG_BLUCONTROL_BUTTON_B_BTN
+    #define BUTTON_B_NUMBER CONFIG_BLUCONTROL_BUTTON_B_BTN
+#else
+    #define BUTTON_B_NUMBER -1
+#endif
+#ifdef CONFIG_BLUCONTROL_BUTTON_Y_BTN
+    #define BUTTON_Y_NUMBER CONFIG_BLUCONTROL_BUTTON_Y_BTN
+#else
+    #define BUTTON_Y_NUMBER -1
+#endif
+#ifdef CONFIG_BLUCONTROL_BUTTON_X_BTN
+    #define BUTTON_X_NUMBER CONFIG_BLUCONTROL_BUTTON_X_BTN
+#else
+    #define BUTTON_X_NUMBER -1
+#endif
+
+// Triggers
+#ifdef CONFIG_BLUCONTROL_BUTTON_L_BTN
+    #define BUTTON_L_NUMBER CONFIG_BLUCONTROL_BUTTON_L_BTN
+#else
+    #define BUTTON_L_NUMBER -1
+#endif
+#ifdef CONFIG_BLUCONTROL_BUTTON_ZL_BTN
+    #define BUTTON_ZL_NUMBER CONFIG_BLUCONTROL_BUTTON_ZL_BTN
+#else
+    #define BUTTON_ZL_NUMBER -1
+#endif
+#ifdef CONFIG_BLUCONTROL_BUTTON_R_BTN
+    #define BUTTON_R_NUMBER CONFIG_BLUCONTROL_BUTTON_R_BTN
+#else
+    #define BUTTON_R_NUMBER -1
+#endif
+#ifdef CONFIG_BLUCONTROL_BUTTON_ZR_BTN
+    #define BUTTON_ZR_NUMBER CONFIG_BLUCONTROL_BUTTON_ZR_BTN
+#else
+    #define BUTTON_ZR_NUMBER -1
+#endif
+
+// Special
+#ifdef CONFIG_BLUCONTROL_BUTTON_START_BTN
+    #define BUTTON_START_NUMBER CONFIG_BLUCONTROL_BUTTON_START_BTN
+#else
+    #define BUTTON_START_NUMBER -1
+#endif
+#ifdef CONFIG_BLUCONTROL_BUTTON_SELECT_BTN
+    #define BUTTON_SELECT_NUMBER CONFIG_BLUCONTROL_BUTTON_SELECT_BTN
+#else
+    #define BUTTON_SELECT_NUMBER -1
+#endif
+#ifdef CONFIG_BLUCONTROL_BUTTON_HOME_BTN
+    #define BUTTON_HOME_NUMBER CONFIG_BLUCONTROL_BUTTON_HOME_BTN
+#else
+    #define BUTTON_HOME_NUMBER -1
+#endif
+#ifdef CONFIG_BLUCONTROL_BUTTON_CAPTURE_BTN
+    #define BUTTON_CAPTURE_NUMBER CONFIG_BLUCONTROL_BUTTON_CAPTURE_BTN
+#else
+    #define BUTTON_CAPTURE_NUMBER -1
+#endif
+
+// Button Sticks
+#ifdef CONFIG_BLUCONTROL_BUTTON_STICK_L_BTN
+    #define BUTTON_STICK_L_NUMBER CONFIG_BLUCONTROL_BUTTON_STICK_L_BTN
+#else
+    #define BUTTON_STICK_L_NUMBER -1
+#endif
+#ifdef CONFIG_BLUCONTROL_BUTTON_STICK_R_BTN
+    #define BUTTON_STICK_R_NUMBER CONFIG_BLUCONTROL_BUTTON_STICK_R_BTN
+#else
+    #define BUTTON_STICK_R_NUMBER -1
+#endif
+
+// Axis
+#ifdef CONFIG_BLUCONTROL_LEFT_STICK_NONE
+    #define AXIS_HAS_LEFT_STICK false
+#else
+    #define AXIS_HAS_LEFT_STICK true
+#endif
+
+#ifdef CONFIG_BLUCONTROL_RIGHT_STICK_NONE
+    #define AXIS_HAS_RIGHT_STICK false
+#else
+    #define AXIS_HAS_RIGHT_STICK true
+#endif
+
+#ifdef CONFIG_BLUCONTROL_LEFT_TRIGGER_NONE
+    #define AXIS_HAS_LEFT_TRIGGER false
+#else
+    #define AXIS_HAS_LEFT_TRIGGER true
+#endif
+
+#ifdef CONFIG_BLUCONTROL_RIGHT_TRIGGER_NONE
+    #define AXIS_HAS_RIGHT_TRIGGER false
+#else
+    #define AXIS_HAS_RIGHT_TRIGGER true
+#endif
+
+// Triggers
+#ifdef CONFIG_BLUCONTROL_LEFT_TRIGGER_ACT
+    #define LEFT_TRIGGER_ACT CONFIG_BLUCONTROL_LEFT_TRIGGER_ACT
+#else
+    #define LEFT_TRIGGER_ACT -1
+#endif
+#ifdef CONFIG_BLUCONTROL_LEFT_TRIGGER_BTN
+    #define LEFT_TRIGGER_BTN CONFIG_BLUCONTROL_LEFT_TRIGGER_BTN
+#else
+    #define LEFT_TRIGGER_BTN -1
+#endif
+
+#ifdef CONFIG_BLUCONTROL_RIGHT_TRIGGER_ACT
+    #define RIGHT_TRIGGER_ACT CONFIG_BLUCONTROL_RIGHT_TRIGGER_ACT
+#else
+    #define RIGHT_TRIGGER_ACT -1
+#endif
+#ifdef CONFIG_BLUCONTROL_RIGHT_TRIGGER_BTN
+    #define RIGHT_TRIGGER_BTN CONFIG_BLUCONTROL_RIGHT_TRIGGER_BTN
+#else
+    #define RIGHT_TRIGGER_BTN -1
+#endif
+
+// Rumbles
+#ifdef CONFIG_BLUCONTROL_RUMBLE_LEFT_GPIO
+    #define LEFT_RUMBLE_GPIO CONFIG_BLUCONTROL_RUMBLE_LEFT_GPIO
+#else
+    #define LEFT_RUMBLE_GPIO -1
+#endif
+#ifdef CONFIG_BLUCONTROL_RUMBLE_RIGHT_GPIO
+    #define RIGHT_RUMBLE_GPIO CONFIG_BLUCONTROL_RUMBLE_RIGHT_GPIO
+#else
+    #define RIGHT_RUMBLE_GPIO -1
+#endif
+
+
+#endif

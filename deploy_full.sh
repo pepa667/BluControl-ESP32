@@ -5,7 +5,6 @@
 
 # --- CONFIGURAÇÕES ---
 SCRIPT_DIR="${0:A:h}"
-# Ajuste se o script estiver dentro de /scripts ou na raiz
 [[ "$SCRIPT_DIR" == *"/scripts" ]] && ROOT_DIR="${SCRIPT_DIR:h}" || ROOT_DIR="$SCRIPT_DIR"
 
 IDF_PY="/Users/pepa/esp/v5.0/esp-idf/tools/idf.py"
@@ -14,14 +13,38 @@ FINAL_BUILD_DIR="$ROOT_DIR/build_final"
 TMP_DIR="$ROOT_DIR/tmp_bins"
 RELEASE_FILE="bebopCORE_Full.bin"
 
-# Ordem de build: blu-ota primeiro (essencial para bootloader/partition table)
 PROJECTS=("blu-ota" "blu-switch" "blu-generic")
 
 # Cores
 GREEN='\033[0;32m'; BLUE='\033[0;34m'; YELLOW='\033[1;33m'; RED='\033[0;31m'; NC='\033[0m'
 
+# --- FUNÇÃO FULL CLEAN ---
+full_clean() {
+    echo "${RED}===> [CLEAN] Resetando todas as builds e temporários...${NC}"
+    rm -rf "$FINAL_BUILD_DIR" "$TMP_DIR"
+    
+    for PROJECT in "${PROJECTS[@]}"; do
+        PROJECT_DIR="$ROOT_DIR/$PROJECT"
+        if [ -d "$PROJECT_DIR" ]; then
+            echo "${YELLOW}Limpando $PROJECT...${NC}"
+            (cd "$PROJECT_DIR" && $IDF_PY fullclean)
+        fi
+    done
+    echo "${GREEN}✔ Limpeza concluída!${NC}"
+}
+
+# Verifica se o argumento é fullclean
+if [[ "$1" == "fullclean" ]]; then
+    full_clean
+    # Se quiser que ele pare após limpar, use exit 0. 
+    # Se quiser que ele limpe e já comece o build, apague a linha abaixo:
+    exit 0
+fi
+
 echo "${BLUE}===> [GROUND-ZERO] bebopCORE AUTO-DEPLOY <===${NC}"
 
+# 1. BUILD PHASE
+# ... (restante do seu código de build original aqui)
 # 1. BUILD PHASE
 START_TOTAL=$SECONDS
 for i in {1..${#PROJECTS[@]}}; do

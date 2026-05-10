@@ -2,7 +2,7 @@
 
 #define LOG_TAG "BLU_GENERIC"
 
-BleGamepad bleGamepad("BluControl Gamepad", "JPZV");
+BleGamepad bleGamepad("bebopCore", "Pépa");
 BleGamepadConfiguration bleGamepadConfig;
 
 TaskHandle_t loopTaskHandle = NULL;
@@ -38,6 +38,11 @@ int8_t dpad_axis = 0;
 bool need_report = false;
 int8_t old_dpad_axis = 0;
 
+#ifdef CONFIG_BLUCONTROL_BUTTONS_MINIMAL_YES
+static bool is_shift_pressed = false;
+static gpio_num_t shift_gpio_num = GPIO_NUM_NC;
+#endif
+
 
 void app_loop(void *params)
 {
@@ -57,6 +62,60 @@ void app_loop(void *params)
 
             blu_refresh_buttons();
 
+#ifdef CONFIG_BLUCONTROL_BUTTONS_MINIMAL_YES
+            {
+                static bool prev_shift_pressed = false;
+                is_shift_pressed = blu_get_button_state(shift_gpio_num);
+                if (prev_shift_pressed != is_shift_pressed)
+                {
+                    need_report = true;
+                    prev_shift_pressed = is_shift_pressed;
+                }
+            }
+
+            if (!is_shift_pressed)
+            {
+                // Normal: A→A, B→B, L→L, R→R, START→START, SELECT→SELECT
+                if (BUTTON_A_NUMBER > 0)  { bleGamepad.setState(BUTTON_A_NUMBER, blu_buttons.button_A.value);     need_report |= (blu_buttons.button_A.old_value != blu_buttons.button_A.value); }
+                if (BUTTON_B_NUMBER > 0)  { bleGamepad.setState(BUTTON_B_NUMBER, blu_buttons.button_B.value);     need_report |= (blu_buttons.button_B.old_value != blu_buttons.button_B.value); }
+                if (BUTTON_X_NUMBER > 0)  { bleGamepad.setState(BUTTON_X_NUMBER, 0); }
+                if (BUTTON_Y_NUMBER > 0)  { bleGamepad.setState(BUTTON_Y_NUMBER, 0); }
+                if (BUTTON_L_NUMBER > 0)  { bleGamepad.setState(BUTTON_L_NUMBER, blu_buttons.trigger_l.value);    need_report |= (blu_buttons.trigger_l.old_value != blu_buttons.trigger_l.value); }
+                if (BUTTON_ZL_NUMBER > 0) { bleGamepad.setState(BUTTON_ZL_NUMBER, 0); }
+                if (BUTTON_R_NUMBER > 0)  { bleGamepad.setState(BUTTON_R_NUMBER, blu_buttons.trigger_r.value);    need_report |= (blu_buttons.trigger_r.old_value != blu_buttons.trigger_r.value); }
+                if (BUTTON_ZR_NUMBER > 0) { bleGamepad.setState(BUTTON_ZR_NUMBER, 0); }
+
+                if (BUTTON_START_NUMBER > 0)       { bleGamepad.setState(BUTTON_START_NUMBER, blu_buttons.special_start.value);          need_report |= (blu_buttons.special_start.old_value != blu_buttons.special_start.value); }
+                else if (BUTTON_START_NUMBER == 0) { bleGamepad.setStateSpecialButton(START_BUTTON, blu_buttons.special_start.value);    need_report |= (blu_buttons.special_start.old_value != blu_buttons.special_start.value); }
+                if (BUTTON_HOME_NUMBER > 0)        { bleGamepad.setState(BUTTON_HOME_NUMBER, 0); }
+                else if (BUTTON_HOME_NUMBER == 0)  { bleGamepad.setStateSpecialButton(HOME_BUTTON, 0); }
+
+                if (BUTTON_SELECT_NUMBER > 0)       { bleGamepad.setState(BUTTON_SELECT_NUMBER, blu_buttons.special_select.value);       need_report |= (blu_buttons.special_select.old_value != blu_buttons.special_select.value); }
+                else if (BUTTON_SELECT_NUMBER == 0) { bleGamepad.setStateSpecialButton(SELECT_BUTTON, blu_buttons.special_select.value); need_report |= (blu_buttons.special_select.old_value != blu_buttons.special_select.value); }
+                if (BUTTON_CAPTURE_NUMBER > 0)      { bleGamepad.setState(BUTTON_CAPTURE_NUMBER, 0); }
+            }
+            else
+            {
+                // SHIFT: A→X, B→Y, L→ZL, R→ZR, START→HOME, SELECT→CAPTURE
+                if (BUTTON_A_NUMBER > 0)  { bleGamepad.setState(BUTTON_A_NUMBER, 0); }
+                if (BUTTON_B_NUMBER > 0)  { bleGamepad.setState(BUTTON_B_NUMBER, 0); }
+                if (BUTTON_X_NUMBER > 0)  { bleGamepad.setState(BUTTON_X_NUMBER, blu_buttons.button_A.value);     need_report |= (blu_buttons.button_A.old_value != blu_buttons.button_A.value); }
+                if (BUTTON_Y_NUMBER > 0)  { bleGamepad.setState(BUTTON_Y_NUMBER, blu_buttons.button_B.value);     need_report |= (blu_buttons.button_B.old_value != blu_buttons.button_B.value); }
+                if (BUTTON_L_NUMBER > 0)  { bleGamepad.setState(BUTTON_L_NUMBER, 0); }
+                if (BUTTON_ZL_NUMBER > 0) { bleGamepad.setState(BUTTON_ZL_NUMBER, blu_buttons.trigger_l.value);   need_report |= (blu_buttons.trigger_l.old_value != blu_buttons.trigger_l.value); }
+                if (BUTTON_R_NUMBER > 0)  { bleGamepad.setState(BUTTON_R_NUMBER, 0); }
+                if (BUTTON_ZR_NUMBER > 0) { bleGamepad.setState(BUTTON_ZR_NUMBER, blu_buttons.trigger_r.value);   need_report |= (blu_buttons.trigger_r.old_value != blu_buttons.trigger_r.value); }
+
+                if (BUTTON_START_NUMBER > 0)       { bleGamepad.setState(BUTTON_START_NUMBER, 0); }
+                else if (BUTTON_START_NUMBER == 0) { bleGamepad.setStateSpecialButton(START_BUTTON, 0); }
+                if (BUTTON_HOME_NUMBER > 0)        { bleGamepad.setState(BUTTON_HOME_NUMBER, blu_buttons.special_start.value);           need_report |= (blu_buttons.special_start.old_value != blu_buttons.special_start.value); }
+                else if (BUTTON_HOME_NUMBER == 0)  { bleGamepad.setStateSpecialButton(HOME_BUTTON, blu_buttons.special_start.value);     need_report |= (blu_buttons.special_start.old_value != blu_buttons.special_start.value); }
+
+                if (BUTTON_SELECT_NUMBER > 0)       { bleGamepad.setState(BUTTON_SELECT_NUMBER, 0); }
+                else if (BUTTON_SELECT_NUMBER == 0) { bleGamepad.setStateSpecialButton(SELECT_BUTTON, 0); }
+                if (BUTTON_CAPTURE_NUMBER > 0)      { bleGamepad.setState(BUTTON_CAPTURE_NUMBER, blu_buttons.special_select.value);      need_report |= (blu_buttons.special_select.old_value != blu_buttons.special_select.value); }
+            }
+#else
             if (BUTTON_A_NUMBER > 0)
             {
                 bleGamepad.setState(BUTTON_A_NUMBER, blu_buttons.button_A.value);
@@ -137,6 +196,7 @@ void app_loop(void *params)
                 bleGamepad.setState(BUTTON_CAPTURE_NUMBER, blu_buttons.special_capture.value);
                 need_report |= (blu_buttons.special_capture.old_value != blu_buttons.special_capture.value);
             }
+#endif // CONFIG_BLUCONTROL_BUTTONS_MINIMAL_YES
 
             if (BUTTON_STICK_L_NUMBER > 0)
             {
@@ -158,41 +218,39 @@ void app_loop(void *params)
             if (blu_buttons.dpad_right.value)
                 btn_x_axis++;
 
-            if (btn_y_axis == 0 && btn_x_axis == 0)
+#if defined(CONFIG_BLUCONTROL_BUTTONS_MINIMAL_YES) && defined(CONFIG_BLUCONTROL_LEFT_STICK_BUTTONS)
+            if (is_shift_pressed)
             {
+                button_stick_data = blu_buttons_stick_get_data(BLU_BUTTONS_PAD_LEFT);
+                if (button_stick_data->x_axis > 0)
+                    btn_x_axis++;
+                else if (button_stick_data->x_axis < 0)
+                    btn_x_axis--;
+                if (button_stick_data->y_axis > 0)
+                    btn_y_axis++;
+                else if (button_stick_data->y_axis < 0)
+                    btn_y_axis--;
+            }
+#endif
+
+            if (btn_x_axis == 0 && btn_y_axis == 0)
                 dpad_axis = 0;
-            }
+            else if (btn_x_axis == 0 && btn_y_axis > 0)
+                dpad_axis = DPAD_UP;
+            else if (btn_x_axis > 0 && btn_y_axis > 0)
+                dpad_axis = DPAD_UP_RIGHT;
+            else if (btn_x_axis > 0 && btn_y_axis == 0)
+                dpad_axis = DPAD_RIGHT;
+            else if (btn_x_axis > 0 && btn_y_axis < 0)
+                dpad_axis = DPAD_DOWN_RIGHT;
+            else if (btn_x_axis == 0 && btn_y_axis < 0)
+                dpad_axis = DPAD_DOWN;
+            else if (btn_x_axis < 0 && btn_y_axis < 0)
+                dpad_axis = DPAD_DOWN_LEFT;
+            else if (btn_x_axis < 0 && btn_y_axis == 0)
+                dpad_axis = DPAD_LEFT;
             else
-            {
-                switch ((int)(atan2(btn_x_axis, btn_y_axis) * 180 / PI))
-                {
-                    default:
-                    case 0:
-                        dpad_axis = DPAD_UP;
-                        break;
-                    case 45:
-                        dpad_axis = DPAD_UP_RIGHT;
-                        break;
-                    case 90:
-                        dpad_axis = DPAD_RIGHT;
-                        break;
-                    case 135:
-                        dpad_axis = DPAD_DOWN_RIGHT;
-                        break;
-                    case 180:
-                        dpad_axis = DPAD_DOWN;
-                        break;
-                    case -135:
-                        dpad_axis = DPAD_DOWN_LEFT;
-                        break;
-                    case -90:
-                        dpad_axis = DPAD_LEFT;
-                        break;
-                    case -45:
-                        dpad_axis = DPAD_UP_LEFT;
-                        break;
-                }
-            }
+                dpad_axis = DPAD_UP_LEFT;
             bleGamepad.setHat1(dpad_axis);
             need_report |= (old_dpad_axis != dpad_axis);
             old_dpad_axis = dpad_axis;
@@ -215,12 +273,30 @@ void app_loop(void *params)
             old_l_thumb_y_value = n64_left_joystick_data.y_axis.value;
             #elif defined(CONFIG_BLUCONTROL_LEFT_STICK_BUTTONS)
             button_stick_data = blu_buttons_stick_get_data(BLU_BUTTONS_PAD_LEFT);
+            #ifdef CONFIG_BLUCONTROL_BUTTONS_MINIMAL_YES
+            if (!is_shift_pressed)
+            {
+                bleGamepad.setLeftThumb(GET_JOYSTICK_X_AXIS(button_stick_data->x_axis),
+                                        GET_JOYSTICK_Y_AXIS(button_stick_data->y_axis * -1));
+                need_report |= (old_l_thumb_x_value != button_stick_data->x_axis) || (old_l_thumb_y_value != button_stick_data->y_axis);
+                old_l_thumb_x_value = button_stick_data->x_axis;
+                old_l_thumb_y_value = button_stick_data->y_axis;
+            }
+            else
+            {
+                // SHIFT: left stick buttons → DPAD (already remapped above)
+                bleGamepad.setLeftThumb(GET_JOYSTICK_X_AXIS(0), GET_JOYSTICK_Y_AXIS(0));
+                need_report |= (old_l_thumb_x_value != 0) || (old_l_thumb_y_value != 0);
+                old_l_thumb_x_value = 0;
+                old_l_thumb_y_value = 0;
+            }
+            #else
             bleGamepad.setLeftThumb(GET_JOYSTICK_X_AXIS(button_stick_data->x_axis),
                                     GET_JOYSTICK_Y_AXIS(button_stick_data->y_axis * -1));
-            
             need_report |= (old_l_thumb_x_value != button_stick_data->x_axis) || (old_l_thumb_y_value != button_stick_data->y_axis);
             old_l_thumb_x_value = button_stick_data->x_axis;
             old_l_thumb_y_value = button_stick_data->y_axis;
+            #endif
             #else
             bleGamepad.setLeftThumb(GET_JOYSTICK_X_AXIS(0),
                                     GET_JOYSTICK_Y_AXIS(0));
@@ -249,9 +325,6 @@ void app_loop(void *params)
             need_report |= (old_r_thumb_x_value != button_stick_data->x_axis) || (old_r_thumb_y_value != button_stick_data->y_axis);
             old_r_thumb_x_value = button_stick_data->x_axis;
             old_r_thumb_y_value = button_stick_data->y_axis;
-            #else
-            bleGamepad.setRightThumb(GET_JOYSTICK_X_AXIS(0),
-                                     GET_JOYSTICK_Y_AXIS(0));
             #endif
 
             #ifdef CONFIG_BLUCONTROL_LEFT_TRIGGER_ANALOG
@@ -315,6 +388,29 @@ extern "C" void app_main(void)
 
     blu_energy_init();
     blu_init_hardware();
+
+#ifdef CONFIG_BLUCONTROL_BUTTONS_MINIMAL_YES
+    {
+        const char *shift_pin_str = SHIFT_BUTTON_PIN;
+        if (strlen(shift_pin_str) > 0)
+        {
+            shift_gpio_num = (gpio_num_t)atoi(shift_pin_str);
+            gpio_config_t io_conf = {};
+            io_conf.intr_type = GPIO_INTR_DISABLE;
+            io_conf.mode = GPIO_MODE_INPUT;
+            io_conf.pin_bit_mask = (1ULL << shift_gpio_num);
+#ifdef CONFIG_BLUCONTROL_BUTTONS_PRESS_STATE_HIGH
+            io_conf.pull_down_en = GPIO_PULLDOWN_ENABLE;
+            io_conf.pull_up_en = GPIO_PULLUP_DISABLE;
+#else
+            io_conf.pull_down_en = GPIO_PULLDOWN_DISABLE;
+            io_conf.pull_up_en = GPIO_PULLUP_ENABLE;
+#endif
+            gpio_config(&io_conf);
+        }
+    }
+#endif
+
     blucontrol_mode_init(true);
 
     bleGamepadConfig.setAutoReport(false);

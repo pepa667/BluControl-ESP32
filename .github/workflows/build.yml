@@ -1,7 +1,10 @@
 name: Build
 
 on:
-  workflow_dispatch:
+  push:
+    branches: ["quicktest"]
+  pull_request:
+    branches: ["quicktest"]
 
 jobs:
   build:
@@ -19,7 +22,7 @@ jobs:
         run: |
           eval `ssh-agent -s`
           ssh-add - <<< '${{ secrets.PULL_KEY }}'
-          git clone --recursive git@github.com:JPZV/BluControl-ESP32.git .
+          git clone --recursive --branch quicktest git@github.com:pepa667/BluControl-ESP32.git .
       - name: Download ESP-IDF
         run: git clone --recursive --branch v5.0 https://github.com/espressif/esp-idf.git ./esp-idf
       - name: Install ESP-IDF

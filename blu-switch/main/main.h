@@ -4,12 +4,13 @@
 #include "blucontrol_mode.h"
 #include "blu-energy.h"
 #include "blu-hardware.h"
+#include "baseband_api.h"
+#include "nvs.h"
+#include "nvs_flash.h"
 #include "esp_log.h"
 #include "esp_system.h"
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
-#include "hoja_includes.h"
-#include "core_switch_backend.h"
 #include <string.h>
 #include <stdio.h>
 
@@ -27,22 +28,11 @@
 #include "blu-analog-triggers.h"
 #endif
 
-#if defined(CONFIG_BLUCONTROL_CONTROL_TYPE_N64)
-#define HOJA_CONTROL_TYPE NS_TYPE_N64
-#elif defined(CONFIG_BLUCONTROL_CONTROL_TYPE_JOY_L)
-#define HOJA_CONTROL_TYPE NS_TYPE_JOYCON_L
-#elif defined(CONFIG_BLUCONTROL_CONTROL_TYPE_JOY_R)
-#define HOJA_CONTROL_TYPE NS_TYPE_JOYCON_R
-#elif defined(CONFIG_BLUCONTROL_CONTROL_TYPE_SNES)
-#define HOJA_CONTROL_TYPE NS_TYPE_SNES
-#elif defined(CONFIG_BLUCONTROL_CONTROL_TYPE_NES)
-#define HOJA_CONTROL_TYPE NS_TYPE_NES
-#elif defined(CONFIG_BLUCONTROL_CONTROL_TYPE_FC)
-#define HOJA_CONTROL_TYPE NS_TYPE_FC
-#elif defined(CONFIG_BLUCONTROL_CONTROL_TYPE_GENESIS)
-#define HOJA_CONTROL_TYPE NS_TYPE_GENESIS
+/* BT mode: Switch (default) or SInput */
+#ifdef CONFIG_BLUCONTROL_BT_MODE_SINPUT
+#define BB_BT_MODE BB_MODE_SINPUT
 #else
-#define HOJA_CONTROL_TYPE NS_TYPE_PROCON
+#define BB_BT_MODE BB_MODE_SWITCH
 #endif
 
 // Triggers

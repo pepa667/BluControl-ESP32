@@ -14,3 +14,6 @@
 [submodule "blu-switch/components/HOJA-LIB-ESP32-Fork"]
 	path = blu-switch/components/HOJA-LIB-ESP32
 	url = https://github.com/JPZV/HOJA-LIB-ESP32
+[submodule "blu-switch/components/hoja-baseband/HOJA-ESP32-Baseband"]
+	path = blu-switch/components/hoja-baseband/HOJA-ESP32-Baseband
+	url = https://github.com/HandHeldLegend/HOJA-ESP32-Baseband.git

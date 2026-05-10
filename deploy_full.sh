@@ -7,8 +7,14 @@
 SCRIPT_DIR="${0:A:h}"
 [[ "$SCRIPT_DIR" == *"/scripts" ]] && ROOT_DIR="${SCRIPT_DIR:h}" || ROOT_DIR="$SCRIPT_DIR"
 
-IDF_PY="/Users/pepa/esp/v5.0/esp-idf/tools/idf.py"
-PYTHON="/Users/pepa/.espressif/python_env/idf5.0_py3.8_env/bin/python"
+IDF_PY="/Users/pepa/esp/v5.2.3/esp-idf/tools/idf.py"
+PYTHON="/Users/pepa/.espressif/python_env/idf5.2_py3.9_env/bin/python"
+
+# Per-project IDF overrides (project name → "IDF_PY|PYTHON")
+declare -A PROJECT_IDF
+PROJECT_IDF["blu-ota"]="/Users/pepa/esp/v5.0/esp-idf/tools/idf.py|/Users/pepa/.espressif/python_env/idf5.0_py3.8_env/bin/python"
+PROJECT_IDF["blu-generic"]="/Users/pepa/esp/v5.2.3/esp-idf/tools/idf.py|/Users/pepa/.espressif/python_env/idf5.2_py3.9_env/bin/python"
+PROJECT_IDF["blu-switch"]="/Users/pepa/esp/v5.2.3/esp-idf/tools/idf.py|/Users/pepa/.espressif/python_env/idf5.2_py3.9_env/bin/python"
 FINAL_BUILD_DIR="$ROOT_DIR/build_final"
 TMP_DIR="$ROOT_DIR/tmp_bins"
 RELEASE_FILE="bebopCORE_Full.bin"
@@ -26,8 +32,13 @@ full_clean() {
     for PROJECT in "${PROJECTS[@]}"; do
         PROJECT_DIR="$ROOT_DIR/$PROJECT"
         if [ -d "$PROJECT_DIR" ]; then
-            echo "${YELLOW}Limpando $PROJECT...${NC}"
-            (cd "$PROJECT_DIR" && $IDF_PY fullclean)
+            local override=("${(s:|:)PROJECT_IDF[$PROJECT]}")
+            local _idf="${override[1]:-$IDF_PY}"
+            local _py="${override[2]:-$PYTHON}"
+            local _idf_root="${_idf:h:h}"
+            local _py_env="${_py:h:h}"
+            echo "${YELLOW}Limpando $PROJECT (IDF: ${_idf_root:t})...${NC}"
+            (cd "$PROJECT_DIR" && IDF_PATH="$_idf_root" IDF_PYTHON_ENV_PATH="$_py_env" "$_py" "$_idf" fullclean)
         fi
     done
     echo "${GREEN}✔ Limpeza concluída!${NC}"
@@ -50,15 +61,19 @@ START_TOTAL=$SECONDS
 for i in {1..${#PROJECTS[@]}}; do
     PROJECT="${PROJECTS[$i]}"
     PROJECT_DIR="$ROOT_DIR/$PROJECT"
-    
-    echo "${BLUE}[Build $i/${#PROJECTS[@]}] $PROJECT${NC}"
+
+    local override=("${(s:|:)PROJECT_IDF[$PROJECT]}")
+    local _idf="${override[1]:-$IDF_PY}"
+    local _py="${override[2]:-$PYTHON}"
+    local _idf_root="${_idf:h:h}"
+    local _py_env="${_py:h:h}"
+
+    echo "${BLUE}[Build $i/${#PROJECTS[@]}] $PROJECT  [IDF ${_idf_root:t} / ${_py_env:t}]${NC}"
     if [ ! -d "$PROJECT_DIR" ]; then
         echo "${RED}Pasta não encontrada: $PROJECT_DIR${NC}"; exit 1
     fi
 
-    cd "$PROJECT_DIR"
-    # Build incremental para ser rápido, mas você pode passar -c se precisar de fullclean
-    "$PYTHON" "$IDF_PY" build || { echo "${RED}Falha no build de $PROJECT${NC}"; exit 1 }
+    (cd "$PROJECT_DIR" && IDF_PATH="$_idf_root" IDF_PYTHON_ENV_PATH="$_py_env" "$_py" "$_idf" build) || { echo "${RED}Falha no build de $PROJECT${NC}"; exit 1 }
 done
 
 # 2. MERGE PHASE
@@ -125,7 +140,12 @@ esptool.py --chip esp32 --port "$SELECTED_PORT" --baud 460800 write_flash 0x0 "$
 if [ $? -eq 0 ]; then
     echo "${GREEN}✓ Flash OK! Entrando em modo Monitor...${NC}"
     # Entra no monitor usando o diretório do OTA para carregar os símbolos de debug (ELF)
-    cd "$ROOT_DIR/blu-ota" && "$PYTHON" "$IDF_PY" -p "$SELECTED_PORT" monitor
+    local ota_override=("${(s:|:)PROJECT_IDF[blu-ota]}")
+    local _ota_idf="${ota_override[1]:-$IDF_PY}"
+    local _ota_py="${ota_override[2]:-$PYTHON}"
+    local _ota_idf_root="${_ota_idf:h:h}"
+    local _ota_py_env="${_ota_py:h:h}"
+    cd "$ROOT_DIR/blu-ota" && IDF_PATH="$_ota_idf_root" IDF_PYTHON_ENV_PATH="$_ota_py_env" "$_ota_py" "$_ota_idf" -p "$SELECTED_PORT" monitor
 else
     echo "${RED}✗ Falha no Flash.${NC}"
     exit 1

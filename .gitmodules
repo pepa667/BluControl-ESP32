@@ -1,9 +1,7 @@
 [submodule "blu-switch/components/BluControl-SDK-ESP32"]
 	path = blu-switch/components/BluControl-SDK-ESP32
 	url = https://github.com/JPZV/BluControl-SDK-ESP32
-[submodule "blu-generic/components/BluControl-SDK-ESP32"]
-	path = blu-generic/components/BluControl-SDK-ESP32
-	url = https://github.com/JPZV/BluControl-SDK-ESP32
+	branch = main
 [submodule "blu-generic/components/esp-nimble-cpp"]
 	path = blu-generic/components/esp-nimble-cpp
 	url = https://github.com/JPZV/esp-nimble-cpp
@@ -11,6 +9,8 @@
 [submodule "blu-generic/components/ESP32-BLE-Gamepad-idf"]
 	path = blu-generic/components/ESP32-BLE-Gamepad-idf
 	url = https://github.com/JPZV/ESP32-BLE-Gamepad-idf
+	branch = master
 [submodule "blu-switch/components/HOJA-LIB-ESP32-Fork"]
 	path = blu-switch/components/HOJA-LIB-ESP32
 	url = https://github.com/JPZV/HOJA-LIB-ESP32
+	branch = main

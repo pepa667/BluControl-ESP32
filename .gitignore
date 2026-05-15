@@ -42,3 +42,7 @@ sdkconfig.old
 sdkconfig
 tmp/
 tmp*.txt
+
+
+
+.DS_Store

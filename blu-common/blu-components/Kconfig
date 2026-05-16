@@ -12,8 +12,81 @@ menu "BluControl Configuration"
         config BLUCONTROL_BUTTONS_PRESS_STATE_HIGH
             bool "HIGH State"
     endchoice
+    choice BLUCONTROL_BUTTONS_MINIMAL
+        prompt "Setup for minimal buttons configuration"
+        default BLUCONTROL_BUTTONS_MINIMAL_NO
+        help
+            Select whether to show minimal inputs. It adds a SHIFT Key to complete the inputs of the controller with only a few buttons connected. The inputs to alternate are: A/X, B/Y, ANALOG/DPAD, L/ZL, R/ZR, START/HOME, SELECT/CAPTURE.  
+
+
+        config BLUCONTROL_BUTTONS_MINIMAL_NO
+            bool "No"
+
+        config BLUCONTROL_BUTTONS_MINIMAL_YES
+            bool "Yes"
+
+            
+    endchoice
+
+    # menu 
+    #     config BLUCONTROL_LEFT_STICK_MODE
+    #     help
+    #         default BLUCONTROL_LEFT_STICK_MODE
+            
+    #     config BLUCONTROL_LEFT_STICK_BUTTONS
+    #     help
+    #         default BLUCONTROL_LEFT_STICK_BUTTONS
+    # endmenu
+
 
     menu "Buttons"
+        depends on BLUCONTROL_BUTTONS_MINIMAL_YES
+       
+        #Buttons
+        config  BLUCONTROL_BUTTONS_MINIMAL_SHIFT_GPIO
+            string "SHIFT Button GPIO"
+            default ""
+            help
+                GPIO Number for the SHIFT Button. This button will be used to alternate the inputs of the controller with only a few buttons connected. The inputs to alternate are: A/X, B/Y, ANALOG/DPAD, L/ZL, R/ZR, START/HOME, SELECT/CAPTURE.
+        config BLUCONTROL_BUTTON_A_GPIO
+            string "Button A, SHIFT -> X GPIO"
+            default ""
+            help
+                GPIO Number for the A Button. Empty if the controller doesn't have that button. Multiple GPIOs can be defined with a space between them
+
+        config BLUCONTROL_BUTTON_B_GPIO
+            string "Button B, SHIFT -> Y GPIO"
+            default ""
+            help
+                GPIO Number for the B Button. Empty if the controller doesn't have that button. Multiple GPIOs can be defined with a space between them
+
+        config BLUCONTROL_BUTTON_L_GPIO
+            string "Button L, SHIFT -> ZL GPIO"
+            default ""
+            help
+                GPIO Number for the L Button. Empty if the controller doesn't have that button. Multiple GPIOs can be defined with a space between them
+
+        config BLUCONTROL_BUTTON_R_GPIO
+            string "Button R, SHIFT -> ZR GPIO"
+            default ""
+            help
+                GPIO Number for the R Button. Empty if the controller doesn't have that button. Multiple GPIOs can be defined with a space between them
+
+        config BLUCONTROL_BUTTON_START_GPIO
+            string "Button START, SHIFT -> HOME GPIO"
+            default ""
+            help
+                GPIO Number for the START Button. Empty if the controller doesn't have that button. Multiple GPIOs can be defined with a space between them
+
+        config BLUCONTROL_BUTTON_SELECT_GPIO
+            string "Button SELECT, SHIFT -> CAPTURE GPIO"
+            default ""
+            help
+                GPIO Number for the SELECT Button. Empty if the controller doesn't have that button. Multiple GPIOs can be defined with a space between them
+
+    endmenu
+    menu "Buttons"
+        depends on !BLUCONTROL_BUTTONS_MINIMAL_YES
         #Buttons
         config BLUCONTROL_BUTTON_A_GPIO
             string "Button A GPIO"
@@ -125,6 +198,8 @@ menu "BluControl Configuration"
     endmenu
 
     menu "Triggers"
+        depends on !BLUCONTROL_BUTTONS_MINIMAL_YES
+        #Triggers   
         choice BLUCONTROL_LEFT_TRIGGER_MODE
             prompt "Left trigger mode"
             default BLUCONTROL_LEFT_TRIGGER_NONE
@@ -199,20 +274,23 @@ menu "BluControl Configuration"
     menu "Sticks"
         menu "Left Stick"
             #Left Stick
-
+            
             choice BLUCONTROL_LEFT_STICK_MODE
                 prompt "Left stick mode"
-                default BLUCONTROL_LEFT_STICK_NONE
+                default BLUCONTROL_LEFT_STICK_BUTTONS if BLUCONTROL_BUTTONS_MINIMAL_YES
+                default BLUCONTROL_LEFT_STICK_NONE if !BLUCONTROL_BUTTONS_MINIMAL_YES
                 help
                     Select the type of input for the left stick
 
                 config BLUCONTROL_LEFT_STICK_NONE
                     bool "Disabled"
-
+                    
                 config BLUCONTROL_LEFT_STICK_ANALOG
+                    depends on !BLUCONTROL_BUTTONS_MINIMAL_YES
                     bool "Analog"
-
+                    
                 config BLUCONTROL_LEFT_STICK_N64
+                    depends on !BLUCONTROL_BUTTONS_MINIMAL_YES
                     bool "N64 stick"
 
                 config BLUCONTROL_LEFT_STICK_BUTTONS
